@@ -21,6 +21,11 @@
                 "path": "/frame",
                 "name": "主题装扮",
                 "icon": "el-icon-brush"
+            },
+            {
+                "path": "/collection",
+                "name": "魔盒藏品",
+                "icon": "el-icon-magic-stick"
             }
         ]
     },
