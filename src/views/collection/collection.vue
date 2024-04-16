@@ -10,7 +10,7 @@
                                 backgroundImage: `url(${getImgPath(index + 1, 'bg')})`,
                             }"
                         ></div>
-                        <div class="u-title">第{{ index }}界证书</div>
+                        <div class="u-title">第{{ index + 1 }}界证书</div>
                         <div class="u-time">获得时间：2019-10-10</div>
                     </div>
                 </el-col>
@@ -42,7 +42,7 @@ export default {
         getImgPath(code, type) {
             let imgUrl = "";
             if (type == "bg") {
-                imgUrl = `/background/${CI[code].bgImg}.png`;
+                imgUrl = `/${CI[code].bgImg}/background.png`;
             }
             return __imgPath + CI.imgBefore + imgUrl;
         },
