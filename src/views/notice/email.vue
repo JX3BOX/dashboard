@@ -19,13 +19,13 @@
                 placeholder="邮箱地址"
                 minlength="3"
                 maxlength="50"
-                @change="checkEmail"
+                @blur="checkEmail"
             >
                 <template slot="prepend">
                     <i class="el-icon-message" style="font-size: 20px"></i>
                 </template>
-                <el-button slot="append" @click="bind"> 确定</el-button>
             </el-input>
+            <el-button :type="ready ? 'primary' : ''" @click="bind"> {{ ready ? "确定" : "取消" }}</el-button>
         </template>
     </div>
 </template>
@@ -88,7 +88,10 @@ export default {
             });
         },
         bind: function () {
-            if (!this.ready) return;
+            if (!this.ready) {
+                this.status = true;
+                return;
+            }
 
             sendBindEmail({
                 uid: this.uid,
