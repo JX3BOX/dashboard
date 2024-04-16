@@ -23,7 +23,7 @@
                 "icon": "el-icon-brush"
             },
             {
-                "path": "/collection",
+                "path": "/treasure",
                 "name": "魔盒藏品",
                 "icon": "el-icon-magic-stick"
             }

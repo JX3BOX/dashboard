@@ -23,9 +23,7 @@ const frame = () => import("../views/frame.vue");
 const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
-const collection = () => import("../views/collection/collection.vue");
-const festival = () => import("../views/collection/festival.vue");
-const birthday = () => import("../views/collection/birthday.vue");
+const treasure = () => import("../views/collection/treasure.vue");
 
 const orders = () => import("../views/orders.vue");
 const packet = () => import("../views/packet.vue");
@@ -67,9 +65,7 @@ const routes = [
     { name: "theme", path: "/theme", component: theme },
     { name: "emotion", path: "/emotion", component: emotion },
     { name: "honor", path: "/honor", component: honor },
-    { name: "collection", path: "/collection", component: collection },
-    { name: "festival", path: "/festival", component: festival },
-    { name: "birthday", path: "/birthday", component: birthday },
+    { name: "treasure", path: "/treasure", component: treasure },
 
     { name: "mall", path: "/mall", component: mall },
     { name: "orders", path: "/orders", component: orders },
@@ -100,7 +96,8 @@ const routes = [
         redirect: {
             name: "feedback_index",
         },
-        children: [{
+        children: [
+            {
                 name: "feedback_index",
                 path: "/feedback",
                 component: () => import("@/components/feedback/index.vue"),
