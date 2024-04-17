@@ -32,6 +32,7 @@
 <script>
 import { getWechatQrcode, unbindWechat } from "@/service/profile";
 import { getMyInfo } from "@/service/index";
+import { SSE } from "@jx3box/jx3box-common/js/https";
 import User from "@jx3box/jx3box-common/js/user";
 import { __cms } from "@jx3box/jx3box-common/data/jx3box.json";
 const base = `https://mp.weixin.qq.com/cgi-bin/showqrcode`;
@@ -64,6 +65,11 @@ export default {
     mounted() {
         this.loadUser();
     },
+    beforeUnmount() {
+        if (this.sse) {
+            this.sse.disconnect();
+        }
+    },
     methods: {
         loadUser() {
             getMyInfo().then((res) => {
@@ -82,10 +88,33 @@ export default {
             getWechatQrcode()
                 .then((res) => {
                     this.ticket = res.data.data?.ticket;
+                    if (!this.isWechatVerified && this.ticket) {
+                        if (this.sse) {
+                            this.sse.disconnect();
+                        }
+                        this.initSSE();
+                    }
                 })
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        initSSE() {
+            this.sse = new SSE(this.url);
+            this.sse.connect();
+            this.sse.on("open", (e) => {
+                console.log("SSE Initialization");
+            });
+            this.sse.on("bind_wx_mp", this.onMessage);
+            this.sse.on("error", (e) => {
+                console.log("SSE Error", e);
+            });
+        },
+        onMessage() {
+            this.success = true;
+            setTimeout(() => {
+                this.$router.replace({ path: "/dashboard/notice" });
+            }, 2000);
         },
         unbind() {
             this.$confirm("解绑后无法用微信接收魔盒通知消息，确定解绑吗？", "提示", {
