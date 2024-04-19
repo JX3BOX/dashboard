@@ -19,9 +19,7 @@
                 </el-image>
                 <i class="u-tip">打开微信扫一扫，关注公众号接收通知告警</i>
                 <div class="u-bind" v-show="success">
-                    <el-icon class="u-bind-icon" color="#67C23A">
-                        <SuccessFilled />
-                    </el-icon>
+                    <i class="el-icon-success" style="color: #67c23a; margin-right: 5px"> </i>
                     <span class="u-bind-text">绑定成功</span>
                 </div>
             </div>
@@ -65,11 +63,6 @@ export default {
     mounted() {
         this.loadUser();
     },
-    beforeUnmount() {
-        if (this.sse) {
-            this.sse.disconnect();
-        }
-    },
     methods: {
         loadUser() {
             getMyInfo().then((res) => {
@@ -82,6 +75,9 @@ export default {
         },
         handleClose() {
             this.visible = false;
+            if (this.sse) {
+                this.sse.disconnect();
+            }
         },
         loadQrcode() {
             this.loading = true;
