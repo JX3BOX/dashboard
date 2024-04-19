@@ -2,7 +2,7 @@
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-collection">
             <el-row :gutter="10">
-                <el-col v-for="(item, index) in Array(8)" :key="index" :xs="24" :sm="12" :md="6" :xl="3">
+                <el-col v-for="(item, index) in Array(8)" :key="index" :xs="24" :sm="12" :md="8" :xl="8">
                     <div class="m-collection-list">
                         <div
                             class="u-img"
@@ -10,8 +10,11 @@
                                 backgroundImage: `url(${getImgPath(index + 1, 'bg')})`,
                             }"
                         ></div>
-                        <div class="u-title">第{{ index + 1 }}界证书</div>
-                        <div class="u-time">获得时间：2019-10-10</div>
+                        <div class="m-info">
+                            <div class="u-title">第{{ index + 1 }}界证书</div>
+                            <div class="u-time">获得时间：2019-10-10</div>
+                            <button class="u-btn el-button el-button--primary">查看证书</button>
+                        </div>
                     </div>
                 </el-col>
             </el-row>
