@@ -18,11 +18,11 @@
                     </div>
                 </el-image>
                 <i class="u-tip">打开微信扫一扫，关注公众号接收通知告警</i>
-                <div class="u-bind">
-                    <el-icon class="u-bind-icon" color="#67C23A" v-show="success"
-                        ><SuccessFilled></SuccessFilled
-                    ></el-icon>
-                    <span class="u-bind-text" v-show="success">绑定成功</span>
+                <div class="u-bind" v-show="success">
+                    <el-icon class="u-bind-icon" color="#67C23A">
+                        <SuccessFilled />
+                    </el-icon>
+                    <span class="u-bind-text">绑定成功</span>
                 </div>
             </div>
         </el-dialog>
@@ -112,9 +112,7 @@ export default {
         },
         onMessage() {
             this.success = true;
-            setTimeout(() => {
-                this.$router.replace({ path: "/dashboard/notice" });
-            }, 2000);
+            this.profile.wechat_mp_openid = true;
         },
         unbind() {
             this.$confirm("解绑后无法用微信接收魔盒通知消息，确定解绑吗？", "提示", {
