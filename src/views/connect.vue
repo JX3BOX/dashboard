@@ -1,20 +1,10 @@
 <template>
     <uc class="m-dashboard-connect">
         <div class="m-profile-connect">
-            <el-alert
-                class="u-tip"
-                title="如需解绑则需要先绑定一个邮箱"
-                type="warning"
-                show-icon
-            >
-            </el-alert>
+            <el-alert class="u-tip" title="如需解绑则需要先绑定一个邮箱" type="warning" show-icon> </el-alert>
             <div class="m-dashboard-connect-list">
-                <el-card
-                    class="box-card"
-                    v-for="(item, type) in oauth"
-                    :key="type"
-                >
-                    <img :class="'u-' + type" svg-inline :src="type | icon" />
+                <el-card class="box-card" v-for="(item, type) in oauth" :key="type">
+                    <img :class="'u-' + type" svg-inline :src="icon(type)" />
                     <p class="u-status">
                         {{ checkStatus(type) ? getNickname(type) : "未绑定" }}
                     </p>
@@ -22,9 +12,7 @@
                         class="u-button"
                         :type="!checkStatus(type) ? 'primary' : 'danger'"
                         @click="!checkStatus(type) ? bind(type) : unbind(type)"
-                        >{{
-                            !checkStatus(type) ? "绑定" : "解除绑定"
-                        }}</el-button
+                        >{{ !checkStatus(type) ? "绑定" : "解除绑定" }}</el-button
                     >
                 </el-card>
             </div>
@@ -42,7 +30,7 @@ const client = location.host.includes("origin") ? "origin" : "std";
 export default {
     name: "connect",
     props: [],
-    data: function() {
+    data: function () {
         return {
             data: {
                 github_name: "",
@@ -62,19 +50,19 @@ export default {
     },
     computed: {},
     methods: {
-        checkStatus: function(type) {
-            if(type == 'qq' || type == 'wechat'){
+        checkStatus: function (type) {
+            if (type == "qq" || type == "wechat") {
                 return !!this.data[type + "_unionid"];
             }
             return !!this.data[type + "_id"];
         },
-        getNickname : function (type){
-            return this.data[type + '_name'] || '未知'
+        getNickname: function (type) {
+            return this.data[type + "_name"] || "未知";
         },
-        bind: function(type) {
-            location.href = links[type].replace('state=login',`state=bind_${client}`)
+        bind: function (type) {
+            location.href = links[type].replace("state=login", `state=bind_${client}`);
         },
-        unbind: function(type) {
+        unbind: function (type) {
             unbindOAuth(type).then((res) => {
                 this.$message({
                     message: "解绑成功",
@@ -82,14 +70,12 @@ export default {
                 });
                 location.reload();
             });
-        },
-    },
-    filters: {
-        icon: function(type) {
+        }, 
+        icon: function (type) {
             return __imgPath + "image/connect/" + type + ".svg";
         },
     },
-    mounted: function() {
+    mounted: function () {
         checkOAuth().then((res) => {
             this.data = res.data.data;
         });

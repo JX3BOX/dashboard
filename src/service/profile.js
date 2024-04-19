@@ -1,11 +1,11 @@
-import { $cms,$_https } from "@jx3box/jx3box-common/js/https.js";
+import { $cms, $_https } from "@jx3box/jx3box-common/js/https.js";
 
-import axios from 'axios'
+import axios from "axios";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 
-const $server = $_https('server', {
+const $server = $_https("server", {
     proxy: false,
-})
+});
 
 // 1.资料
 // -------------------------------
@@ -26,14 +26,14 @@ function uploadAvatar(data) {
 }
 function getFrames() {
     // let url = process.env.NODE_ENV == 'development'?'/temp/user_avatar_frame.json':(__imgPath + "avatar/index.json")
-    let url = __imgPath + "avatar/index.json"
-    return axios.get(url)
+    let url = __imgPath + "avatar/index.json";
+    return axios.get(url);
 }
 function getUserOverview(uid) {
-    return $cms().get(`/api/cms/user/${uid}/info`,{
+    return $cms().get(`/api/cms/user/${uid}/info`, {
         params: {
-            __no_cache: 1
-        }
+            __no_cache: 1,
+        },
     });
 }
 
@@ -72,10 +72,20 @@ function checkOAuth() {
 
 function unbindOAuth(type) {
     return $cms({
-        popType : 'alert',
+        popType: "alert",
     }).delete(`/api/cms/account/oauth/unbind/${type}`);
 }
 
+// 6.微信
+// 获取微信二维码
+function getWechatQrcode() {
+    return $cms().get(`/api/cms/wechat/mp/bind`);
+}
+
+// 解除绑定
+function unbindWechat() {
+    return $cms().get(`/api/cms/wechat/mp/unbind`);
+}
 
 export {
     updateProfile,
@@ -91,4 +101,6 @@ export {
     uploadAvatar,
     getFrames,
     getUserOverview,
+    getWechatQrcode,
+    unbindWechat,
 };
