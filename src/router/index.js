@@ -23,7 +23,7 @@ const frame = () => import("../views/frame.vue");
 const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
-const treasure = () => import("../views/collection/treasure.vue");
+const treasure = () => import("../views/treasure.vue");
 
 const orders = () => import("../views/orders.vue");
 const packet = () => import("../views/packet.vue");
