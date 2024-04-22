@@ -25,6 +25,7 @@
 <script>
 import uc from "@/components/uc.vue";
 import { antiqueTab } from "@/assets/data/tabs.json";
+import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import CI from "./json/collection.json";
@@ -41,7 +42,11 @@ export default {
     },
     computed: {},
     methods: {
-        load() {},
+        load() {
+            teamCertificationRecordList().then((res) => {
+                console.log(res);
+            });
+        },
         getImgPath(code, type) {
             let imgUrl = "";
             if (type == "bg") {
