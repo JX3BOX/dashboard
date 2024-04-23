@@ -22,6 +22,6 @@
         { "name": "letter", "icon": "el-icon-chat-dot-square", "label": "私信" }
     ],
     "antiqueTab":[
-        { "name": "treasure", "icon": "el-icon-collection", "label": "证书" }
+        { "name": "treasure", "icon": "el-icon-collection", "label": "电子证书" }
     ]
 }
