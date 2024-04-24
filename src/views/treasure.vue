@@ -16,7 +16,7 @@
                             <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
                             <div class="u-tip">团队名称：{{ item.team_certificate.team_name }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
-                            <a :href="`/certificate/${item.id}`">
+                            <a :href="`/author/${item.user_id}/certificate/${item.id}`">
                                 <button class="u-btn el-button el-button--primary">查看证书</button>
                             </a>
                         </div>
