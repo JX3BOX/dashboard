@@ -4,7 +4,10 @@
             <el-alert class="u-tip" title="配置你的联系方式以接收魔盒通知" type="warning" show-icon> </el-alert>
             <div class="m-dashboard-content-list">
                 <div class="m-item" v-for="(item, i) in list" :key="i">
-                    <img class="u-icon" svg-inline :src="icon(item.key)" />
+                    <span class="u-notice-item">
+                        <img class="u-icon" svg-inline :src="icon(item.key)" />
+                        <span class="u-label">{{ item.name }}</span>
+                    </span>
                     <component :is="item.component" />
                 </div>
             </div>
@@ -56,6 +59,15 @@ export default {
     img,
     svg {
         .size(40px);
+    }
+}
+.m-dashboard-notice{
+    .u-notice-item{
+        .flex;
+        align-items: center;
+        gap:20px;
+        padding:0 20px;
+        .bold;
     }
 }
 </style>

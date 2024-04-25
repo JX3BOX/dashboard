@@ -1,7 +1,7 @@
 <template>
     <uc class="m-dashboard-connect">
         <div class="m-profile-connect">
-            <el-alert class="u-tip" title="如需解绑则需要先绑定一个邮箱" type="warning" show-icon> </el-alert>
+            <el-alert class="u-tip" title="通过第三方账号快速登录，如需解绑则需要先绑定一个邮箱" type="warning" show-icon> </el-alert>
             <div class="m-dashboard-connect-list">
                 <el-card class="box-card" v-for="(item, type) in oauth" :key="type">
                     <img :class="'u-' + type" svg-inline :src="icon(type)" />
@@ -70,7 +70,7 @@ export default {
                 });
                 location.reload();
             });
-        }, 
+        },
         icon: function (type) {
             return __imgPath + "image/connect/" + type + ".svg";
         },
