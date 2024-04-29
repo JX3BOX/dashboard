@@ -1,9 +1,9 @@
 <template>
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-collection">
-            <el-row :gutter="10">
-                <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :xl="8">
-                    <div class="m-collection-list">
+            <el-row :gutter="32">
+                <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :xl="6">
+                    <div class="m-collection-list" @click="goDetail(`/author/${item.user_id}/certificate/${item.id}`)">
                         <div
                             class="u-img"
                             :style="{
@@ -16,10 +16,8 @@
                             <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
                             <div class="u-tip">团队名称：{{ item.team_certificate.team_name }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
-                            <a :href="`/author/${item.user_id}/certificate/${item.id}`">
-                                <button class="u-btn el-button el-button--primary">查看证书</button>
-                            </a>
                         </div>
+                        <img class="u-icon" :src="`${getImgPath('/common/CI_icon.svg')}`" alt="" />
                     </div>
                 </el-col>
             </el-row>
@@ -44,9 +42,9 @@ import { antiqueTab } from "@/assets/data/tabs.json";
 import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
-import CI from "@/assets/data/collection.json";
+import CI from "@/assets/data/treasure.json";
 export default {
-    name: "collection",
+    name: "treasure",
     components: {
         uc,
     },
@@ -83,10 +81,15 @@ export default {
             this.page = current;
             this.getCertificateList();
         },
+        goDetail(url) {
+            window.location.href = url;
+        },
         getImgPath(code, type) {
             let imgUrl = "";
             if (type == "bg") {
                 imgUrl = `/${CI[code].bgImg}/background.png`;
+            } else {
+                imgUrl = code;
             }
             return __imgPath + CI.imgBefore + imgUrl;
         },
@@ -97,5 +100,5 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../assets/css/collection.less";
+@import "../assets/css/treasure.less";
 </style>
