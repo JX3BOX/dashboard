@@ -41,8 +41,7 @@ import uc from "@/components/uc.vue";
 import { antiqueTab } from "@/assets/data/tabs.json";
 import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
-import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
-import CI from "@/assets/data/treasure.json";
+import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 export default {
     name: "treasure",
     components: {
@@ -87,11 +86,12 @@ export default {
         getImgPath(code, type) {
             let imgUrl = "";
             if (type == "bg") {
-                imgUrl = `/${CI[code].bgImg}/background.png`;
+                imgUrl = `design/certification/CertCover_jdt${code < 10 ? "0" + code : code}.png`;
+                return __cdn + imgUrl;
             } else {
-                imgUrl = code;
+                imgUrl = "img/dashboard/treasure" + code;
+                return __imgPath + imgUrl;
             }
-            return __imgPath + CI.imgBefore + imgUrl;
         },
     },
     mounted: function () {
