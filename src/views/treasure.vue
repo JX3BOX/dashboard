@@ -7,7 +7,7 @@
                         <div
                             class="u-img"
                             :style="{
-                                backgroundImage: `url(${getImgPath(item.team_certificate.rank_id, 'bg')})`,
+                                backgroundImage: `url(${getImgPath(item.team_certificate.rank_id)})`,
                             }"
                         ></div>
                         <div class="m-info">
@@ -17,7 +17,7 @@
                             <div class="u-tip">团队名称：{{ item.team_certificate.team_name }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
                         </div>
-                        <img class="u-icon" :src="`${getImgPath('/common/CI_icon.svg')}`" alt="" />
+                        <img class="u-icon" src="../assets/img/cert/CI_icon.svg" alt="" />
                     </div>
                 </el-col>
             </el-row>
@@ -41,7 +41,7 @@ import uc from "@/components/uc.vue";
 import { antiqueTab } from "@/assets/data/tabs.json";
 import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
-import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 export default {
     name: "treasure",
     components: {
@@ -83,15 +83,10 @@ export default {
         goDetail(url) {
             window.location.href = url;
         },
-        getImgPath(code, type) {
+        getImgPath(code) {
             let imgUrl = "";
-            if (type == "bg") {
-                imgUrl = `design/certification/CertCover_jdt${code < 10 ? "0" + code : code}.png`;
-                return __cdn + imgUrl;
-            } else {
-                imgUrl = "img/dashboard/treasure" + code;
-                return __imgPath + imgUrl;
-            }
+            imgUrl = `design/certification/CertCover_jdt${code < 10 ? "0" + code : code}.png`;
+            return __cdn + imgUrl;
         },
     },
     mounted: function () {
