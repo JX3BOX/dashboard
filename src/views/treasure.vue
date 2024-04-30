@@ -1,9 +1,9 @@
 <template>
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
-        <div class="m-collection">
+        <div class="m-cert-list">
             <el-row :gutter="32">
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :xl="6">
-                    <div class="m-collection-list" @click="goDetail(`/author/${item.user_id}/certificate/${item.id}`)">
+                    <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
                         <div
                             class="u-img"
                             :style="{
@@ -12,18 +12,18 @@
                         ></div>
                         <div class="m-info">
                             <div class="u-title">{{ item.team_certificate.rank_name }}</div>
-                            <div class="u-tip">团队长：{{ item.team_certificate.leader }}</div>
+                            <div class="u-tip">团队：{{ item.team_certificate.team_name }}</div>
                             <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
-                            <div class="u-tip">团队名称：{{ item.team_certificate.team_name }}</div>
+                            <div class="u-tip">团长：{{ item.team_certificate.leader }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
                         </div>
                         <img class="u-icon" src="../assets/img/cert/CI_icon.svg" alt="" />
-                    </div>
+                    </a>
                 </el-col>
             </el-row>
 
             <el-pagination
-                class="m-packet-pages"
+                class="m-cert-pages"
                 background
                 @current-change="handleCurrentChange"
                 :page-size="per"
@@ -87,6 +87,9 @@ export default {
             let imgUrl = "";
             imgUrl = `design/certification/CertCover_jdt${code < 10 ? "0" + code : code}.png`;
             return __cdn + imgUrl;
+        },
+        getCertLink(item) {
+            return `/author/${item.user_id}/certificate/${item.id}`;
         },
     },
     mounted: function () {

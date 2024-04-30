@@ -35,7 +35,7 @@ const card = () => import("../views/card.vue");
 
 const profile = () => import("../views/profile.vue");
 const avatar = () => import("../views/avatar.vue");
-const pwd = () => import("../views/pwd.vue"); 
+const pwd = () => import("../views/pwd.vue");
 const notice = () => import("../views/notice/index.vue");
 const connect = () => import("../views/connect.vue");
 const config = () => import("../views/config.vue");
@@ -78,7 +78,7 @@ const routes = [
 
     { name: "profile", path: "/profile", component: profile },
     { name: "avatar", path: "/avatar", component: avatar },
-    { name: "pwd", path: "/pwd", component: pwd }, 
+    { name: "pwd", path: "/pwd", component: pwd },
     { name: "notice", path: "/notice", component: notice },
     { name: "connect", path: "/connect", component: connect },
     { name: "config", path: "/config", component: config },
