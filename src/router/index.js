@@ -23,6 +23,7 @@ const frame = () => import("../views/frame.vue");
 const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
+const treasure = () => import("../views/treasure.vue");
 
 const orders = () => import("../views/orders.vue");
 const packet = () => import("../views/packet.vue");
@@ -34,7 +35,7 @@ const card = () => import("../views/card.vue");
 
 const profile = () => import("../views/profile.vue");
 const avatar = () => import("../views/avatar.vue");
-const pwd = () => import("../views/pwd.vue"); 
+const pwd = () => import("../views/pwd.vue");
 const notice = () => import("../views/notice/index.vue");
 const connect = () => import("../views/connect.vue");
 const config = () => import("../views/config.vue");
@@ -64,6 +65,7 @@ const routes = [
     { name: "theme", path: "/theme", component: theme },
     { name: "emotion", path: "/emotion", component: emotion },
     { name: "honor", path: "/honor", component: honor },
+    { name: "treasure", path: "/treasure", component: treasure },
 
     { name: "mall", path: "/mall", component: mall },
     { name: "orders", path: "/orders", component: orders },
@@ -76,7 +78,7 @@ const routes = [
 
     { name: "profile", path: "/profile", component: profile },
     { name: "avatar", path: "/avatar", component: avatar },
-    { name: "pwd", path: "/pwd", component: pwd }, 
+    { name: "pwd", path: "/pwd", component: pwd },
     { name: "notice", path: "/notice", component: notice },
     { name: "connect", path: "/connect", component: connect },
     { name: "config", path: "/config", component: config },
@@ -94,7 +96,8 @@ const routes = [
         redirect: {
             name: "feedback_index",
         },
-        children: [{
+        children: [
+            {
                 name: "feedback_index",
                 path: "/feedback",
                 component: () => import("@/components/feedback/index.vue"),

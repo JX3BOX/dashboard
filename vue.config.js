@@ -61,6 +61,12 @@ module.exports = {
                     request.setHeader("origin", "");
                 },
             },
+            "/api/team": {
+                "target": "https://team.jx3box.com",
+                onProxyReq: function (request) {
+                    request.setHeader("origin", "");
+                }
+            },
             // 商城
             "/api/mall": {
                 target: "https://pay.jx3box.com",

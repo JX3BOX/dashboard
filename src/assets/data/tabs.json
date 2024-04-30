@@ -20,5 +20,8 @@
     "msgTab": [
         { "name": "msg", "icon": "el-icon-message", "label": "消息" },
         { "name": "letter", "icon": "el-icon-chat-dot-square", "label": "私信" }
+    ],
+    "antiqueTab":[
+        { "name": "treasure", "icon": "el-icon-collection", "label": "电子证书" }
     ]
 }
