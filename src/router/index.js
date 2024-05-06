@@ -23,7 +23,7 @@ const frame = () => import("../views/frame.vue");
 const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
-const treasure = () => import("../views/treasure.vue");
+const certification = () => import("../views/certification.vue");
 
 const orders = () => import("../views/orders.vue");
 const packet = () => import("../views/packet.vue");
@@ -65,7 +65,14 @@ const routes = [
     { name: "theme", path: "/theme", component: theme },
     { name: "emotion", path: "/emotion", component: emotion },
     { name: "honor", path: "/honor", component: honor },
-    { name: "treasure", path: "/treasure", component: treasure },
+    {
+        name: "treasure",
+        path: "/treasure",
+        redirect: {
+            name: "certification",
+        },
+    },
+    { name: "certification", path: "/treasure/certification", component: certification },
 
     { name: "mall", path: "/mall", component: mall },
     { name: "orders", path: "/orders", component: orders },

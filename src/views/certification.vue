@@ -98,5 +98,5 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../assets/css/treasure.less";
+@import "../assets/css/certification.less";
 </style>
