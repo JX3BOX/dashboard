@@ -2,7 +2,7 @@
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-cert-list">
             <el-row :gutter="32">
-                <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="12" :xl="6">
+                <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
                     <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
                         <div
                             class="u-img"
