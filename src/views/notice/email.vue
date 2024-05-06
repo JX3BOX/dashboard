@@ -12,7 +12,7 @@
                 <el-button type="primary" class="u-button" @click="changeEmail" icon="el-icon-edit">修改邮箱</el-button>
             </template>
         </template>
-        <template v-if="status == false">
+        <template v-if="status == false && address">
             <el-input
                 class="u-text u-email"
                 v-model="email"
@@ -27,6 +27,34 @@
             </el-input>
             <el-button :type="ready ? 'primary' : ''" @click="bind"> {{ ready ? "确定" : "取消" }}</el-button>
         </template>
+        <template v-if="status == false && !address">
+            <el-button type="primary" icon="el-icon-connection" @click="open"> 绑定邮箱 </el-button>
+        </template>
+        <el-dialog
+            title="绑定邮箱"
+            :visible.sync="visible"
+            width="30%"
+            custom-class="m-notice-wechat__dialog"
+            :before-close="handleClose"
+            @cancel="handleClose"
+        >
+            <el-input
+                class="u-text u-email"
+                v-model="email"
+                placeholder="邮箱地址"
+                minlength="3"
+                maxlength="50"
+                @blur="checkEmail"
+            >
+                <template slot="prepend">
+                    <i class="el-icon-message" style="font-size: 20px"></i>
+                </template>
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="handleClose">取 消</el-button>
+                <el-button type="primary" @click="bind">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -43,7 +71,7 @@ export default {
             uid: User.getInfo().uid,
             address: "",
             verified: null,
-
+            visible: false,
             email: "",
             email_validate: false,
             email_available: false,
@@ -88,6 +116,10 @@ export default {
             });
         },
         bind: function () {
+            if (!validator(this.email,'isEmail')) {
+                this.$message.error('邮箱地址错误')
+                return;
+            }
             if (!this.ready) {
                 this.status = true;
                 return;
@@ -109,6 +141,12 @@ export default {
             this.status = false;
             this.changeEmailMode = true;
         },
+        open: function() {
+            this.visible = true;
+        },
+        handleClose: function() {
+            this.visible = false;
+        }
     },
     mounted: function () {
         this.uid = User.getInfo().uid;
