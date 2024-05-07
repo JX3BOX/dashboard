@@ -13,8 +13,8 @@
                         <div class="m-info">
                             <div class="u-title">{{ item.team_certificate.rank_name }}</div>
                             <div class="u-tip">团队：{{ item.team_certificate.team_name }}</div>
-                            <div class="u-tip">角色名：{{ item.role }}</div>
                             <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
+                            <div class="u-tip">角色名：{{ item.role }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
                         </div>
                         <img class="u-icon" src="../assets/img/cert/CI_icon.svg" alt="" />
