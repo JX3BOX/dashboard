@@ -1,8 +1,12 @@
 <template>
     <div class="m-notice-wechat">
-        <el-button type="warning" icon="el-icon-connection" @click="unbind" v-if="isWechatVerified">
-            解绑公众号
-        </el-button>
+        <template v-if="isWechatVerified">
+            <span>******</span>
+            <el-tag type="success">已绑定</el-tag>
+            <el-button type="warning" icon="el-icon-connection" @click="unbind">
+                解绑公众号
+            </el-button>
+        </template>
         <el-button type="primary" icon="el-icon-connection" @click="open" v-else> 绑定公众号 </el-button>
         <el-dialog
             title="绑定微信公众号"
@@ -109,6 +113,10 @@ export default {
         onMessage() {
             this.success = true;
             this.profile.wechat_mp_openid = true;
+
+            setTimeout(() => {
+                this.visible = false;
+            }, 4000);
         },
         unbind() {
             this.$confirm("解绑后无法用微信接收魔盒通知消息，确定解绑吗？", "提示", {
