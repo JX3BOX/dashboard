@@ -2,7 +2,7 @@
     <div class="m-notice-email">
         <span class="u-address" v-if="address">{{ address }}</span>
         <el-button type="primary" class="u-button" @click="visible = true" icon="el-icon-edit">
-            {{ address ? "修改邮箱" : "绑定邮箱" }}
+            {{ address ? (verified ? "修改邮箱" : "验证邮箱") : "绑定邮箱" }}
         </el-button>
 
         <el-dialog
