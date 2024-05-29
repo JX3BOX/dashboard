@@ -173,7 +173,7 @@ export default {
 
             if (redirect) {
                 // 内部链接与外部链接
-                return redirect.startsWith("http") ? redirect : ("/" + redirect.split("_").join("/"));
+                return redirect
             } else {
                 // 贺卡处理
                 if (source_type == "birthday") {
