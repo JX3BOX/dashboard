@@ -291,8 +291,8 @@ export default {
         // 区服
         zones: function () {
             return this.client == "origin"
-                ? ['缘起大区']
-                : ['电信区','双线区']
+                ? zones.filter((item) => item.startsWith("缘起"))
+                : zones.filter((item) => !item.startsWith("缘起"));
         },
 
         // 限制
