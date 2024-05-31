@@ -46,6 +46,7 @@
 <script>
 import { getFeedbackList } from "@/service/feedback";
 import { types, subtypes, statusMap, statusColors } from "@/assets/data/feedback.json";
+import { __clients } from "@jx3box/jx3box-common/data/jx3box.json";
 import moment from "moment";
 export default {
     name: "FeedbackList",
@@ -86,9 +87,8 @@ export default {
         formatTime(time) {
             return moment(time).format("YYYY-MM-DD HH:mm:ss");
         },
-        formatClient(client) {
-            const _client = client || "std";
-            return _client === "std" ? "重制" : "缘起";
+        formatClient(client = "std") {
+            return __clients[client] || client;
         },
         handleView(row) {
             this.$router.push({

@@ -144,6 +144,7 @@ import { showAvatar, authorLink } from "@jx3box/jx3box-common/js/utils";
 import User from "@jx3box/jx3box-common/js/user";
 import moment from "moment";
 import { concat, isEqual } from "lodash";
+import { __clients } from "@jx3box/jx3box-common/data/jx3box.json";
 export default {
     name: "pendingList",
     data() {
@@ -261,9 +262,8 @@ export default {
         formatTime(time) {
             return moment(time).format("YYYY-MM-DD HH:mm:ss");
         },
-        formatClient(client) {
-            const _client = client || "std";
-            return _client === "std" ? "重制" : "缘起";
+        formatClient(client = "std") {
+            return __clients[client] || client;
         },
         handleView(row) {
             window.open(`/dashboard/feedback/${row.id}`, "_blank");
