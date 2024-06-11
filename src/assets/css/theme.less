@@ -52,9 +52,10 @@
     }
     .u-bottom {
         .mt(20px);
-        .size(100%,100px);
+        .w(100%);
         .flex;
         .flex(x);
+        min-height: 100px;
         // .pt(4px);
         border: 1px dashed #eee;
         box-sizing: border-box;
@@ -65,7 +66,7 @@
         text-align: center;
         .u-type-box {
             // border: 1px dashed #eee;
-            padding: 8px 10px 10px 12px;
+            padding: 8px;
             cursor: pointer;
             // .mr(10px);
             .u-img,
@@ -93,7 +94,7 @@
     }
 }
 .m-theme-right {
-    .size(540px,470px);
+    .size(520px,470px);
     border: 1px solid #eee;
     box-sizing: border-box;
     border-radius: 10px;
@@ -162,8 +163,7 @@
                 // justify-content: space-between;
                 flex-wrap: wrap;
                 .u-picbox {
-                    .pr;
-                    .mr(4px);
+                    .pr; 
                     cursor: pointer;
                     user-select: none;
                     -webkit-user-select: none;
