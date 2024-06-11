@@ -97,6 +97,7 @@ export default {
                 { name: "主页风格", type: "homebg", statue: 1 },
                 { name: "侧栏主题", type: "sidebar", statue: 1 },
                 { name: "首页日历", type: "calendar", statue: 1 },
+                { name: "评论皮肤", type: "comment", statue: 1 },
                 //{ name: "社区称号", type: "", statue: 0 },
             ],
             // bg: "url('https://cdn.jx3box.com/static/dashboard/img/no.5fe91973.svg')", //预览合成背景
@@ -122,8 +123,8 @@ export default {
             getDecorationJson().then((res) => {
                 sessionStorage.setItem("decoration_json", JSON.stringify(res.data));
                 this.decorationJson = res.data;
-                getDecoration().then((res) => { 
-                    let typeArr = ["atcard", "homebg", "sidebar", "calendar"];
+                getDecoration().then((res) => {
+                    let typeArr = ["atcard", "homebg", "sidebar", "calendar", "comment"];
                     let arr = res.data.data.filter((item) => item.type != "" && typeArr.indexOf(item.type) != -1);
                     this.decoration = this.formattingData(arr, "val");
                     this.back.decoration = cloneDeep(this.decoration);
@@ -142,6 +143,7 @@ export default {
                 { type: "homebg", text: "主页风格", sort: 2, isHave: 0, using: 0 },
                 { type: "sidebar", text: "侧栏主题", sort: 3, isHave: 0, using: 0 },
                 { type: "calendar", text: "首页日历", sort: 4, isHave: 0, using: 0 },
+                { type: "comment", text: "评论皮肤", sort: 5, isHave: 0, using: 0 },
             ];
             arr.forEach((item, i) => {
                 let sortFind = options.find((e) => e.type == item.type);
