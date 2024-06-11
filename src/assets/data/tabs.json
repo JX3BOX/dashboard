@@ -18,7 +18,7 @@
         { "name": "orders", "icon": "el-icon-shopping-bag-2", "label": "系统订单" }
     ],
     "msgTab": [
-        { "name": "msg", "icon": "el-icon-message", "label": "消息" },
+        { "name": "msg", "icon": "el-icon-message", "label": "通知" },
         { "name": "letter", "icon": "el-icon-chat-dot-square", "label": "私信" }
     ],
     "antiqueTab":[

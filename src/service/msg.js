@@ -17,4 +17,8 @@ function removeMsg(id) {
     return $next().delete(`/api/messages/${id}`);
 }
 
-export { getMsgs, readMsg, readAll, removeMsg };
+function getMsgUnread() {
+    return $next({ mute: true }).get("/api/letter/unread/count");
+}
+
+export { getMsgs, readMsg, readAll, removeMsg, getMsgUnread };

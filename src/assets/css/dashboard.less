@@ -12,9 +12,9 @@
 // .m-dashboard-person{
 //     padding:25px 35px;
 // }
-@media screen and (max-width:@phone){
-    .m-dashboard-person{
-        padding:10px 20px;
+@media screen and (max-width: @phone) {
+    .m-dashboard-person {
+        padding: 10px 20px;
     }
 }
 .m-dashboard-tabs {
@@ -27,12 +27,18 @@
             fill: @primary;
         }
     }
-    .el-tabs__item:hover{
+    .el-tabs__item:hover {
         .u-mail {
             fill: @primary;
         }
     }
     .u-tab-icon {
         min-width: 14px;
+    }
+    .u-count {
+        color: gray;
+        &.is-orange {
+            color: orange;
+        }
     }
 }
