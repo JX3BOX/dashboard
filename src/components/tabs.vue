@@ -3,7 +3,7 @@
         <el-tab-pane v-for="item in tabs" :key="item.name" :name="item.name">
             <span slot="label"
                 ><i :class="item.icon" class="u-tab-icon"></i> {{ item.label }}
-                <span class="u-count" :class="count[countMap[item.name]] ? 'is-orange' : ''"
+                <span v-if="showCount" class="u-count" :class="count[countMap[item.name]] ? 'is-orange' : ''"
                     >({{ count[countMap[item.name]] || 0 }})</span
                 >
             </span>
@@ -20,6 +20,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        msgChangeCount: {
+            type: Number,
+            default: 0,
+        },
     },
     data: function () {
         return {
@@ -33,10 +37,30 @@ export default {
     },
     watch: {
         $route: function () {
-            this.active = this.$route.name;
+            this.active = this.routeName;
+        },
+        msgChangeCount: {
+            immediate: true,
+            handler(num) {
+                if (num > 0) {
+                    // 全读
+                    this.count.message = 0;
+                }
+                if (num < 0) {
+                    // 单个已读
+                    this.count.message += num;
+                }
+            },
         },
     },
-    computed: {},
+    computed: {
+        showCount() {
+            return ["msg", "letter"].includes(this.routeName);
+        },
+        routeName() {
+            return this.$route.name;
+        },
+    },
     methods: {
         changeTab: function () {
             this.$router.push({ name: this.active });
@@ -49,8 +73,10 @@ export default {
         },
     },
     mounted: function () {
-        this.active = this.$route.name;
-        this.loadCount();
+        this.active = this.routeName;
+        if (this.showCount) {
+            this.loadCount();
+        }
     },
     components: {},
 };
