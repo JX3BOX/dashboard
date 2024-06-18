@@ -63,6 +63,13 @@ export default {
             location.href = links[type].replace("state=login", `state=bind_${client}`);
         },
         unbind: function (type) {
+            if (type == "qq") {
+                type = "qq_unionid";
+            } else if (type == "wechat") {
+                type = "wechat_unionid";
+            } else {
+                type = type + "_id";
+            }
             unbindOAuth(type).then((res) => {
                 this.$message({
                     message: "解绑成功",
