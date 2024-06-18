@@ -1,5 +1,11 @@
 <template>
-    <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-bell" title="我的消息" :tab-list="tabList">
+    <uc
+        class="m-dashboard-frame m-dashboard-skin"
+        icon="el-icon-bell"
+        title="我的消息"
+        :tab-list="tabList"
+        :msg-change-count="msgChangeCount"
+    >
         <div class="m-dashboard m-dashboard-work m-dashboard-msg">
             <div class="m-dashboard-msg-header">
                 <el-input
@@ -101,6 +107,8 @@ export default {
             paginationShow: true,
 
             tabList: msgTab,
+
+            msgChangeCount: 0,
         };
     },
     methods: {
@@ -130,10 +138,12 @@ export default {
                 });
         },
         read(item) {
+            this.msgChangeCount = 0;
             if (item) {
                 readMsg(item.ID).then((res) => {
                     if (res.data.code === 0) {
                         item.read = 1;
+                        this.msgChangeCount = -1;
                     } else {
                         this.$notify.error({ title: res.data.message });
                     }
@@ -142,6 +152,7 @@ export default {
                 readAll().then((res) => {
                     if (res.data.code === 0) {
                         this.changePage(this.page);
+                        this.msgChangeCount = 1; // 表示全部已读
                     } else {
                         this.$notify.error({ title: res.data.message });
                     }
@@ -173,16 +184,16 @@ export default {
 
             if (redirect) {
                 // 内部链接与外部链接
-                return redirect
+                return redirect;
             } else {
                 // 贺卡处理
                 if (source_type == "birthday") {
                     return `/author/birthday?code=` + Base64.encode(source_id);
-                // 特殊回调
+                    // 特殊回调
                 } else if (source_type == "callback") {
                     let info = encodeURIComponent(Base64.encode(JSON.stringify(item)));
                     return `/dashboard/callback/${type}/${subtype}?info=${info}`;
-                // 通用资源
+                    // 通用资源
                 } else {
                     return getLink(source_type, source_id);
                 }

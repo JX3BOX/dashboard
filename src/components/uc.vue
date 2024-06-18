@@ -4,7 +4,7 @@
             <i :class="icon"></i> {{ title }}
             <slot name="header"></slot>
         </h2>
-        <tabs :tabs="tabList" />
+        <tabs :tabs="tabList" :msg-change-count="msgChangeCount" />
         <slot></slot>
     </div>
 </template>
@@ -28,16 +28,20 @@ export default {
             default: function () {
                 return profileTab;
             },
-        }
+        },
+        msgChangeCount: {
+            type: Number,
+            default: 0,
+        },
     },
-    data: function() {
+    data: function () {
         return {};
     },
     computed: {},
     methods: {},
-    mounted: function() {},
+    mounted: function () {},
     components: {
-        tabs
+        tabs,
     },
 };
 </script>
