@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="m-theme-right">
-                <div class="u-tips"><i class="el-icon-warning-outline"></i> 仅限同主题配置，该主题下部位可分别激活</div>
+                <!-- <div class="u-tips"><i class="el-icon-warning-outline"></i> 仅限同主题配置，该主题下部位可分别激活</div> -->
                 <!-- <div class="u-no-theme" :class="decorationActivate==null?'select':''" @click="noSet">不设置主题</div> -->
                 <!-- 主题渲染列表 -->
                 <div class="u-theme">
@@ -104,7 +104,7 @@ export default {
             previewUrl: "",
             decoration: [],
             decorationJson: [], //远程json
-            decorationActivate: null,
+            // decorationActivate: null,
             originalActivateName: null,
             back: {},
         };
@@ -116,7 +116,7 @@ export default {
             // let back=this.back
             this.previewUrl = "";
             this.decoration = back.decoration;
-            this.decorationActivate = back.decorationActivate;
+            // this.decorationActivate = back.decorationActivate;
             this.originalActivateName = back.originalActivateName;
         },
         loadDecoration() {
@@ -128,7 +128,7 @@ export default {
                     let arr = res.data.data.filter((item) => item.type != "" && typeArr.indexOf(item.type) != -1);
                     this.decoration = this.formattingData(arr, "val");
                     this.back.decoration = cloneDeep(this.decoration);
-                    this.back.decorationActivate = cloneDeep(this.decorationActivate);
+                    // this.back.decorationActivate = cloneDeep(this.decorationActivate);
                     this.back.originalActivateName = cloneDeep(this.originalActivateName);
                 });
             });
@@ -197,9 +197,9 @@ export default {
                 }
             });
             Object.keys(map).forEach((key, i) => {
-                if (key == this.originalActivateName) {
-                    this.decorationActivate = i;
-                }
+                // if (key == this.originalActivateName) {
+                //     this.decorationActivate = i;
+                // }
                 res.push({
                     [group_key]: key,
                     name: decorationJson[key]?.desc,
@@ -208,54 +208,66 @@ export default {
             });
             return res;
         },
-        noSet() {
-            let decorationActivate = this.decorationActivate;
-            let res = this.decoration[decorationActivate] ? this.decoration[decorationActivate].list : [];
-            for (let k = 0; k < res.length; k++) {
-                res[k].using = 0;
-            }
-            this.decorationActivate = null;
-            this.previewUrl = "";
-        },
+        // noSet() {
+        //     let decorationActivate = this.decorationActivate;
+        //     let res = this.decoration[decorationActivate] ? this.decoration[decorationActivate].list : [];
+        //     for (let k = 0; k < res.length; k++) {
+        //         res[k].using = 0;
+        //     }
+        //     this.decorationActivate = null;
+        //     this.previewUrl = "";
+        // },
         //设置选中/取消
         setStatus(i, i2, item) {
             if (!item.isHave) {
                 return;
             }
+            let type = item.type;
+            let val = item.val;
+            // 消除激活的痛部位
+            this.decoration.forEach(({ list }, index) => {
+                list.forEach((item, i) => {
+                    if (item.val != val && item.type == type && item.using == 1) {
+                        this.decoration[index].list[i].using = 0;
+                    }
+                });
+            });
+
             item.using == 1 ? (item.using = 0) : (item.using = 1);
-            let decorationActivate = this.decorationActivate;
-            //需判断点击项目和原有已选择项目是否一致，不一致取消原有全部
-            if (i != decorationActivate) {
-                //需先把原有的置空再勾选点击项目
-                let res = this.decoration[decorationActivate] ? this.decoration[decorationActivate].list : [];
-                for (let k = 0; k < res.length; k++) {
-                    res[k].using = 0;
-                }
-                //勾选当前选择
-                this.decorationActivate = i;
-            }
         },
         isStatus(item) {
-            let decorationActivate = this.decorationActivate;
-            let res = this.decoration[decorationActivate] ? this.decoration[decorationActivate].list : [];
-            let findSelect = res.find((e) => e.type == item.type && e.using == 1);
-            if (findSelect) return true;
+            // let decorationActivate = this.decorationActivate;
+            // 循环所有主题的卡片，判断是否有已激活的
+            let type = item.type;
+            var isSelect = false;
+            const _decorations = flatten(this.decoration.map((item) => item.list));
+            _decorations.forEach((item) => {
+                if (item.type == type && item.using == 1) {
+                    isSelect = true;
+                }
+            });
+            if (isSelect) return true;
             else return false;
         },
         preview(item) {
             this.previewUrl = this.getActiveImg(item);
         },
         getActiveImg(item) {
-            let decorationActivate = this.decorationActivate;
-            let val = this.decoration[decorationActivate] ? this.decoration[decorationActivate].val : null;
+            let type = item.type;
+            let val = undefined;
+            const _decorations = flatten(this.decoration.map((item) => item.list));
+            _decorations.forEach((item) => {
+                if (item.type == type && item.using == 1) {
+                    val = item.val;
+                }
+            });
             let defaultImg = "https://cdn.jx3box.com/static/dashboard/img/no.5fe91973.svg";
-            if (val) return __imgPath + `decoration/images/${val}/${item.type}_preview.png`;
+            if (val) return __imgPath + `decoration/images/${val}/${type}_preview.png`;
             else return defaultImg;
         },
         decorationSubmit() {
-            let decorationActivate = this.decorationActivate,
-                activateType = [];
-            let decorationName = decorationActivate ? this.decoration[decorationActivate].val : "";
+            let activateType = [];
+            let decorationName = "";
             //激活主题
             const _decorations = flatten(this.decoration.map((item) => item.list));
             const params = _decorations.map((item) => {
