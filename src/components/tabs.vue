@@ -48,7 +48,9 @@ export default {
                 }
                 if (num < 0) {
                     // 单个已读
-                    this.count.message += num;
+                    if (this.count.message > 0) {
+                        this.count.message += num;
+                    }
                 }
             },
         },

@@ -142,8 +142,10 @@ export default {
             if (item) {
                 readMsg(item.ID).then((res) => {
                     if (res.data.code === 0) {
+                        if (!item.read) {
+                            this.msgChangeCount = -1;
+                        }
                         item.read = 1;
-                        this.msgChangeCount = -1;
                     } else {
                         this.$notify.error({ title: res.data.message });
                     }
