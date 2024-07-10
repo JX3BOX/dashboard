@@ -99,6 +99,11 @@ export default {
                     label: "其它应用",
                     options: Object.entries(__appType).map((item) => {
                         return { value: item[0], label: item[1] };
+                    }).map(item => {
+                        return {
+                            label: item.label,
+                            value: item.value == 'community' ? 'community_topic' : item.value
+                        }
                     }),
                 },
             ],
