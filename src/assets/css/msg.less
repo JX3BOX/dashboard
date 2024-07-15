@@ -27,6 +27,16 @@
         .fz(12px, 2);
         color: #999;
     }
+    .u-msg-detail {
+        .ml(10px);
+        cursor: pointer;
+        display: inline-flex;
+        gap: 3px;
+        align-items: center;
+        &:hover {
+            color: @pink;
+        }
+    }
     .u-msg-link {
         .ml(10px);
         &:hover {
@@ -61,8 +71,8 @@
     }
 }
 
-@media screen and (max-width:@phone){
-    .m-dashboard-msg-header  {
+@media screen and (max-width: @phone) {
+    .m-dashboard-msg-header {
         flex-wrap: wrap;
     }
 }

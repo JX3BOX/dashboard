@@ -29,6 +29,14 @@
                             <span class="u-label u-hasChecked" v-if="item.read == 1">已读</span>
                             <span class="u-label u-hasNotChecked" v-else>未读</span>
                             <span v-html="item.content"></span>
+                            <span
+                                class="u-msg-detail"
+                                v-if="item.ext_type === 'comments' && item.ext_type_id > 0"
+                                @click="handleDetail(item.ext_type_id)"
+                            >
+                                <i class="el-icon-document"></i>
+                                <span>内容</span>
+                            </span>
                             <a
                                 :href="msgLink(item)"
                                 class="u-msg-link"
@@ -76,12 +84,14 @@
                 :total="total"
             ></el-pagination>
         </div>
+
+        <CommentDetail v-if="visible" :visible="visible" :id="id" @close="close"></CommentDetail>
     </uc>
 </template>
 
 <script>
 import { msgTab } from "@/assets/data/tabs.json";
-import { getMsgs, readMsg, removeMsg, readAll } from "../service/msg.js";
+import { getMsgs, readMsg, removeMsg, readAll, getCommentMsgDetail } from "../service/msg.js";
 import { showTime } from "@jx3box/jx3box-common/js/moment.js";
 import { getLink } from "@jx3box/jx3box-common/js/utils";
 import { Base64 } from "js-base64";
@@ -89,11 +99,13 @@ const ignoreLinkTypes = ["namespace"];
 
 // components
 import uc from "@/components/uc.vue";
+import CommentDetail from "@/components/msg/CommentDetail.vue";
 
 export default {
     name: "msg",
     components: {
         uc,
+        CommentDetail,
     },
     data: function () {
         return {
@@ -109,9 +121,20 @@ export default {
             tabList: msgTab,
 
             msgChangeCount: 0,
+
+            id: "",
+            visible: false,
         };
     },
     methods: {
+        close() {
+            this.id = "";
+            this.visible = false;
+        },
+        handleDetail(id) {
+            this.id = id;
+            this.visible = true;
+        },
         changePage: function (i = 1) {
             this.$router.push({
                 name: "msg",

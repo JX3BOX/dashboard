@@ -21,4 +21,8 @@ function getMsgUnread() {
     return $next({ mute: true }).get("/api/letter/unread/count");
 }
 
-export { getMsgs, readMsg, readAll, removeMsg, getMsgUnread };
+function getCommentMsgDetail(id) {
+    return $next().get(`/api/next2/comment/item/${id}`);
+}
+
+export { getMsgs, readMsg, readAll, removeMsg, getMsgUnread, getCommentMsgDetail };
