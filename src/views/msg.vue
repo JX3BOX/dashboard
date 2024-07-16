@@ -34,8 +34,8 @@
                                 v-if="item.ext_type === 'comments' && item.ext_type_id > 0"
                                 @click="handleDetail(item.ext_type_id)"
                             >
-                                <i class="el-icon-document"></i>
-                                <span>内容</span>
+                                <i class="el-icon-view"></i>
+                                <span>详情</span>
                             </span>
                             <a
                                 :href="msgLink(item)"
@@ -44,7 +44,7 @@
                                 @click="read(item)"
                                 target="_blank"
                             >
-                                <i class="el-icon-link"></i> 点击查看
+                                <i class="el-icon-link"></i> 查看
                             </a>
                         </span>
                         <time class="u-time">
