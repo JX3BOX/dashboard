@@ -12,10 +12,10 @@
     "update": "yarn add @jx3box/jx3box-common-ui@latest @jx3box/jx3box-common@latest @jx3box/jx3box-data@latest @jx3box/jx3box-comment-ui@latest @jx3box/jx3box-emotion@latest"
   },
   "dependencies": {
-    "@jx3box/jx3box-comment-ui": "^1.9.4",
-    "@jx3box/jx3box-common": "^8.2.18",
-    "@jx3box/jx3box-common-ui": "^8.7.7",
-    "@jx3box/jx3box-data": "^3.5.8",
+    "@jx3box/jx3box-comment-ui": "^1.9.9",
+    "@jx3box/jx3box-common": "^8.3.1",
+    "@jx3box/jx3box-common-ui": "^8.9.7",
+    "@jx3box/jx3box-data": "^3.6.2",
     "@jx3box/jx3box-emotion": "^1.2.8",
     "@microsoft/signalr": "^8.0.0",
     "axios": "^0.21.1",
