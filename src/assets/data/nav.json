@@ -51,6 +51,11 @@
                 "path": "/card",
                 "name": "我的卡密",
                 "icon": "el-icon-bank-card"
+            },
+            {
+                "path": "ic",
+                "name": "我的盒码",
+                "icon": "el-icon-present"
             }
         ]
     },
@@ -61,6 +66,11 @@
                 "path": "/profile",
                 "name": "资料设置",
                 "icon": "el-icon-user"
+            },
+            {
+                "path": "/role",
+                "name": "角色设置",
+                "icon": "el-icon-coordinate"
             },
             {
                 "path": "/privacy",
