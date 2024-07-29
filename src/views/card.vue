@@ -1,6 +1,14 @@
 <template>
     <div class="m-dashboard-keycode m-credit">
-        <h2 class="u-title"><i class="el-icon-bank-card"></i> 我的卡密</h2>
+        <h2 class="u-title">
+            <span>
+                <i class="el-icon-bank-card"></i>
+                我的卡密
+            </span>
+            <span class="u-only" v-if="tab !== 'virtual'">
+                <el-switch v-model="onlyNew" active-text="仅查看未使用"></el-switch>
+            </span>
+        </h2>
         <el-alert class="m-boxcoin-tip" title="请务必妥善保管，并注意过期时间。" type="warning" show-icon>
             <a href="https://charge.xoyo.com/pay?item=jx3&way=kcard" target="_blank">金山一卡通充值页面</a>
         </el-alert>
@@ -341,9 +349,6 @@
                     ></el-pagination>
                 </el-tab-pane>
             </el-tabs>
-            <div class="u-only" v-if="tab !== 'virtual'">
-                <el-switch v-model="onlyNew" active-text="仅查看未使用"></el-switch>
-            </div>
         </div>
     </div>
 </template>

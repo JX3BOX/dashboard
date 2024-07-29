@@ -19,42 +19,50 @@
             <template slot="prepend">关键词</template>
             <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
         </el-input>
-
-        <div class="m-dashboard-box" v-loading="loading">
-            <ul class="m-dashboard-box-list" v-if="data.length">
-                <li v-for="(item, i) in data" :key="i">
-                    <i class="u-icon">
-                        <img svg-inline src="../assets/img/works/repo.svg" />
-                    </i>
-                    <a class="u-title" target="_blank" :href="getLink(item.post_type, item.post_id)">{{
-                        item.post_title || "无标题"
-                    }}</a>
-                    <div class="u-desc">
+        <el-tabs v-model="favChangeCount" @tab-click="loadData">
+            <el-tab-pane label="收藏" name="fav">
+                <span slot="label"><i class="el-icon-star-on"></i> 收藏</span>
+                <div class="m-dashboard-box" v-loading="loading">
+                    <ul class="m-dashboard-box-list" v-if="data.length">
+                        <li v-for="(item, i) in data" :key="i">
+                            <i class="u-icon">
+                                <img svg-inline src="../assets/img/works/repo.svg" />
+                            </i>
+                            <a class="u-title" target="_blank" :href="getLink(item.post_type, item.post_id)">{{
+                                    item.post_title || "无标题"
+                                }}</a>
+                            <div class="u-desc">
                         <span class="u-category"
-                            ><i class="el-icon-folder"></i> {{ getTypeLabel(item.post_type) }}
+                        ><i class="el-icon-folder"></i> {{ getTypeLabel(item.post_type) }}
                         </span>
-                        <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created) }} 加入收藏 </span>
-                    </div>
-                    <el-button-group class="u-action">
-                        <el-button size="mini" icon="el-icon-delete" title="取消收藏" @click="del(item.id)"></el-button>
-                    </el-button-group>
-                </li>
-            </ul>
-            <el-alert v-else class="m-dashboard-box-null" title="没有找到相关条目" type="info" center show-icon>
-            </el-alert>
-            <el-pagination
-                v-if="showPagination"
-                class="m-dashboard-box-pages"
-                background
-                :hide-on-single-page="true"
-                :page-size="per"
-                :current-page.sync="page"
-                layout="total, prev, pager, next, jumper"
-                :total="total"
-                @current-change="currentChange"
-            >
-            </el-pagination>
-        </div>
+                                <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created) }} 加入收藏 </span>
+                            </div>
+                            <el-button-group class="u-action">
+                                <el-button size="mini" icon="el-icon-delete" title="取消收藏" @click="del(item.id)"></el-button>
+                            </el-button-group>
+                        </li>
+                    </ul>
+                    <el-alert v-else class="m-dashboard-box-null" title="没有找到相关条目" type="info" center show-icon>
+                    </el-alert>
+                    <el-pagination
+                        v-if="showPagination"
+                        class="m-dashboard-box-pages"
+                        background
+                        :hide-on-single-page="true"
+                        :page-size="per"
+                        :current-page.sync="page"
+                        layout="total, prev, pager, next, jumper"
+                        :total="total"
+                        @current-change="currentChange"
+                    >
+                    </el-pagination>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="订阅" name="sub" disabled>
+                <span slot="label"><i class="u-tab-icon el-icon-circle-plus"></i> 订阅</span>
+                敬请期待。。。
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 
@@ -107,6 +115,7 @@ export default {
                     }),
                 },
             ],
+            favChangeCount: 'fav'
         };
     },
     computed: {
