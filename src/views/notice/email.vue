@@ -1,6 +1,7 @@
 <template>
     <div class="m-notice-email">
-        <span class="u-address" v-if="address">{{ address }}</span>
+        <span class="u-address" v-if="address">{{ blurAddress(address) }}</span>
+        <el-tag v-if="verified" type="success">已绑定</el-tag>
         <el-button type="primary" class="u-button" @click="visible = true" icon="el-icon-edit">
             {{ address ? (verified ? "修改邮箱" : "验证邮箱") : "绑定邮箱" }}
         </el-button>
@@ -64,7 +65,7 @@
                         {{ changeEmailMode ? "修改邮箱" : "未绑定邮箱" }}
                     </h1>
 
-                    <div class="u-email">
+                    <div class="m-email">
                         <el-input
                             class="u-text u-email"
                             v-model="email"
@@ -118,7 +119,7 @@
 <script>
 import { validator } from "sterilizer";
 import User from "@jx3box/jx3box-common/js/user";
-import { sendVerifyEmail, sendBindEmail, checkEmailAvailable, checkEmailStatus } from "@/service/profile";
+import { sendVerifyEmail, sendBindEmail, checkEmailAvailable, getProfile } from "@/service/profile";
 export default {
     name: "email",
     data: function () {
@@ -198,18 +199,19 @@ export default {
         handleClose() {
             this.visible = false;
         },
+        // 模糊地址
+        blurAddress(text) {
+            return text.replace(/(.{2}).*(.{0}@.*)/, "$1****$2");
+        },
     },
     mounted: function () {
         this.uid = User.getInfo().uid;
-        checkEmailStatus().then((res) => {
-            if (res.data.data.email) {
-                this.status = true;
-                this.address = res.data.data.email;
-                this.verified = !!parseInt(res.data.data.verified);
-            } else {
-                this.status = false;
-            }
-        });
+        getProfile().then(res => {
+            const data = res.data.data;
+            this.address = data?.user_email;
+            this.verified = data?.verify_email;
+            this.status = data?.user_email ? true : false;
+        })
     },
 };
 </script>
