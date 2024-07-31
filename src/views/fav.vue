@@ -10,35 +10,42 @@
                 </el-option-group>
             </el-select>
         </div>
-        <el-input
-            class="m-dashboard-work-search"
-            placeholder="请输入搜索内容"
-            v-model="search"
-            @keyup.enter.native="handleChange"
-        >
-            <template slot="prepend">关键词</template>
-            <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
-        </el-input>
         <el-tabs v-model="favChangeCount" @tab-click="loadData">
             <el-tab-pane label="收藏" name="fav">
-                <span slot="label"><i class="el-icon-star-on"></i> 收藏</span>
+                <span slot="label"><i class="el-icon-star-off"></i> 收藏</span>
                 <div class="m-dashboard-box" v-loading="loading">
+                    <div class="m-dashboard-msg-header">
+                        <el-input
+                            class="m-dashboard-work-search"
+                            placeholder="请输入搜索内容"
+                            v-model="search"
+                            @keyup.enter.native="handleChange"
+                        >
+                            <template slot="prepend">关键词</template>
+                            <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
+                        </el-input>
+                    </div>
                     <ul class="m-dashboard-box-list" v-if="data.length">
                         <li v-for="(item, i) in data" :key="i">
                             <i class="u-icon">
                                 <img svg-inline src="../assets/img/works/repo.svg" />
                             </i>
                             <a class="u-title" target="_blank" :href="getLink(item.post_type, item.post_id)">{{
-                                    item.post_title || "无标题"
-                                }}</a>
+                                item.post_title || "无标题"
+                            }}</a>
                             <div class="u-desc">
-                        <span class="u-category"
-                        ><i class="el-icon-folder"></i> {{ getTypeLabel(item.post_type) }}
-                        </span>
+                                <span class="u-category"
+                                    ><i class="el-icon-folder"></i> {{ getTypeLabel(item.post_type) }}
+                                </span>
                                 <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created) }} 加入收藏 </span>
                             </div>
                             <el-button-group class="u-action">
-                                <el-button size="mini" icon="el-icon-delete" title="取消收藏" @click="del(item.id)"></el-button>
+                                <el-button
+                                    size="mini"
+                                    icon="el-icon-delete"
+                                    title="取消收藏"
+                                    @click="del(item.id)"
+                                ></el-button>
                             </el-button-group>
                         </li>
                     </ul>
@@ -59,7 +66,7 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="订阅" name="sub" disabled>
-                <span slot="label"><i class="u-tab-icon el-icon-circle-plus"></i> 订阅</span>
+                <span slot="label"><i class="u-tab-icon el-icon-news"></i> 订阅</span>
                 敬请期待。。。
             </el-tab-pane>
         </el-tabs>
@@ -105,17 +112,19 @@ export default {
                 },
                 {
                     label: "其它应用",
-                    options: Object.entries(__appType).map((item) => {
-                        return { value: item[0], label: item[1] };
-                    }).map(item => {
-                        return {
-                            label: item.label,
-                            value: item.value == 'community' ? 'community_topic' : item.value
-                        }
-                    }),
+                    options: Object.entries(__appType)
+                        .map((item) => {
+                            return { value: item[0], label: item[1] };
+                        })
+                        .map((item) => {
+                            return {
+                                label: item.label,
+                                value: item.value == "community" ? "community_topic" : item.value,
+                            };
+                        }),
                 },
             ],
-            favChangeCount: 'fav'
+            favChangeCount: "fav",
         };
     },
     computed: {

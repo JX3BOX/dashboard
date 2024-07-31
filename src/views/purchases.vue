@@ -17,7 +17,7 @@
             <el-table-column label="购买时间" prop="created_at" />
             <el-table-column>
                 <template slot-scope="{ row }">
-                    <el-button size="small" @click="toDetails(row)" icon="el-icon-view">查看详情</el-button>
+                    <el-button size="mini" plain @click="toDetails(row)" icon="el-icon-view">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>

@@ -6,84 +6,92 @@
                 <div class="m-mall-list" v-if="list && list.length">
                     <table>
                         <thead>
-                        <th>兑换时间</th>
-                        <th>兑换商品</th>
-                        <th>订单号</th>
-                        <th>数量</th>
-                        <th>订单状态</th>
-                        <th>付款状态</th>
-                        <th>是否为赠送</th>
-                        <th>操作</th>
+                            <th>兑换时间</th>
+                            <th>兑换商品</th>
+                            <th>订单号</th>
+                            <th>数量</th>
+                            <th>订单状态</th>
+                            <th>付款状态</th>
+                            <th>是否为赠送</th>
+                            <th>操作</th>
                         </thead>
                         <tbody>
-                        <tr v-for="(item, i) in list" :key="i">
-                            <td>{{ item.order.created_at }}</td>
-                            <td>{{ item.goods.title }}</td>
-                            <td>{{ item.order.order_no }}</td>
-                            <td>{{ item.order.goods_num }}</td>
-                            <td>{{ orderStatus[item.order.order_status] }}</td>
-                            <td>{{ payStatus[item.order.pay_status] }}</td>
-                            <td>{{ item.order.is_vitural_gift_order ? "是" : "否" }}</td>
-                            <td>
-                                <!-- 查看详情 -->
-                                <el-tooltip effect="dark" content="查看详情" placement="top">
-                                    <el-button size="small" @click="showDetail(item)" icon="el-icon-link" circle></el-button>
-                                </el-tooltip>
-
-                                <!-- 未支付 -->
-                                <el-tooltip effect="dark" content="点击支付" placement="top">
-                                    <el-button
-                                        size="small"
-                                        type="primary"
-                                        icon="el-icon-position"
-                                        v-if="showPay(item.order)"
-                                        @click="toPay(item)"
-                                        circle
-                                    ></el-button>
-                                </el-tooltip>
-
-                                <!-- 已发货操作： 确认收货&申请退货 -->
-                                <template v-if="item.order.order_status == 3">
-                                    <el-tooltip effect="dark" content="确认收货" placement="top">
-                                        <el-button
-                                            size="small"
-                                            type="success"
-                                            icon="el-icon-circle-check"
-                                            @click="isReceipt(item.order.id)"
-                                            circle
-                                        ></el-button>
-                                    </el-tooltip>
-                                </template>
-
-                                <!-- 未发货允许操作： 取消订单 -->
-                                <el-tooltip effect="dark" content="取消订单" placement="top">
-                                    <el-popconfirm
-                                        confirm-button-text="确定"
-                                        cancel-button-text="取消"
-                                        icon="el-icon-info"
-                                        title="确定取消吗？"
-                                        @confirm="cancel(item.order.id)"
+                            <tr v-for="(item, i) in list" :key="i">
+                                <td>{{ item.order.created_at }}</td>
+                                <td>
+                                    <span class="u-title" @click="showDetail(item)"
+                                        ><i class="el-icon-link"></i>{{ item.goods.title }}</span
                                     >
-                                        <el-button
-                                            v-if="item.order.order_status == 0"
-                                            size="small"
-                                            slot="reference"
-                                            type="info"
-                                            plain
-                                            icon="el-icon-circle-close"
-                                            circle
-                                        ></el-button>
-                                    </el-popconfirm>
-                                </el-tooltip>
+                                </td>
+                                <td>{{ item.order.order_no }}</td>
+                                <td>{{ item.order.goods_num }}</td>
+                                <td>{{ orderStatus[item.order.order_status] }}</td>
+                                <td>{{ payStatus[item.order.pay_status] }}</td>
+                                <td>{{ item.order.is_vitural_gift_order ? "是" : "否" }}</td>
+                                <td>
+                                    <div class="u-op">
+                                        <!-- 未支付 -->
+                                        <el-tooltip effect="dark" content="点击支付" placement="top" v-if="showPay(item.order)">
+                                            <el-button
+                                                link
+                                                size="mini"
+                                                type="success"
+                                                plain
+                                                icon="el-icon-wallet"
+                                                @click="toPay(item)"
+                                                circle
+                                            ></el-button>
+                                        </el-tooltip>
 
-                                <!-- 已收货操作： 评价 -->
-                                <template v-if="item.order.order_status == 4">
-                                    <el-tooltip effect="dark" content="评价商品" placement="top">
-                                        <el-button icon="el-icon-edit" @click="handleShow('comment', item.order.id)" type="primary" size="small" circle></el-button>
-                                    </el-tooltip>
-                                </template>
-                            </td>
-                        </tr>
+                                        <!-- 已发货操作： 确认收货&申请退货 -->
+                                        <template v-if="item.order.order_status == 3">
+                                            <el-tooltip effect="dark" content="确认收货" placement="top">
+                                                <el-button
+                                                    link
+                                                    size="mini"
+                                                    plain
+                                                    icon="el-icon-circle-check"
+                                                    @click="isReceipt(item.order.id)"
+                                                    circle
+                                                ></el-button>
+                                            </el-tooltip>
+                                        </template>
+
+                                        <!-- 未发货允许操作： 取消订单 -->
+                                        <el-tooltip effect="dark" content="取消订单" placement="top" v-if="item.order.order_status == 0">
+                                            <el-popconfirm
+                                                confirm-button-text="确定"
+                                                cancel-button-text="取消"
+                                                icon="el-icon-info"
+                                                title="确定取消吗？"
+                                                @confirm="cancel(item.order.id)"
+                                            >
+                                                <el-button
+                                                    size="mini"
+                                                    slot="reference"
+                                                    type="info"
+                                                    plain
+                                                    icon="el-icon-circle-close"
+                                                    circle
+                                                ></el-button>
+                                            </el-popconfirm>
+                                        </el-tooltip>
+
+                                        <!-- 已收货操作： 评价 -->
+                                        <template v-if="item.order.order_status == 4">
+                                            <el-tooltip effect="dark" content="评价商品" placement="top">
+                                                <el-button
+                                                    icon="el-icon-chat-dot-square"
+                                                    @click="handleShow('comment', item.order.id)"
+                                                    size="mini"
+                                                    plain
+                                                    circle
+                                                ></el-button>
+                                            </el-tooltip>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- 分页 -->
@@ -176,7 +184,7 @@ export default {
             getOrder(this.params).then((res) => {
                 this.list = res.data.data.list;
                 this.total = res.data.data.page.total;
-            })
+            });
         },
         // 显示支付按钮
         showPay({ order_status, pay_status }) {
