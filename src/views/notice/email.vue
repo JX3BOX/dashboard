@@ -13,14 +13,14 @@
             :before-close="handleClose"
         >
             <div class="m-profile-email">
-                <img class="u-pic" svg-inline src="@/assets/img/setting/email_done.svg" />
+                <img class="u-pic" src="@/assets/img/setting/email.png" />
 
                 <!-- 已绑定 -->
                 <div v-if="status == true" class="u-done">
                     <template v-if="verified == true">
                         <h1 class="u-title">已绑定邮箱</h1>
-                        <p class="u-address">{{ address }}</p>
-                        <el-alert
+                        <p class="u-address">当前绑定邮箱：<span class="u-current-email">{{ currentEmail }}</span></p>
+                        <!-- <el-alert
                             class="u-tip"
                             title="已验证邮箱"
                             type="success"
@@ -28,7 +28,7 @@
                             show-icon
                             :closable="false"
                         >
-                        </el-alert>
+                        </el-alert> -->
                         <div class="u-btngroup">
                             <el-button type="primary" class="u-button" @click="changeEmail" icon="el-icon-edit"
                                 >修改邮箱</el-button
@@ -39,6 +39,11 @@
                     <template v-if="verified == false">
                         <h1 class="u-title">未验证邮箱</h1>
                         <p class="u-address">{{ address }}</p>
+                        <div class="u-code">
+                            <el-input v-model="code" placeholder="验证码" style="width: 300px;" size="large">
+                                <template #prepend><i class="el-icon-lock"></i></template>
+                            </el-input>
+                        </div>
                         <el-alert
                             title="未验证邮箱"
                             class="u-tip"
@@ -64,8 +69,10 @@
                     <h1 class="u-title">
                         {{ changeEmailMode ? "修改邮箱" : "未绑定邮箱" }}
                     </h1>
+                    <p class="u-address">当前绑定邮箱：<span class="u-current-email">{{ currentEmail }}</span></p>
 
-                    <div class="m-email">
+
+                    <div class="u-email">
                         <el-input
                             class="u-text u-email"
                             v-model="email"
@@ -97,7 +104,7 @@
                         <i v-show="ready" class="el-icon-success el-icons-status"></i>
                     </div>
 
-                    <el-alert
+                    <!-- <el-alert
                         title="请填写正确的邮箱地址"
                         class="u-tip"
                         type="warning"
@@ -105,7 +112,7 @@
                         show-icon
                         :closable="false"
                     >
-                    </el-alert>
+                    </el-alert> -->
 
                     <div class="u-btngroup">
                         <el-button type="primary" class="u-button" @click="bind" :disabled="!ready">绑定邮箱</el-button>
@@ -125,7 +132,6 @@ export default {
     data: function () {
         return {
             status: null,
-            uid: User.getInfo().uid,
             address: "",
             verified: null,
             visible: false,
@@ -137,6 +143,8 @@ export default {
             email_available_tip: "邮箱已被使用,请更换",
 
             changeEmailMode: false,
+            code: "",
+            currentEmail: "",
         };
     },
     computed: {
@@ -146,11 +154,14 @@ export default {
     },
     methods: {
         verify: function () {
-            sendVerifyEmail(this.uid).then((res) => {
-                this.$message({
-                    message: "邮件已发送请查收",
-                    type: "success",
-                });
+            sendVerifyEmail(this.code).then((res) => {
+                this.$message.success("验证成功，请重新登录");
+                this.verified = true;
+                this.visible = false;
+
+                User.destroy().then(() => {
+                    User.toLogin();
+                })
             });
         },
         checkEmail: function () {
@@ -171,7 +182,7 @@ export default {
 
             // 邮箱是否可用
             checkEmailAvailable(this.email).then((res) => {
-                this.email_available = res.data.data;
+                this.email_available = !res.data.data?.isExist;
             });
         },
         bind: function () {
@@ -181,7 +192,6 @@ export default {
             }
 
             sendBindEmail({
-                uid: this.uid,
                 email: this.email,
             }).then((res) => {
                 this.$alert("申请提交成功,请前往邮箱验证", "消息", {
@@ -203,15 +213,18 @@ export default {
         blurAddress(text) {
             return text.replace(/(.{2}).*(.{0}@.*)/, "$1****$2");
         },
+        load() {
+            getProfile().then(res => {
+                const data = res.data.data;
+                this.address = data?.user_email;
+                this.currentEmail = data?.user_email;
+                this.verified = data?.verify_email;
+                this.status = data?.user_email ? true : false;
+            })
+        }
     },
     mounted: function () {
-        this.uid = User.getInfo().uid;
-        getProfile().then(res => {
-            const data = res.data.data;
-            this.address = data?.user_email;
-            this.verified = data?.verify_email;
-            this.status = data?.user_email ? true : false;
-        })
+        this.load();
     },
 };
 </script>
@@ -228,6 +241,17 @@ export default {
     .m-dashboard-content-list img,
     .m-dashboard-content-list svg {
         .size(24px);
+    }
+
+    .u-code {
+        margin-bottom: 20px;
+        .x;
+    }
+    .u-address{
+        color: #606266;
+    }
+    .u-current-email {
+        color: orange;
     }
 }
 .m-notice-email {

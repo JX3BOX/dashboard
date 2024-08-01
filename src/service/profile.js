@@ -39,30 +39,37 @@ function getUserOverview(uid) {
 
 // 3.密码
 // -------------------------------
+// 发送验证码
+function sendVerifyCode(data) {
+    return $cms().post("/api/cms/user/account/email/forgot-password", data, {
+        app: "jx3box",
+    });
+}
+// 重设密码
 function updatePassword(data) {
-    return $server.post("profile/password", data);
+    return $cms().put("/api/cms/user/account/email/reset-password", data, {
+        app: "jx3box",
+    });
 }
 
 // 4.邮箱
 // -------------------------------
-function checkEmailStatus() {
-    return $server.get("profile/email/check");
-}
-
 function checkEmailAvailable(email) {
-    return $server.get("profile/email/available", {
+    return $cms().get("/api/cms/user/account/email/valid", {
         params: {
-            user_email: email,
-        },
+            email
+        }
     });
 }
 
 function sendBindEmail(data) {
-    return $server.post("profile/email/bind", data);
+    return $cms().post("/api/cms/user/account/email/bind", data);
 }
 
-function sendVerifyEmail() {
-    return $server.post("profile/email/verify");
+function sendVerifyEmail(code) {
+    return $cms().put("/api/cms/user/account/email/verify", {
+        code,
+    }, { app: 'jx3box' });
 }
 
 // 5.互联
@@ -94,7 +101,6 @@ export {
     updatePassword,
     sendVerifyEmail,
     checkEmailAvailable,
-    checkEmailStatus,
     sendBindEmail,
     unbindOAuth,
     checkOAuth,
@@ -103,4 +109,5 @@ export {
     getUserOverview,
     getWechatQrcode,
     unbindWechat,
+    sendVerifyCode
 };
