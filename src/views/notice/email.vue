@@ -1,125 +1,14 @@
 <template>
     <div class="m-notice-email">
-        <span class="u-address" v-if="address">{{ blurAddress(address) }}</span>
-        <el-tag v-if="verified" type="success">已绑定</el-tag>
+        <span class="u-address">{{ blurAddress(currentEmail) }}</span>
+        <el-tag v-if="!!currentEmail" :type="verified ? 'success' : 'warning'">{{
+            verified ? "已验证" : "未验证"
+        }}</el-tag>
         <el-button type="primary" class="u-button" @click="visible = true" icon="el-icon-edit">
-            {{ address ? (verified ? "修改邮箱" : "验证邮箱") : "绑定邮箱" }}
+            {{ verified ? "修改邮箱" : "绑定邮箱" }}
         </el-button>
 
-        <el-dialog
-            :visible.sync="visible"
-            width="40%"
-            custom-class="m-notice-email__dialog"
-            :before-close="handleClose"
-        >
-            <div class="m-profile-email">
-                <img class="u-pic" src="@/assets/img/setting/email.png" />
-
-                <!-- 已绑定 -->
-                <div v-if="status == true" class="u-done">
-                    <template v-if="verified == true">
-                        <h1 class="u-title">已绑定邮箱</h1>
-                        <p class="u-address">当前绑定邮箱：<span class="u-current-email">{{ currentEmail }}</span></p>
-                        <!-- <el-alert
-                            class="u-tip"
-                            title="已验证邮箱"
-                            type="success"
-                            description="仅绑定邮箱用户支持邮件订阅通知等功能"
-                            show-icon
-                            :closable="false"
-                        >
-                        </el-alert> -->
-                        <div class="u-btngroup">
-                            <el-button type="primary" class="u-button" @click="changeEmail" icon="el-icon-edit"
-                                >修改邮箱</el-button
-                            >
-                        </div>
-                    </template>
-
-                    <template v-if="verified == false">
-                        <h1 class="u-title">未验证邮箱</h1>
-                        <p class="u-address">{{ address }}</p>
-                        <div class="u-code">
-                            <el-input v-model="code" placeholder="验证码" style="width: 300px;" size="large">
-                                <template #prepend><i class="el-icon-lock"></i></template>
-                            </el-input>
-                        </div>
-                        <el-alert
-                            title="未验证邮箱"
-                            class="u-tip"
-                            type="warning"
-                            description="请尽快进行邮箱验证,否则您的账号将面临风险与权限受阻"
-                            show-icon
-                            :closable="false"
-                        >
-                        </el-alert>
-                        <div class="u-btngroup">
-                            <el-button type="primary" class="u-button" @click="verify" icon="el-icon-s-promotion"
-                                >验证邮箱</el-button
-                            >
-                            <el-button type="primary" class="u-button" @click="changeEmail" icon="el-icon-edit"
-                                >修改邮箱</el-button
-                            >
-                        </div>
-                    </template>
-                </div>
-
-                <!-- 未绑定 -->
-                <div v-if="status == false" class="u-none">
-                    <h1 class="u-title">
-                        {{ changeEmailMode ? "修改邮箱" : "未绑定邮箱" }}
-                    </h1>
-                    <p class="u-address">当前绑定邮箱：<span class="u-current-email">{{ currentEmail }}</span></p>
-
-
-                    <div class="u-email">
-                        <el-input
-                            class="u-text u-email"
-                            v-model="email"
-                            placeholder="邮箱地址"
-                            minlength="3"
-                            maxlength="50"
-                            @change="checkEmail"
-                        >
-                            <template slot="prepend">
-                                <img class="i-mail" svg-inline src="@/assets/img/nav/mail.svg" />
-                            </template>
-                        </el-input>
-                        <div class="u-error">
-                            <el-alert
-                                v-show="email_validate == false"
-                                :title="email_validate_tip"
-                                type="error"
-                                show-icon
-                                :closable="false"
-                            ></el-alert>
-                            <el-alert
-                                v-show="email_available == false"
-                                :title="email_available_tip"
-                                type="error"
-                                show-icon
-                                :closable="false"
-                            ></el-alert>
-                        </div>
-                        <i v-show="ready" class="el-icon-success el-icons-status"></i>
-                    </div>
-
-                    <!-- <el-alert
-                        title="请填写正确的邮箱地址"
-                        class="u-tip"
-                        type="warning"
-                        description="绑定邮箱后将可以使用邮箱进行登录,当第三方登录出现异常时不会受影响"
-                        show-icon
-                        :closable="false"
-                    >
-                    </el-alert> -->
-
-                    <div class="u-btngroup">
-                        <el-button type="primary" class="u-button" @click="bind" :disabled="!ready">绑定邮箱</el-button>
-                    </div>
-                </div>
-            </div>
-        </el-dialog>
+        <email-dialog v-model="visible" :email="currentEmail" :verified="verified" @update="onUpdate" />
     </div>
 </template>
 
@@ -127,30 +16,19 @@
 import { validator } from "sterilizer";
 import User from "@jx3box/jx3box-common/js/user";
 import { sendVerifyEmail, sendBindEmail, checkEmailAvailable, getProfile } from "@/service/profile";
+import EmailDialog from "./email_dialog.vue";
 export default {
     name: "email",
+    components: {
+        EmailDialog,
+    },
     data: function () {
         return {
-            status: null,
-            address: "",
-            verified: null,
             visible: false,
+            verified: false,
 
-            email: "",
-            email_validate: null,
-            email_validate_tip: "邮箱格式不正确或长度超出限制",
-            email_available: null,
-            email_available_tip: "邮箱已被使用,请更换",
-
-            changeEmailMode: false,
-            code: "",
             currentEmail: "",
         };
-    },
-    computed: {
-        ready: function () {
-            return this.email_validate && this.email_available;
-        },
     },
     methods: {
         verify: function () {
@@ -161,7 +39,7 @@ export default {
 
                 User.destroy().then(() => {
                     User.toLogin();
-                })
+                });
             });
         },
         checkEmail: function () {
@@ -202,10 +80,6 @@ export default {
                 this.address = this.email;
             });
         },
-        changeEmail: function () {
-            this.status = false;
-            this.changeEmailMode = true;
-        },
         handleClose() {
             this.visible = false;
         },
@@ -214,14 +88,15 @@ export default {
             return text.replace(/(.{2}).*(.{0}@.*)/, "$1****$2");
         },
         load() {
-            getProfile().then(res => {
+            getProfile().then((res) => {
                 const data = res.data.data;
-                this.address = data?.user_email;
                 this.currentEmail = data?.user_email;
-                this.verified = data?.verify_email;
-                this.status = data?.user_email ? true : false;
-            })
-        }
+                this.verified = !!data?.verify_email;
+            });
+        },
+        onUpdate() {
+            this.load();
+        },
     },
     mounted: function () {
         this.load();
@@ -247,7 +122,7 @@ export default {
         margin-bottom: 20px;
         .x;
     }
-    .u-address{
+    .u-address {
         color: #606266;
     }
     .u-current-email {
