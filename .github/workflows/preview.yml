@@ -5,7 +5,7 @@ on:
             - dev
 jobs:
     build-and-deploy:
-        runs-on: [self-hosted, node, linux, seasun, jx3box]
+        runs-on: [node, linux, seasun, jx3box]
         strategy:
             matrix:
                 node-version: [v16.18.1]
