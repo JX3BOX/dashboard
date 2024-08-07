@@ -5,7 +5,7 @@ on:
             - dev
 jobs:
     build-and-deploy:
-        runs-on: ubuntu-latest
+        runs-on: [self-hosted, aliyun, linux, node, iruxu]
         strategy:
             matrix:
                 node-version: [v16.18.1]
@@ -40,4 +40,11 @@ jobs:
                   key: ${{ secrets.DEPLOY_KEY }}
                   source: dashboard/*
                   target: /www/wwwroot/jx3box/test
+
+            - name: Cleanup
+              if: always()
+              run: |
+               rm -rf ${{ github.workspace }}/*
+               rm -rf ${{ github.workspace }}/.[!.]*
+               rm -rf ${{ github.workspace }}/..?*
 
