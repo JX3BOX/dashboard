@@ -6,9 +6,10 @@
                 slot="reference"
                 class="u-back"
                 size="mini"
+                plain
                 icon="el-icon-arrow-left"
                 @click="goBack"
-            >返回列表</el-button>
+            >返回</el-button>
         </h2>
         <roleform :data="form" @submit="submit" btn_txt="更新" :processing="processing" />
     </div>
@@ -76,6 +77,7 @@ export default {
         },
         goBack : function (){
             this.$router.push('/role')
+            // this.$router.go(-1)
         }
     },
     mounted: function () {

@@ -8,7 +8,7 @@
     }
     .u-item {
         .pr;
-        padding-left: 68px + 10px;
+        padding-left: 68px + 20px;
         min-height: 68px;
         border-bottom: 1px solid @border;
         padding-bottom: 20px;
@@ -29,49 +29,57 @@
                 border-color:#ddd;
             }
         }
-        .u-title {
-            .bold;
-            .db;
-            .mb(5px);
-        }
-        .u-rolename{
-            .fz(15px, 1.2);
-            .mr(2px);
-            color:@color-link;
-            &:hover{
-                color:@pink;
-            }
-        }
         .u-status {
             .fz(12px);
             font-style: normal;
             font-weight: normal;
             // background-color:#49c10f;
             // color:#fff;
-            padding: 2px 5px;
+            // padding: 2px 5px;
             color: #00d26f;
+            .size(16px);
             svg {
-                .size(16px);
-                .y(-3px);
-                .mr(3px);
+                .size(100%);
+            }
+            .pa;.rt(3px);
+        }
+
+        .u-title {
+            .bold;
+            .db;
+            .flex;
+            align-items: center;
+            gap:5px;
+            padding:4px 0;
+        }
+        .u-rolename{
+            .fz(15px, 1.2);
+            // .mr(2px);
+            color:@color-link;
+            &:hover{
+                color:@pink;
             }
         }
         .u-note {
-            .fz(12px);
+            .fz(12px,18px);
             color: #999;
-            .mr(10px);
+            font-weight: normal;
+            // .mr(10px);
         }
         .u-addnote {
-            color: @color-link;
+            color: #999;
             .pointer;
             &:hover {
-                color: @pink;
+                color: @color-link;
             }
         }
         .u-star{
-            .ml(5px);
+            // .ml(5px);
             color:#888;
             .pointer;
+            &:hover {
+                color: @color-link;
+            }
             &.on{
                 color:#fba524;
             }
@@ -84,11 +92,11 @@
 
             em {
                 margin-right: 5px;
-                padding: 2px 5px;
+                padding: 3px 6px;
                 border-radius: 2px;
                 font-style: normal;
-                background-color: #f2f6fc;
-                color: #888;
+                background-color: #f3f6f9;
+                color: #909399;
             }
 
             span {
@@ -107,6 +115,8 @@
         .u-time {
             .fz(12px);
             color: #888;
+            margin-top:5px;
+            .db;
         }
 
         .u-op {
@@ -196,12 +206,11 @@
     border-bottom:1px dashed #eee;
     padding:10px 0;
     .mb(20px);
-    .clearfix;
+    .flex;
+    align-items: center;
+    gap:10px;
     .u-name{
-        .fl;
-        .w(280px);
-        .mr(10px);
-        .mb(10px);
+        flex:1;
     }
 
     .u-mount{

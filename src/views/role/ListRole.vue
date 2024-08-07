@@ -1,7 +1,7 @@
 <template>
     <div class="v-role-list" v-loading="loading">
         <h2 class="u-title">
-            <i class="el-icon-user"></i> 我的角色
+            <i class="el-icon-coordinate"></i> 我的角色
             <!-- <goback /> -->
             <div class="u-op">
                 <router-link to="/role/bind" class="el-button el-button--primary el-button--mini">
@@ -13,11 +13,6 @@
             </div>
         </h2>
         <div class="m-role-list-filter">
-            <el-input class="u-name" v-model="name" placeholder="请输入角色名称" size="small">
-                <template slot="prepend">
-                    <i class="el-icon-search"></i> 查找
-                </template>
-            </el-input>
             <el-select size="small" v-model="mount" popper-class="m-school-pop">
                 <el-option label="全部" value=""></el-option>
                 <el-option
@@ -28,9 +23,12 @@
                     class="u-school"
                 >
                     <img width="24" height="24" :src="school_id | showSchoolIcon" />
-                    {{school}}
+                    {{ school }}
                 </el-option>
             </el-select>
+            <el-input class="u-name" v-model="name" placeholder="请输入角色名称" size="small">
+                <template slot="prepend"> <i class="el-icon-search"></i> 查找 </template>
+            </el-input>
             <!-- <el-radio-group class="u-mount" v-model="mount">
                 <el-radio class="u-mount-unit" label>全部</el-radio>
                 <el-radio
@@ -49,26 +47,21 @@
                 <li class="u-item" v-for="(item, i) in data" :key="i">
                     <router-link :to="'/role/' + item.ID" class="u-pic u-avatar">
                         <img :src="showAvatar(item.mount, item.body_type)" alt />
-                    </router-link>
-                    <span class="u-title">
-                        <router-link class="u-rolename" :to="'/role/' + item.ID">{{ item.name }}</router-link>
                         <i class="u-status" v-if="!item.custom" title="已认证">
                             <img svg-inline src="../../assets/img/verify.svg" />
                         </i>
-                        <span class="u-note" v-if="item.note">({{ item.note }})</span>
-                        <span class="u-addnote" @click="addNote(item)">
-                            <el-tooltip class="item" effect="dark" content="设置备注" placement="top">
-                                <i class="el-icon-edit-outline"></i>
-                            </el-tooltip>
-                        </span>
-                        <span class="u-star" :class="{on : item.priority}" @click="starRole(item)">
+                    </router-link>
+                    <span class="u-title">
+                        <router-link class="u-rolename" :to="'/role/' + item.ID">{{ item.name }}</router-link>
+                        <span class="u-star" :class="{ on: item.priority }" @click="starRole(item)">
                             <el-tooltip
                                 class="item"
                                 effect="dark"
-                                :content="item.priority ? '取消置顶' : '置顶' "
+                                :content="item.priority ? '取消置顶' : '置顶'"
                                 placement="top"
                             >
-                                <i class="el-icon-star-off"></i>
+                                <i class="el-icon-star-on" v-if="item.priority"></i>
+                                <i class="el-icon-star-off" v-else></i>
                             </el-tooltip>
                         </span>
                     </span>
@@ -82,37 +75,47 @@
                             <img class="u-icon" :src="item.mount | showSchoolIcon" />
                             {{ item.mount | showSchoolName }}
                         </span>
+                        <span class="u-note">
+                            <em>备注</em>
+                            {{ item.note }}
+                            <span class="u-addnote" @click="addNote(item)">
+                            <el-tooltip class="item" effect="dark" content="设置备注" placement="top">
+                                <i class="el-icon-edit-outline"></i>
+                            </el-tooltip>
+                        </span>
+                        </span>
                     </span>
                     <span class="u-time">绑定时间 : {{ item.created_at | showTime }}</span>
                     <div class="u-op">
                         <el-button
                             v-if="!item.custom"
                             class="u-btn u-unbind"
-                            type="warning"
                             plain
                             size="mini"
+                            circle
+                            icon="el-icon-delete"
                             @click="unbind(item.ID, i)"
                         >
-                            <i class="u-icon">
-                                <img svg-inline src="../../assets/img/unbind.svg" />
-                            </i>解绑角色
+                            <!-- <i class="u-icon">
+                                <img svg-inline src="../../assets/img/unbind.svg" /> </i
+                            > -->
                         </el-button>
                         <template v-else>
                             <router-link
                                 :to="'/role/edit/' + item.ID"
-                                class="el-button el-button--primary el-button--mini is-plain"
+                                class="el-button u-btn u-delete el-button--default el-button--mini is-plain is-circle"
                             >
                                 <i class="el-icon-edit-outline"></i>
-                                编辑
                             </router-link>
                             <el-button
                                 class="u-btn u-delete"
-                                type="info"
                                 plain
                                 size="mini"
+                                circle
                                 @click="delRole(item.ID, i)"
                                 icon="el-icon-delete"
-                            >删除</el-button>
+                                ></el-button
+                            >
                         </template>
                     </div>
                 </li>
@@ -141,12 +144,7 @@
         </template>
         <el-dialog title="设置备注" :visible.sync="noteVisible" width="30%" class="m-team-note-dialog">
             <div>
-                <el-input
-                    v-model="note"
-                    placeholder="请输入内容"
-                    :maxlength="20"
-                    :show-word-limit="true"
-                ></el-input>
+                <el-input v-model="note" placeholder="请输入内容" :maxlength="20" :show-word-limit="true"></el-input>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="noteVisible = false">取 消</el-button>
@@ -157,18 +155,11 @@
 </template>
 
 <script>
-import {
-    getRoles,
-    unbindRole,
-    noteRole,
-    deleteRole,
-    starRole,
-    unstarRole,
-} from "@/service/role.js";
+import { getRoles, unbindRole, noteRole, deleteRole, starRole, unstarRole } from "@/service/role.js";
 import school_id_map from "@jx3box/jx3box-data/data/xf/schoolid.json";
-import { __imgPath,__cdn } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import xfmap from "@jx3box/jx3box-data/data/xf/xf.json";
-import { showSchoolIcon, showSchoolName, showTime, getThumbnail } from "@/utils/filters"
+import { showSchoolIcon, showSchoolName, showTime, getThumbnail } from "@/utils/filters";
 export default {
     name: "ListRole",
     props: [],
@@ -221,7 +212,7 @@ export default {
         },
     },
     methods: {
-        unbind: function (id,i) {
+        unbind: function (id, i) {
             this.$alert("在网站进行解绑游戏内需要小退方可生效", "消息", {
                 confirmButtonText: "确定解绑",
                 callback: (action) => {
@@ -251,9 +242,7 @@ export default {
                 });
         },
         showAvatar: function (mount, body_type) {
-            return getThumbnail(
-                __cdn + "design/avatar/" + mount + "-" + body_type + ".png"
-            );
+            return getThumbnail(__cdn + "design/avatar/" + mount + "-" + body_type + ".png");
         },
         go: function (route) {
             this.$router.push(route);
@@ -295,7 +284,7 @@ export default {
         starRole: function (item) {
             if (item.priority) {
                 unstarRole(item.ID).then((res) => {
-                    item.priority = 0
+                    item.priority = 0;
                     this.$notify({
                         title: "取消星标成功",
                         message: "角色取消星标成功",
@@ -304,7 +293,7 @@ export default {
                 });
             } else {
                 starRole(item.ID).then((res) => {
-                    item.priority = Date.now()
+                    item.priority = Date.now();
                     this.$notify({
                         title: "星标成功",
                         message: "角色星标成功",
@@ -313,9 +302,9 @@ export default {
                 });
             }
         },
-        changePage : function (){
+        changePage: function () {
             window.scrollTo(0, 0);
-        }
+        },
     },
     created: function () {},
     watch: {
