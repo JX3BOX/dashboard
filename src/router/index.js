@@ -33,6 +33,12 @@ const cny = () => import("../views/cny.vue");
 const tasks = () => import("../views/tasks.vue");
 const card = () => import("../views/card.vue");
 
+const BindRole = () => import("../views/role/BindRole.vue");
+const ListRole = () => import("../views/role/ListRole.vue");
+const AddRole = () => import("../views/role/AddRole.vue");
+const EditRole = () => import("../views/role/EditRole.vue");
+const ViewRole = () => import("../views/role/ViewRole.vue");
+
 const profile = () => import("../views/profile.vue");
 const avatar = () => import("../views/avatar.vue");
 const pwd = () => import("../views/pwd.vue");
@@ -82,6 +88,12 @@ const routes = [
     { name: "points", path: "/points", component: points },
     { name: "tasks", path: "/tasks", component: tasks },
     { name: "card", path: "/card", component: card },
+
+    { name: "bind_role", path: "/role/bind", component: BindRole },
+    { name: "list_role", path: "/role", component: ListRole },
+    { name: "add_role", path: "/role/add", component: AddRole },
+    { name: "edit_role", path: "/role/edit/:id", component: EditRole },
+    { name: "view_role", path: "/role/:id", component: ViewRole },
 
     { name: "profile", path: "/profile", component: profile },
     { name: "avatar", path: "/avatar", component: avatar },

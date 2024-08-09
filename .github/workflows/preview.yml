@@ -5,7 +5,7 @@ on:
             - dev
 jobs:
     build-and-deploy:
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         strategy:
             matrix:
                 node-version: [v16.18.1]
@@ -30,7 +30,6 @@ jobs:
                   access-key-secret: ${{secrets.Access_Key_Secret}}
             - run: ossutil cp -rf dashboard oss://jx3box/static/dashboard
 
-
             ## TODO:下方修改1处
             - name: GrayEnv
               uses: appleboy/scp-action@v0.1.4
@@ -41,3 +40,9 @@ jobs:
                   source: dashboard/*
                   target: /www/wwwroot/jx3box/test
 
+            - name: Cleanup
+              if: always()
+              run: |
+                  rm -rf ${{ github.workspace }}/*
+                  rm -rf ${{ github.workspace }}/.[!.]*
+                  rm -rf ${{ github.workspace }}/..?*

@@ -2,7 +2,7 @@
     <uc>
         <div class="m-page-address">
             <!-- 显示地址 -->
-            <el-button type="success" icon="el-icon-plus" @click="add" size="small">添加地址</el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="add" size="small">添加地址</el-button>
 
             <div class="m-content">
                 <el-table :data="list" size="small">
@@ -18,28 +18,14 @@
                             {{ scope.row.province }}{{ scope.row.city }}{{ scope.row.area }}{{ scope.row.address }}
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="操作" width="180">
                         <template slot-scope="scope">
                             <div>
-                                <el-button plain @click="edit(scope.row)" icon="el-icon-edit" size="mini"
-                                    >编辑</el-button
-                                >
-                                <el-popconfirm
-                                    confirm-button-text="确定"
-                                    cancel-button-text="取消"
-                                    icon="el-icon-info"
-                                    title="确定删除吗？"
-                                    @confirm="del(scope.row.id)"
-                                >
-                                    <el-button
-                                        style="margin-left: 10px"
-                                        slot="reference"
-                                        type="info"
-                                        plain
-                                        size="mini"
-                                        icon="el-icon-delete"
-                                        >删除</el-button
-                                    >
+                                <!--编辑-->
+                                <el-button circle @click="edit(scope.row)" icon="el-icon-edit-outline" size="mini"></el-button>
+                                <!--删除-->
+                                <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon="el-icon-info" title="确定删除吗？" @confirm="del(scope.row.id)">
+                                    <el-button style="margin-left: 10px" slot="reference" circle size="mini" icon="el-icon-delete"></el-button>
                                 </el-popconfirm>
                             </div>
                         </template>
