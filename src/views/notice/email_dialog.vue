@@ -9,7 +9,7 @@
                     <el-tag v-if="email" class="u-status" :type="verified ? 'success' : 'warning'" size="mini">{{ verified ? '已验证' : '未验证' }}</el-tag>
                 </div>
 
-                <el-form :model="form" ref="form" :rules="rules">
+                <el-form :model="form" ref="form" :rules="rules" status-icon>
                     <el-form-item prop="email">
                         <el-input
                             v-model.trim="form.email"
@@ -19,13 +19,12 @@
                             clearable
                         ></el-input>
                     </el-form-item>
-                    <el-form-item prop="code" v-if="hasSendBindEmail">
+                    <el-form-item prop="code" v-if="hasSendBindEmail" class="u-code-input">
                         <el-input
                             v-model.trim="form.code"
                             size="large"
                             prefix-icon="el-icon-lock"
                             placeholder="请输入验证码"
-                            clearable
                         ></el-input>
                     </el-form-item>
                 </el-form>
@@ -192,6 +191,12 @@ export default {
 
     .m-action {
         .x;
+    }
+
+    .el-form-item.is-success {
+        .el-input__validateIcon {
+            color: #67c23a;
+        }
     }
 }
 </style>
