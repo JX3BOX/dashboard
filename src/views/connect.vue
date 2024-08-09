@@ -1,15 +1,21 @@
 <template>
     <uc class="m-dashboard-connect">
         <div class="m-profile-connect">
-            <el-alert class="u-tip" title="通过第三方账号快速登录，如需解绑则需要先绑定一个邮箱" type="warning" show-icon> </el-alert>
+            <el-alert
+                class="u-tip"
+                title="通过第三方账号快速登录，如需解绑则需要先绑定一个邮箱"
+                type="warning"
+                show-icon
+            >
+            </el-alert>
             <div class="m-dashboard-content-list">
                 <div class="m-item" v-for="(item, type) in oauth" :key="type">
                     <span class="u-profile-item">
                         <img :class="'u-' + type" svg-inline :src="icon(type)" />
+                        <span class="u-status">
+                            {{ checkStatus(type) ? getNickname(type) : "未绑定" }}
+                        </span>
                     </span>
-                    <p class="u-status">
-                        {{ checkStatus(type) ? getNickname(type) : "未绑定" }}
-                    </p>
                     <el-button
                         class="u-button"
                         :type="!checkStatus(type) ? 'primary' : 'danger'"

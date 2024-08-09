@@ -2,7 +2,7 @@
     <uc>
         <div class="m-page-address">
             <!-- 显示地址 -->
-            <el-button type="success" icon="el-icon-plus" @click="add" size="small">添加地址</el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="add" size="small">添加地址</el-button>
 
             <div class="m-content">
                 <el-table :data="list" size="small">
