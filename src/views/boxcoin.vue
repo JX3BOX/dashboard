@@ -133,9 +133,7 @@
                                 <td>{{ item.zone }}</td>
                                 <td>{{ item.account }}</td>
                                 <td>{{ item.email }}</td>
-                                <td
-                                    :class="statusClass(item)"
-                                >
+                                <td :class="statusClass(item)">
                                     {{ formatHistoryStatus(item) }}
                                 </td>
                                 <td>{{ item.remark }}</td>
@@ -290,9 +288,7 @@ export default {
 
         // 区服
         zones: function () {
-            return this.client == "origin"
-                ? ['缘起大区']
-                : ['电信区','双线区']
+            return this.client == "origin" ? ["缘起大区"] : ["电信区", "双线区", "无界区"];
         },
 
         // 限制
@@ -347,7 +343,7 @@ export default {
             this.loadData();
         },
         getPostLink(item) {
-            return getLink(item.post_type_sub ||item.post_type, item.article_id);
+            return getLink(item.post_type_sub || item.post_type, item.article_id);
         },
 
         // 提现操作
@@ -459,12 +455,12 @@ export default {
         },
         countBoxCoin: function (item) {
             let i = 1;
-            if(item.user_id == this.uid){
+            if (item.user_id == this.uid) {
                 i = item.action_type > 0 ? 1 : -1;
-            }else if (item.operate_user_id == this.uid) {
+            } else if (item.operate_user_id == this.uid) {
                 i = item.action_type > 0 ? -1 : 1;
             }
-            return Math.abs(item.count + ~~item.ext_take_off_count + ~~item.ext2_take_off_count)*i ;
+            return Math.abs(item.count + ~~item.ext_take_off_count + ~~item.ext2_take_off_count) * i;
         },
         showBoxcoinOp(item) {
             let value = this.countBoxCoin(item);
