@@ -120,16 +120,6 @@
                     </div>
                 </li>
             </ul>
-            <el-pagination
-                class="m-archive-pages"
-                background
-                layout="total, prev, pager, next,jumper"
-                :hide-on-single-page="true"
-                :page-size="per"
-                :total="total"
-                :current-page.sync="page"
-                @current-change="changePage"
-            ></el-pagination>
         </div>
         <template v-else>
             <el-alert class="m-archive-null" title="没有找到相关条目" type="info" center show-icon></el-alert>
@@ -170,10 +160,6 @@ export default {
     },
     data: function () {
         return {
-            per: 10,
-            page: 1,
-            total: 1,
-            pages: 1,
             data: [
                 // {
                 //     id: 0,
@@ -204,8 +190,6 @@ export default {
     computed: {
         params: function () {
             return {
-                pageIndex: this.page,
-                pageSize: this.per,
                 mount: this.mount,
                 name: this.name,
             };
@@ -233,8 +217,6 @@ export default {
             this.loading = true;
             getRoles(this.params)
                 .then((res) => {
-                    this.total = res.data.data.page.total;
-                    this.pages = res.data.data.page.pageTotal;
                     this.data = res.data.data.list || [];
                 })
                 .finally(() => {
@@ -301,9 +283,6 @@ export default {
                     });
                 });
             }
-        },
-        changePage: function () {
-            window.scrollTo(0, 0);
         },
     },
     created: function () {},

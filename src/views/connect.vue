@@ -2,9 +2,11 @@
     <uc class="m-dashboard-connect">
         <div class="m-profile-connect">
             <el-alert class="u-tip" title="通过第三方账号快速登录，如需解绑则需要先绑定一个邮箱" type="warning" show-icon> </el-alert>
-            <div class="m-dashboard-connect-list">
-                <el-card class="box-card" v-for="(item, type) in oauth" :key="type">
-                    <img :class="'u-' + type" svg-inline :src="icon(type)" />
+            <div class="m-dashboard-content-list">
+                <div class="m-item" v-for="(item, type) in oauth" :key="type">
+                    <span class="u-profile-item">
+                        <img :class="'u-' + type" svg-inline :src="icon(type)" />
+                    </span>
                     <p class="u-status">
                         {{ checkStatus(type) ? getNickname(type) : "未绑定" }}
                     </p>
@@ -12,9 +14,10 @@
                         class="u-button"
                         :type="!checkStatus(type) ? 'primary' : 'danger'"
                         @click="!checkStatus(type) ? bind(type) : unbind(type)"
-                        >{{ !checkStatus(type) ? "绑定" : "解除绑定" }}</el-button
                     >
-                </el-card>
+                        {{ !checkStatus(type) ? "绑定" : "解除绑定" }}
+                    </el-button>
+                </div>
             </div>
         </div>
     </uc>
@@ -25,7 +28,7 @@ import uc from "@/components/uc.vue";
 import links from "@jx3box/jx3box-common/js/connect";
 import oauth from "@jx3box/jx3box-common/data/oauth.json";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
-import { unbindOAuth, checkOAuth } from "../service/profile";
+import { unbindOAuth, checkOAuth } from "@/service/profile";
 const client = location.host.includes("origin") ? "origin" : "std";
 export default {
     name: "connect",
