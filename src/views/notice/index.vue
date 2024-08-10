@@ -70,4 +70,22 @@ export default {
         .bold;
     }
 }
+
+@media screen and (max-width: @phone) {
+    .m-dashboard-content-list {
+        .m-item {
+            gap: 20px;
+        }
+    }
+    .m-dashboard-notice{
+        img {
+            min-width: 40px;
+        }
+        .u-notice-item {
+            flex-direction: column;
+            padding: 0;
+            gap: 10px;
+        }
+    }
+}
 </style>
