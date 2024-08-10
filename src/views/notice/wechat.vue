@@ -1,13 +1,18 @@
 <template>
     <div class="m-notice-wechat">
-        <template v-if="isWechatVerified">
-            <span>******</span>
-            <el-tag type="success">已绑定</el-tag>
-            <el-button type="warning" icon="el-icon-connection" @click="unbind">
-                解绑公众号
-            </el-button>
-        </template>
-        <el-button type="primary" icon="el-icon-connection" @click="open" v-else> 绑定公众号 </el-button>
+        <span class="u-value" v-if="isWechatVerified">******</span>
+        <el-tag :type="isWechatVerified ? 'success' : 'warning'">{{ isWechatVerified ? "已绑定" : "未绑定" }}</el-tag>
+        <el-button
+            v-if="isWechatVerified"
+            class="u-bind-button"
+            type="warning"
+            icon="el-icon-connection"
+            @click="unbind"
+            :circle="isPhone"
+        >解绑公众号
+        </el-button>
+        <el-button type="primary" :circle="isPhone" class="u-bind-button" icon="el-icon-connection" @click="open" v-else>绑定公众号
+        </el-button>
         <el-dialog
             title="绑定微信公众号"
             :visible.sync="visible"
@@ -48,6 +53,8 @@ export default {
             profile: null,
             success: false,
             loading: false,
+
+            isPhone: window.innerWidth < 768,
         };
     },
     computed: {
@@ -162,6 +169,18 @@ export default {
         }
         .u-error {
             .fz(120px);
+        }
+    }
+}
+@media screen and (max-width: @phone) {
+    .m-notice-wechat {
+        .u-value {
+            font-size: 12px;
+        }
+        .u-bind-button {
+            span {
+                .none;
+            }
         }
     }
 }
