@@ -1,9 +1,11 @@
 <template>
-    <div class="m-notice-email">
-        <span class="u-address">{{ blurAddress(currentEmail) }}</span>
-        <el-tag v-if="!!currentEmail" :type="verified ? 'success' : 'warning'">{{
-            verified ? "已验证" : "未验证"
-        }}</el-tag>
+    <div class="m-notice-email u-notice-box">
+        <div class="u-notice-value">
+            <span class="u-address">{{ blurAddress(currentEmail) }}</span>
+            <el-tag class="u-notice-status" v-if="!!currentEmail" :type="verified ? 'success' : 'warning'" size="small">{{
+                verified ? "已验证" : "未验证"
+            }}</el-tag>
+        </div>
         <el-button type="primary" :circle="isPhone" class="u-button" @click="visible = true" icon="el-icon-edit">
             {{ verified ? "修改邮箱" : "绑定邮箱" }}
         </el-button>

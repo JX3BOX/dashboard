@@ -1,7 +1,11 @@
 <template>
-    <div class="m-notice-wechat">
-        <span class="u-value" v-if="isWechatVerified">******</span>
-        <el-tag :type="isWechatVerified ? 'success' : 'warning'">{{ isWechatVerified ? "已绑定" : "未绑定" }}</el-tag>
+    <div class="m-notice-wechat u-notice-box">
+        <div class="u-notice-value">
+            <span class="u-value" v-if="isWechatVerified">******</span>
+            <el-tag class="u-notice-status" :type="isWechatVerified ? 'success' : 'info'" size="small">{{
+                isWechatVerified ? "已绑定" : "未绑定"
+            }}</el-tag>
+        </div>
         <el-button
             v-if="isWechatVerified"
             class="u-bind-button"
@@ -9,9 +13,10 @@
             icon="el-icon-connection"
             @click="unbind"
             :circle="isPhone"
-        >解绑公众号
+            >解绑公众号
         </el-button>
-        <el-button type="primary" :circle="isPhone" class="u-bind-button" icon="el-icon-connection" @click="open" v-else>绑定公众号
+        <el-button type="primary" :circle="isPhone" class="u-bind-button" icon="el-icon-connection" @click="open" v-else
+            >绑定公众号
         </el-button>
         <el-dialog
             title="绑定微信公众号"
