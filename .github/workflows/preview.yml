@@ -18,7 +18,7 @@ jobs:
 
             # 调试SSH
             - name: Check SSH connection
-              run: ssh -v -o StrictHostKeyChecking=no -i ${{ secrets.DEPLOY_KEY }} ${{ secrets.DEPLOY_USER }}@${{ secrets.HOST_NANJING2 }} "echo 'SSH connection successful'"
+              run: ssh -v -o LogLevel=DEBUG3 -o StrictHostKeyChecking=no -i ${{ secrets.DEPLOY_KEY }} ${{ secrets.DEPLOY_USER }}@${{ secrets.HOST_NANJING2 }} "echo 'SSH connection successful'"
 
             - name: Debug SCP
               run: |
