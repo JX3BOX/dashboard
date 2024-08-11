@@ -16,26 +16,27 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Install && Build
-              run: |
-                  npm install
-                  npm run preview
-
-            ## TODO:下方修改2处
-            # - name: OSS
-            #   uses: manyuanrong/setup-ossutil@v2.0
-            #   with:
-            #       endpoint: "oss-cn-hangzhou.aliyuncs.com"
-            #       access-key-id: ${{secrets.AccessKey_ID}}
-            #       access-key-secret: ${{secrets.Access_Key_Secret}}
-            # - run: ossutil cp -rf dashboard oss://jx3box/static/dashboard
-
+            # 调试SSH
             - name: Check SSH connection
               run: ssh -v -o StrictHostKeyChecking=no -i ${{ secrets.DEPLOY_KEY }} ${{ secrets.DEPLOY_USER }}@${{ secrets.HOST_NANJING2 }} "echo 'SSH connection successful'"
 
             - name: Debug SCP
               run: |
                 scp -v -i ${{ secrets.DEPLOY_KEY }} -o StrictHostKeyChecking=no dashboard/* ${{ secrets.DEPLOY_USER }}@${{ secrets.HOST_NANJING2 }}:/www/wwwroot/jx3box/test
+
+            - name: Install && Build
+              run: |
+                  npm install
+                  npm run preview
+
+            ## TODO:下方修改2处
+            - name: OSS
+              uses: manyuanrong/setup-ossutil@v2.0
+              with:
+                  endpoint: "oss-cn-hangzhou.aliyuncs.com"
+                  access-key-id: ${{secrets.AccessKey_ID}}
+                  access-key-secret: ${{secrets.Access_Key_Secret}}
+            - run: ossutil cp -rf dashboard oss://jx3box/static/dashboard
 
 
             ## TODO:下方修改1处
