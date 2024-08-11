@@ -3,8 +3,25 @@
         <div class="m-cert-list">
             <el-row :gutter="32">
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
-                    <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
+                    <a
+                        class="m-cert-item"
+                        :href="getCertLink(item)"
+                        target="_blank"
+                        :class="{
+                            tt_item: item.team_certificate.sort_no > 100,
+                        }"
+                    >
+                        <!-- 门派天团 -->
                         <div
+                            v-if="item.team_certificate.sort_no > 100"
+                            class="u-img"
+                            :style="{
+                                backgroundImage: `url(${require('@/assets/img/certification/tt.png')})`,
+                            }"
+                        ></div>
+                        <!-- 百强证书 -->
+                        <div
+                            v-else
                             class="u-img"
                             :style="{
                                 backgroundImage: `url(${getImgPath(item.team_certificate.rank_id)})`,
@@ -17,7 +34,15 @@
                             <div class="u-tip">角色名：{{ item.role }}</div>
                             <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
                         </div>
-                        <img class="u-icon" src="../assets/img/cert/CI_icon.svg" alt="" />
+                        <!-- 门派天团 -->
+                        <img
+                            class="u-icon"
+                            v-if="item.team_certificate.sort_no > 100"
+                            :src="showSchoolIcon(tianTuanCertificateCode[item.team_certificate.sort_no])"
+                            alt=""
+                        />
+                        <!-- 百强证书 -->
+                        <img class="u-icon" v-else src="../assets/img/cert/CI_icon.svg" alt="" />
                     </a>
                 </el-col>
             </el-row>
@@ -42,6 +67,9 @@ import { antiqueTab } from "@/assets/data/tabs.json";
 import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
 import { __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
+import tianTuanCertificateCode from "../assets/data/tianTuan_certificate_code.json";
+import { showSchoolIcon } from "@jx3box/jx3box-common/js/utils";
+
 export default {
     name: "treasure",
     components: {
@@ -56,10 +84,12 @@ export default {
             per: 12,
             total: 0,
             list: [],
+            tianTuanCertificateCode,
         };
     },
     computed: {},
     methods: {
+        showSchoolIcon,
         load() {
             const screenWidth = window.innerWidth;
             if (screenWidth < 1920) {
@@ -89,7 +119,13 @@ export default {
             return __cdn + imgUrl;
         },
         getCertLink(item) {
-            return `/author/${item.user_id}/certificate/${item.id}`;
+            if (item.team_certificate.sort_no > 100) {
+                // 门派天团
+                return `/author/${item.user_id}/groupCertificate/${item.id}`;
+            } else {
+                // 百强证书
+                return `/author/${item.user_id}/certificate/${item.id}`;
+            }
         },
     },
     mounted: function () {
