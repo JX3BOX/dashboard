@@ -3,10 +3,6 @@ import { $cms, $_https } from "@jx3box/jx3box-common/js/https.js";
 import axios from "axios";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 
-const $server = $_https("server", {
-    proxy: false,
-});
-
 // 1.资料
 // -------------------------------
 function getProfile() {

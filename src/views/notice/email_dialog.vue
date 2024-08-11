@@ -1,12 +1,11 @@
 <template>
-    <el-dialog :visible="modelValue" @close="close" custom-class="m-email-dialog" width="950px">
+    <el-dialog :visible="modelValue" @close="close" custom-class="m-email-dialog" :width="isPhone ? '90%' : '950px'">
         <div class="m-content">
             <div class="m-pic"></div>
             <div class="m-info">
                 <div class="u-title">更新邮箱</div>
                 <div class="u-email">
-                    当前邮箱地址：<span class="u-value">{{ email || "当前未绑定邮箱" }}</span>
-                    <el-tag v-if="email" class="u-status" :type="verified ? 'success' : 'warning'" size="mini">{{ verified ? '已验证' : '未验证' }}</el-tag>
+                    当前邮箱地址：<span class="u-value">{{ email || "当前未绑定邮箱" }}<el-tag v-if="email" class="u-status" :type="verified ? 'success' : 'warning'" size="mini">{{ verified ? '已验证' : '未验证' }}</el-tag></span>
                 </div>
 
                 <el-form :model="form" ref="form" :rules="rules" status-icon>
@@ -93,6 +92,8 @@ export default {
             loading: false,
 
             hasSendBindEmail: false,
+
+            isPhone: window.innerWidth < 768,
         };
     },
     computed: {
@@ -137,6 +138,7 @@ export default {
                     this.loading = true;
                     sendVerifyEmail(this.form.code).then((res) => {
                         this.$emit("update");
+                        this.$message.success("邮箱绑定成功")
                         this.close();
                         this.loading = false;
                     });
@@ -196,6 +198,29 @@ export default {
     .el-form-item.is-success {
         .el-input__validateIcon {
             color: #67c23a;
+        }
+    }
+}
+
+@media screen and (max-width: @phone) {
+    .m-email-dialog {
+        .m-content {
+        }
+        .m-pic {
+            background: none;
+            .none;
+        }
+
+        .m-info {
+            .pr;
+            .rt(0);
+            height: auto;
+        }
+        .u-email {
+            .flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
         }
     }
 }

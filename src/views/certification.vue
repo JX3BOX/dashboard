@@ -8,12 +8,12 @@
                         :href="getCertLink(item)"
                         target="_blank"
                         :class="{
-                            tt_item: item.team_certificate.sort_no > 100,
+                            tt_item: isSuperstar(item),
                         }"
                     >
                         <!-- 门派天团 -->
                         <div
-                            v-if="item.team_certificate.sort_no > 100"
+                            v-if="isSuperstar(item)"
                             class="u-img"
                             :style="{
                                 backgroundImage: `url(${require('@/assets/img/certification/tt.png')})`,
@@ -30,9 +30,18 @@
                         <div class="m-info">
                             <div class="u-title">{{ item.team_certificate.rank_name }}</div>
                             <div class="u-tip">团队：{{ item.team_certificate.team_name }}</div>
-                            <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
-                            <div class="u-tip">角色名：{{ item.role }}</div>
-                            <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
+                            <template v-if="isSuperstar(item)">
+                                <div class="u-tip">
+                                    门派：{{ tianTuanCertificateCode[item.team_certificate.sort_no] }}
+                                </div>
+                                <div class="u-tip">团长：{{ item.team_certificate.leader }}</div>
+                                <div class="u-tip">通关时间：{{ item.team_certificate.time }}</div>
+                            </template>
+                            <template v-else>
+                                <div class="u-tip">服务器：{{ item.team_certificate.team_server }}</div>
+                                <div class="u-tip">团长：{{ item.team_certificate.leader }}</div>
+                                <div class="u-tip">获得时间：{{ item.team_certificate.awardtime }}</div>
+                            </template>
                         </div>
                         <!-- 门派天团 -->
                         <img
@@ -67,7 +76,7 @@ import { antiqueTab } from "@/assets/data/tabs.json";
 import { teamCertificationRecordList } from "@/service/treasure";
 import User from "@jx3box/jx3box-common/js/user";
 import { __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
-import tianTuanCertificateCode from "../assets/data/tianTuan_certificate_code.json";
+import tianTuanCertificateCode from "@/assets/data/tianTuan_certificate_code.json";
 import { showSchoolIcon } from "@jx3box/jx3box-common/js/utils";
 
 export default {
@@ -126,6 +135,9 @@ export default {
                 // 百强证书
                 return `/author/${item.user_id}/certificate/${item.id}`;
             }
+        },
+        isSuperstar(item) {
+            return item.team_certificate.sort_no > 100 ? true : false;
         },
     },
     mounted: function () {
