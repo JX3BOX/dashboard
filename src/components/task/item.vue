@@ -18,7 +18,7 @@
                     :disabled="data.hasFinish"
                     :icon="(data.hasFinish && 'el-icon-check') || ''"
                     @click="checkFinish(data.task.id)"
-                    >{{ data.hasFinish ? "已完成" : "接受任务" }}</el-button
+                    >{{ data.hasFinish ? "已完成" : "领取奖励" }}</el-button
                 >
             </div>
         </div>

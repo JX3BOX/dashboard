@@ -9,11 +9,11 @@
         <el-button
             v-if="isWechatVerified"
             class="u-bind-button"
-            type="warning"
+            type="danger"
             icon="el-icon-connection"
             @click="unbind"
             :circle="isPhone"
-            >解绑公众号
+            >解除绑定
         </el-button>
         <el-button type="primary" :circle="isPhone" class="u-bind-button" icon="el-icon-connection" @click="open" v-else
             >绑定公众号

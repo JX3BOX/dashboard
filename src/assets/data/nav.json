@@ -81,11 +81,6 @@
                 "path": "/config",
                 "name": "全局设置",
                 "icon": "el-icon-setting"
-            },
-            {
-                "path": "/cooperation",
-                "name": "签约作者",
-                "icon": "el-icon-reading"
             }
         ]
     },
@@ -93,14 +88,19 @@
         "group_name": "服务中心",
         "children": [
             {
-                "path": "/mall",
-                "name": "订单中心",
-                "icon": "el-icon-shopping-bag-1"
-            },
-            {
                 "path": "/tasks",
                 "name": "任务中心",
                 "icon": "el-icon-coffee-cup"
+            },
+            {
+                "path": "/cooperation",
+                "name": "签约中心",
+                "icon": "el-icon-reading"
+            },
+            {
+                "path": "/mall",
+                "name": "订单中心",
+                "icon": "el-icon-shopping-bag-1"
             },
             {
                 "path": "/feedback",

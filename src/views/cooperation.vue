@@ -1,7 +1,7 @@
 <template>
     <div class="m-dashboard m-cooperation">
         <h2 class="u-title">
-            <span><i class="el-icon-reading"></i> 签约作者</span>
+            <span><i class="el-icon-reading"></i> 签约中心</span>
             <el-button type="primary" @click="openPage" size="small" v-if="isSuperAuthor" icon="el-icon-unlock">
                 敏感词测试
             </el-button>
