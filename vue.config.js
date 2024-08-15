@@ -76,7 +76,7 @@ module.exports = {
             },
             // 默认PAY服务
             "/api": {
-                target: "https://ipay.jx3box.com",
+                target: "https://pay.jx3box.com",
                 onProxyReq: function (request) {
                     request.setHeader("origin", "");
                 },

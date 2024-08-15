@@ -32,6 +32,7 @@ const points = () => import("../views/points.vue");
 const cny = () => import("../views/cny.vue");
 const tasks = () => import("../views/tasks.vue");
 const card = () => import("../views/card.vue");
+const ic = () => import("../views/ic.vue");
 
 const BindRole = () => import("../views/role/BindRole.vue");
 const ListRole = () => import("../views/role/ListRole.vue");
@@ -88,6 +89,7 @@ const routes = [
     { name: "points", path: "/points", component: points },
     { name: "tasks", path: "/tasks", component: tasks },
     { name: "card", path: "/card", component: card },
+    { name: "ic", path: "/ic", component: ic },
 
     { name: "bind_role", path: "/role/bind", component: BindRole },
     { name: "list_role", path: "/role", component: ListRole },
