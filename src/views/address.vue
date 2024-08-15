@@ -54,8 +54,8 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="m-footer">
-                    <el-button size="small" @click="visible = false">取 消</el-button>
-                    <el-button size="small" type="primary" @click="submit('ruleForm')">确 定</el-button>
+                    <el-button @click="visible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
                 </span>
             </el-dialog>
         </div>

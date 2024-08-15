@@ -13,6 +13,29 @@
             &:hover {
                 background-color: @bg-gray;
             }
+            &.u-parent {
+                border: 0;
+                padding: 0;
+                margin: 0;
+            }
+            &.u-group {
+                flex-direction: column;
+                &.open {
+                    .u-parent {
+                        .pb(20px);
+                    }
+                    .u-item:not(.u-parent) {
+                        &:hover {
+                            background-color: #fff;
+                        }
+                    }
+                }
+                &.close {
+                    .u-item:not(.u-parent) {
+                        .none;
+                    }
+                }
+            }
 
             .u-img {
                 flex-shrink: 0;

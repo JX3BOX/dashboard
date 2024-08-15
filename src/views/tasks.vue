@@ -2,67 +2,87 @@
     <div class="m-credit m-tasks">
         <h2 class="u-title"><i class="el-icon-coffee-cup"></i> 任务中心</h2>
         <div class="m-tasks-list" v-loading="loading">
-            <div class="u-item" v-for="(item, index) in list" :key="index">
-                <img class="u-img" :src="item.task.task_icon || defaultTaskIcon" :alt="item.task.action_type_desc" />
-                <div class="u-box">
-                    <div class="u-info">
-                        <a class="u-title" :href="item.task.task_url" target="_blank">{{ item.task.action_type_desc }}</a>
-                        <span class="u-desc">
-                            {{item.task.task_detail}} ∕
-                            <span v-for="(attr, key) in item.attr" :key="key" class="u-attr">
-                                {{ attr_name[attr.name] }} +{{ attr.count }}
-                            </span>
-                        </span>
+            <taskItem v-for="(item, index) in list" :key="index" :data="item" @update="checkFinish" />
+            <!-- 任务组 -->
+            <template v-if="Object.keys(group).length">
+                <div
+                    class="u-item u-group"
+                    v-for="(task, key) in group"
+                    :key="key"
+                    :class="groupInfo[key].open ? 'open' : 'close'"
+                >
+                    <div class="u-parent u-item">
+                        <img class="u-img" :src="groupInfo[key].img" :alt="groupInfo[key].name" />
+                        <div class="u-box">
+                            <a class="u-title" :href="groupInfo[key].url" target="_blank">{{ groupInfo[key].name }}</a>
+                            <el-button
+                                size="small"
+                                :type="groupInfo[key].open ? 'primary' : ''"
+                                @click="groupInfo[key].open = !groupInfo[key].open"
+                                >{{ groupInfo[key].open ? "折叠" : "展开"
+                                }}<i :class="groupInfo[key].open ? 'el-icon-caret-top' : 'el-icon-caret-right'"></i
+                            ></el-button>
+                        </div>
                     </div>
-                    <div class="u-btn">
-                        <el-button
-                            size="small"
-                            :type="item.hasFinish ? 'success' : 'warning'"
-                            :disabled="item.hasFinish"
-                            :icon="item.hasFinish && 'el-icon-check' || ''"
-                            @click="checkFinish(item.task.id)"
-                            >{{item.hasFinish ? '已完成' : '接受任务'}}</el-button
-                        >
-                    </div>
+                    <taskItem v-for="(item, index) in task" :key="index" :data="item" @update="checkFinish" />
                 </div>
-            </div>
+            </template>
         </div>
     </div>
 </template>
 <script>
 import { getTasks, getCheckTasks } from "@/service/tasks.js";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
+import taskItem from "@/components/task/item.vue";
+import { getBreadcrumb } from "@jx3box/jx3box-common/js/api_misc.js";
 export default {
     name: "tasks",
-    props: [],
-
+    components: {
+        taskItem,
+    },
     data: function () {
         return {
             loading: false,
             list: [],
-            attr_name: {
-                experience: "经验",
-                points: "积分",
-            },
+            group: {},
+            groupInfo: {},
         };
     },
-    computed: {
-        defaultTaskIcon() {
-            return __imgPath + "image/common/jx3box_black.svg";
-        },
-    },
-    watch: {},
     methods: {
         // 加载任务列表
         loadTasks() {
             this.loading = true;
             getTasks({ is_limit_everyday: 0, os_visible: 1 })
                 .then((res) => {
-                    this.list = res.data.data.list;
+                    const list = res.data.data.list;
+                    this.list = list.filter((item) => {
+                        return item.task.task_group == "";
+                    });
+                    this.group = list
+                        .sort((a, b) => {
+                            const numA = parseInt(a.task.action_type.split("_").pop(), 10);
+                            const numB = parseInt(b.task.action_type.split("_").pop(), 10);
+                            return numA - numB;
+                        })
+                        .reduce((acc, cur) => {
+                            if (cur.task.task_group) {
+                                if (!acc[cur.task.task_group]) {
+                                    acc[cur.task.task_group] = [];
+                                }
+                                acc[cur.task.task_group].push(cur);
+                            }
+                            return acc;
+                        }, {});
                 })
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        loadAc() {
+            getBreadcrumb("task_group_info").then((data) => {
+                data = data.replace(/ /g, "");
+                this.groupInfo = JSON.parse(data);
+            });
         },
         // 点击完成
         checkFinish(id) {
@@ -86,6 +106,7 @@ export default {
     },
     mounted: function () {
         this.loadTasks();
+        this.loadAc();
     },
 };
 </script>

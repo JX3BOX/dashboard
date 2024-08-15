@@ -61,13 +61,40 @@ export default {
         .size(40px);
     }
 }
-.m-dashboard-notice{
-    .u-notice-item{
+.m-dashboard-notice {
+    .u-notice-item {
         .flex;
         align-items: center;
-        gap:20px;
-        padding:0 20px;
+        gap: 20px;
+        padding: 0 20px;
         .bold;
+    }
+    .u-notice-value {
+        width: 200px;
+    }
+    .u-notice-status {
+        margin-left: 5px;
+    }
+}
+
+@media screen and (max-width: @phone) {
+    .m-dashboard-content-list {
+        .m-item {
+            gap: 20px;
+        }
+    }
+    .m-dashboard-notice {
+        img {
+            min-width: 40px;
+        }
+        .u-notice-item {
+            flex-direction: column;
+            padding: 0;
+            gap: 10px;
+        }
+        .u-notice-box {
+            flex: 1;
+        }
     }
 }
 </style>

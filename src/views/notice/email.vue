@@ -1,12 +1,18 @@
 <template>
-    <div class="m-notice-email">
-        <span class="u-address">{{ blurAddress(currentEmail) }}</span>
-        <el-tag v-if="!!currentEmail" :type="verified ? 'success' : 'warning'">{{
-            verified ? "已验证" : "未验证"
-        }}</el-tag>
-        <el-button type="primary" class="u-button" @click="visible = true" icon="el-icon-edit">
-            {{ verified ? "修改邮箱" : "绑定邮箱" }}
-        </el-button>
+    <div class="m-notice-email u-notice-box">
+        <div class="u-notice-value">
+            <span class="u-address">{{ blurAddress(currentEmail) }}</span>
+            <el-tag
+                class="u-notice-status"
+                v-if="!!currentEmail"
+                :type="verified ? 'success' : 'warning'"
+                size="small"
+                >{{ verified ? "已验证" : "未验证" }}</el-tag
+            >
+        </div>
+        <el-button type="primary" :circle="isPhone" class="u-button" @click="visible = true" icon="el-icon-edit">{{
+            verified ? "修改邮箱" : "绑定邮箱"
+        }}</el-button>
 
         <email-dialog v-model="visible" :email="currentEmail" :verified="verified" @update="onUpdate" />
     </div>
@@ -28,20 +34,11 @@ export default {
             verified: false,
 
             currentEmail: "",
+
+            isPhone: window.innerWidth < 768,
         };
     },
     methods: {
-        verify: function () {
-            sendVerifyEmail(this.code).then((res) => {
-                this.$message.success("验证成功，请重新登录");
-                this.verified = true;
-                this.visible = false;
-
-                User.destroy().then(() => {
-                    User.toLogin();
-                });
-            });
-        },
         checkEmail: function () {
             // 如果为空
             if (this.email == "") {
@@ -134,5 +131,20 @@ export default {
     justify-content: center;
     align-items: center;
     gap: 10px;
+}
+@media screen and (max-width: @phone) {
+    .m-notice-email {
+        .u-address {
+            // .none;
+
+            font-size: 12px;
+        }
+
+        .u-button {
+            span {
+                .none;
+            }
+        }
+    }
 }
 </style>
