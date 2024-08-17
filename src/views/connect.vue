@@ -72,13 +72,21 @@ export default {
             location.href = links[type].replace("state=login", `state=bind_${client}`);
         },
         unbind: function (type) {
-            unbindOAuth(type).then((res) => {
-                this.$message({
-                    message: "解绑成功",
-                    type: "success",
-                });
-                location.reload();
-            });
+            this.$confirm("确定要解绑吗？", "解绑", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    unbindOAuth(type).then((res) => {
+                        this.$message({
+                            message: "解绑成功",
+                            type: "success",
+                        });
+                        location.reload();
+                    });
+                })
+                .catch(() => {});
         },
         icon: function (type) {
             return __imgPath + "image/connect/" + type + ".svg";
