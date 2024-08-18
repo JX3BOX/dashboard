@@ -42,6 +42,7 @@ export default {
 
             // TODO: 生成小程序二维码
             qrcodeValue: "",
+            loading: false,
         };
     },
     methods: {
@@ -50,6 +51,9 @@ export default {
             return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
         },
         onUpdate: function () {
+            this.visible = false;
+        },
+        handleClose: function () {
             this.visible = false;
         },
     },

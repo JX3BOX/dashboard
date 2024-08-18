@@ -218,13 +218,13 @@ export default {
         },
         loadDecoration() {
             getUserHonors(this.uid).then((res) => {
-                const myHonors = res;
+                const myHonors = res || [];
                 this.honorList = this.honorList.map((item) => {
-                    const isHave = myHonors.find((e) => e.honor_id == item.id);
+                    const isHave = myHonors?.find((e) => e.honor_id == item.id);
                     if (isHave) {
                         item.isHave = true;
                     }
-                    const isUsing = myHonors.find((e) => e.honor_id == item.id && e.using == 1);
+                    const isUsing = myHonors?.find((e) => e.honor_id == item.id && e.using == 1);
                     if (isUsing) {
                         item.using = 1;
                     }
@@ -236,7 +236,7 @@ export default {
 
                     return item;
                 });
-                let isUsing = this.honorList.find((item) => item.using == 1);
+                let isUsing = this.honorList?.find((item) => item.using == 1);
                 let isCustomize = {
                     type: "honor_customize",
                     img: "不佩戴称号",
