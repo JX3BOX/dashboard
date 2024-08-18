@@ -2,7 +2,7 @@
     <div class="m-notice-phone u-notice-box">
         <div class="u-notice-value">
             <span class="u-address" v-if="phone">{{ phoneStr(phone) }}</span>
-            <el-tag class="u-notice-status" :type="phone ? 'success' : 'warning'" size="small">{{
+            <el-tag class="u-notice-status" :type="phone ? 'success' : 'info'" size="small">{{
                 phone ? "已绑定" : "未绑定"
             }}</el-tag>
         </div>
