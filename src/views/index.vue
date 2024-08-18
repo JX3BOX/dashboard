@@ -62,10 +62,10 @@
                         <el-tooltip
                             class="item"
                             effect="dark"
-                            :content="~~info.verify_phone ? '手机已绑定' : '手机未绑定'"
+                            :content="~~info.user_phone ? '手机已绑定' : '手机未绑定'"
                             placement="top"
                         >
-                            <a href="/dashboard/phone" :class="info.verify_phone && 'done'">
+                            <a href="/dashboard/phone" :class="info.user_phone && 'done'">
                                 <i class="el-icon-mobile-phone"></i>
                             </a>
                         </el-tooltip>
