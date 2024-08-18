@@ -20,6 +20,7 @@ import uc from "@/components/uc.vue";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import wechat from "./wechat.vue";
 import email from "./email.vue";
+import phone from "./phone.vue";
 export default {
     name: "notice",
     components: { uc, wechat, email },
@@ -28,6 +29,7 @@ export default {
             list: [
                 { key: "email", name: "邮箱", component: email },
                 { key: "wechat", name: "微信", component: wechat },
+                { key: "phone", name: "手机", component: phone },
             ],
         };
     },
