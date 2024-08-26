@@ -9,13 +9,13 @@
     "preview": "cross-env BUILD_MODE=preview vue-cli-service build",
     "lint": "vue-cli-service lint",
     "inspect": "vue inspect > output.js",
-    "update": "yarn add @jx3box/jx3box-common-ui@latest @jx3box/jx3box-common@latest @jx3box/jx3box-data@latest @jx3box/jx3box-comment-ui@latest @jx3box/jx3box-emotion@latest @jx3box/jx3box-facedat@latest"
+    "update": "npm install @jx3box/jx3box-common-ui@latest @jx3box/jx3box-common@latest @jx3box/jx3box-data@latest @jx3box/jx3box-comment-ui@latest @jx3box/jx3box-emotion@latest @jx3box/jx3box-facedat@latest"
   },
   "dependencies": {
     "@jx3box/jx3box-comment-ui": "^1.9.9",
     "@jx3box/jx3box-common": "^8.3.3",
-    "@jx3box/jx3box-common-ui": "^8.9.10",
-    "@jx3box/jx3box-data": "^3.6.2",
+    "@jx3box/jx3box-common-ui": "^8.9.16",
+    "@jx3box/jx3box-data": "^3.6.5",
     "@jx3box/jx3box-emotion": "^1.2.8",
     "@jx3box/jx3box-facedat": "^2.6.2",
     "@microsoft/signalr": "^8.0.0",
