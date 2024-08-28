@@ -17,11 +17,7 @@
             :before-close="handleClose"
         >
             <div class="m-phone-content" v-loading="loading">
-                <el-image class="u-qr" :src="qrcodeValue" lazy>
-                    <div slot="error" class="u-error">
-                        <i class="el-icon-picture-outline"></i>
-                    </div>
-                </el-image>
+                <img class="u-qr" src="../../assets/img/bindphone.jpg" />
                 <i class="u-tip">打开微信扫一扫，{{ phone ? "修改" : "绑定" }}手机号</i>
             </div>
         </el-dialog>
@@ -40,8 +36,6 @@ export default {
 
             isPhone: window.innerWidth < 768,
 
-            // TODO: 生成小程序二维码
-            qrcodeValue: "",
             loading: false,
         };
     },
