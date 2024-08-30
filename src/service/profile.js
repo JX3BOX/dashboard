@@ -43,9 +43,7 @@ function sendVerifyCode(data) {
 }
 // 重设密码
 function updatePassword(data) {
-    return $cms().put("/api/cms/user/account/email/reset-password", data, {
-        app: "jx3box",
-    });
+    return $cms().put("/api/cms/user/my/password", data);
 }
 
 // 4.邮箱

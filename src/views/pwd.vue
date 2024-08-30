@@ -140,9 +140,7 @@ export default {
         },
         done: function() {
             updatePassword({
-                uid: User.getInfo().uid,
-                pwd1: this.pwd1,
-                pwd2: this.pwd2,
+                password: this.pwd1,
             }).then((res) => {
                 this.$message({
                     message: "密码修改成功",
