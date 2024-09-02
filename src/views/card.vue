@@ -14,117 +14,6 @@
         </el-alert>
         <div class="m-keycode-tab">
             <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
-                <el-tab-pane label="一卡通" name="keycode">
-                    <el-table
-                        class="m-table"
-                        v-if="filteredList.length"
-                        :data="filteredList"
-                        show-header
-                        v-loading="loading"
-                    >
-                        <el-table-column prop="type" label="类型" width="140">
-                            <template slot-scope="scope">{{ keycodeOptions.types[scope.row.type] || "其他" }}</template>
-                        </el-table-column>
-                        <el-table-column prop="subtype" label="渠道" width="140">
-                            <template slot-scope="scope">{{
-                                keycodeOptions.subtypes[scope.row.subtype] || "其他"
-                            }}</template>
-                        </el-table-column>
-                        <el-table-column label="面额" width="120">
-                            <template slot-scope="scope">{{ scope.row.count }}</template>
-                        </el-table-column>
-                        <el-table-column label="卡密" min-width="330">
-                            <template slot-scope="scope">
-                                <div class="u-card">
-                                    <div class="u-count">
-                                        <div class="u-line">
-                                            <span>卡号：{{ scope.row.key || "****************" }}</span>
-                                            <el-button
-                                                class="u-btn"
-                                                v-if="scope.row.key"
-                                                type="txt"
-                                                size="mini"
-                                                icon="el-icon-document-copy"
-                                                v-clipboard:copy="'' + scope.row.key"
-                                                v-clipboard:success="onCopy"
-                                                v-clipboard:error="onError"
-                                                >复制卡号</el-button
-                                            >
-                                        </div>
-                                        <div class="u-line">
-                                            <span>卡密：{{ scope.row.code || "****************" }} </span>
-                                            <el-button
-                                                v-if="!scope.row.code"
-                                                type="primary"
-                                                icon="el-icon-view"
-                                                @click="getKeycode(scope.$index, scope.row)"
-                                                size="mini"
-                                                plain
-                                                >点击查看</el-button
-                                            >
-                                            <el-button
-                                                class="u-btn"
-                                                v-if="scope.row.code"
-                                                type="txt"
-                                                size="mini"
-                                                icon="el-icon-document-copy"
-                                                v-clipboard:copy="'' + scope.row.code"
-                                                v-clipboard:success="onCopy"
-                                                v-clipboard:error="onError"
-                                                >复制卡密</el-button
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="过期时间" min-width="180">
-                            <template slot-scope="scope">
-                                <div class="u-time" v-if="scope.row.expire_at">
-                                    <span class="u-tag" :class="compareTime(scope.row.expire_at, 'tag')">{{
-                                        compareTime(scope.row.expire_at, "time")
-                                    }}</span
-                                    ><span>{{ scope.row.expire_at }}</span>
-                                </div>
-                                <span v-else>-</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="发放时间" min-width="180" prop="grant_at"></el-table-column>
-                        <el-table-column prop="remark" label="备注" min-width="200"> </el-table-column>
-                        <el-table-column prop="used_by_self" label="是否使用">
-                            <template slot-scope="scope">
-                                {{ scope.row.used_by_self ? "是" : "否" }}
-
-                                <el-button
-                                    v-show="!scope.row.used_by_self"
-                                    type="text"
-                                    size="mini"
-                                    @click="onKeyCodeUsedClick(scope.row)"
-                                    >（标记使用）</el-button
-                                >
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <el-alert
-                        v-else
-                        class="m-credit-null m-packet-null"
-                        title="没有找到任何记录"
-                        type="info"
-                        center
-                        show-icon
-                    ></el-alert>
-                    <el-pagination
-                        v-if="showPagination"
-                        @current-change="currentChange"
-                        class="m-credit-pages"
-                        background
-                        :page-size="per"
-                        :hide-on-single-page="true"
-                        :current-page.sync="page"
-                        layout="total, prev, pager, next, jumper"
-                        :total="total"
-                    ></el-pagination>
-                </el-tab-pane>
                 <el-tab-pane label="激活码" name="sn">
                     <el-table
                         class="m-table"
@@ -348,6 +237,117 @@
                         :total="total"
                     ></el-pagination>
                 </el-tab-pane>
+                <el-tab-pane label="一卡通" name="keycode">
+                    <el-table
+                        class="m-table"
+                        v-if="filteredList.length"
+                        :data="filteredList"
+                        show-header
+                        v-loading="loading"
+                    >
+                        <el-table-column prop="type" label="类型" width="140">
+                            <template slot-scope="scope">{{ keycodeOptions.types[scope.row.type] || "其他" }}</template>
+                        </el-table-column>
+                        <el-table-column prop="subtype" label="渠道" width="140">
+                            <template slot-scope="scope">{{
+                                keycodeOptions.subtypes[scope.row.subtype] || "其他"
+                            }}</template>
+                        </el-table-column>
+                        <el-table-column label="面额" width="120">
+                            <template slot-scope="scope">{{ scope.row.count }}</template>
+                        </el-table-column>
+                        <el-table-column label="卡密" min-width="330">
+                            <template slot-scope="scope">
+                                <div class="u-card">
+                                    <div class="u-count">
+                                        <div class="u-line">
+                                            <span>卡号：{{ scope.row.key || "****************" }}</span>
+                                            <el-button
+                                                class="u-btn"
+                                                v-if="scope.row.key"
+                                                type="txt"
+                                                size="mini"
+                                                icon="el-icon-document-copy"
+                                                v-clipboard:copy="'' + scope.row.key"
+                                                v-clipboard:success="onCopy"
+                                                v-clipboard:error="onError"
+                                                >复制卡号</el-button
+                                            >
+                                        </div>
+                                        <div class="u-line">
+                                            <span>卡密：{{ scope.row.code || "****************" }} </span>
+                                            <el-button
+                                                v-if="!scope.row.code"
+                                                type="primary"
+                                                icon="el-icon-view"
+                                                @click="getKeycode(scope.$index, scope.row)"
+                                                size="mini"
+                                                plain
+                                                >点击查看</el-button
+                                            >
+                                            <el-button
+                                                class="u-btn"
+                                                v-if="scope.row.code"
+                                                type="txt"
+                                                size="mini"
+                                                icon="el-icon-document-copy"
+                                                v-clipboard:copy="'' + scope.row.code"
+                                                v-clipboard:success="onCopy"
+                                                v-clipboard:error="onError"
+                                                >复制卡密</el-button
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="过期时间" min-width="180">
+                            <template slot-scope="scope">
+                                <div class="u-time" v-if="scope.row.expire_at">
+                                    <span class="u-tag" :class="compareTime(scope.row.expire_at, 'tag')">{{
+                                        compareTime(scope.row.expire_at, "time")
+                                    }}</span
+                                    ><span>{{ scope.row.expire_at }}</span>
+                                </div>
+                                <span v-else>-</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="发放时间" min-width="180" prop="grant_at"></el-table-column>
+                        <el-table-column prop="remark" label="备注" min-width="200"> </el-table-column>
+                        <el-table-column prop="used_by_self" label="是否使用">
+                            <template slot-scope="scope">
+                                {{ scope.row.used_by_self ? "是" : "否" }}
+
+                                <el-button
+                                    v-show="!scope.row.used_by_self"
+                                    type="text"
+                                    size="mini"
+                                    @click="onKeyCodeUsedClick(scope.row)"
+                                    >（标记使用）</el-button
+                                >
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-alert
+                        v-else
+                        class="m-credit-null m-packet-null"
+                        title="没有找到任何记录"
+                        type="info"
+                        center
+                        show-icon
+                    ></el-alert>
+                    <el-pagination
+                        v-if="showPagination"
+                        @current-change="currentChange"
+                        class="m-credit-pages"
+                        background
+                        :page-size="per"
+                        :hide-on-single-page="true"
+                        :current-page.sync="page"
+                        layout="total, prev, pager, next, jumper"
+                        :total="total"
+                    ></el-pagination>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -376,7 +376,7 @@ export default {
             page: 1,
             total: 0,
 
-            tab: "keycode",
+            tab: "sn",
             list: [],
 
             keycodeOptions,

@@ -123,29 +123,6 @@
                     </div>
                 </el-col>
                 <el-col :span="6">
-                    <div class="u-cny">
-                        <el-tooltip
-                            class="item"
-                            effect="dark"
-                            content="余额与人民币(单位分)为1:1，只能通过充值或玩家赠送获取"
-                            placement="top"
-                        >
-                            <div class="u-credit-name"><i class="el-icon-wallet"></i> 金箔</div>
-                        </el-tooltip>
-                        <div class="u-credit-value">
-                            <b>{{ asset.cny }}</b>
-                        </div>
-                        <div class="u-credit-op">
-                            <!-- <a class="el-button el-button--primary el-button--mini" href="/vip/cny" target="_blank"
-                                >充值</a
-                            > -->
-                            <router-link class="el-button el-button--primary el-button--mini" to="/cny"
-                                >兑现</router-link
-                            >
-                        </div>
-                    </div>
-                </el-col>
-                <el-col :span="6">
                     <div class="u-dot">
                         <el-tooltip
                             class="item"
@@ -153,7 +130,7 @@
                             content="积分可用于兑换限量纪念品、激活码等，通过发布作品或参与站内活动获取"
                             placement="top"
                         >
-                            <div class="u-credit-name"><i class="el-icon-sugar"></i> 银铛</div>
+                            <div class="u-credit-name"><i class="el-icon-sugar"></i> 积分</div>
                         </el-tooltip>
                         <div class="u-credit-value">
                             <b>{{ asset.points }}</b>
@@ -201,6 +178,29 @@
                             >
                         </div>
                     </div> -->
+                </el-col>
+                <el-col :span="6">
+                    <div class="u-cny">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="余额与人民币(单位分)为1:1，只能通过充值或玩家赠送获取"
+                            placement="top"
+                        >
+                            <div class="u-credit-name"><i class="el-icon-wallet"></i> 金箔</div>
+                        </el-tooltip>
+                        <div class="u-credit-value">
+                            <b>{{ asset.cny }}</b>
+                        </div>
+                        <div class="u-credit-op">
+                            <!-- <a class="el-button el-button--primary el-button--mini" href="/vip/cny" target="_blank"
+                                >充值</a
+                            > -->
+                            <router-link class="el-button el-button--primary el-button--mini" to="/cny"
+                                >记录</router-link
+                            >
+                        </div>
+                    </div>
                 </el-col>
             </el-row>
         </div>
