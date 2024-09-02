@@ -14,7 +14,7 @@
         </el-alert>
         <div class="m-keycode-tab">
             <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
-                <el-tab-pane label="激活码" name="sn">
+                <el-tab-pane label="激活码(直发)" name="sn">
                     <el-table
                         class="m-table"
                         v-if="filteredList.length"
@@ -109,7 +109,7 @@
                         :total="total"
                     ></el-pagination>
                 </el-tab-pane>
-                <el-tab-pane label="虚拟商品" name="virtual">
+                <el-tab-pane label="激活码(积分兑换|抽奖)" name="virtual">
                     <el-table
                         class="m-table"
                         v-if="virtualList.length"
