@@ -208,6 +208,9 @@ export default {
             let { source_id, source_type, type, subtype, redirect, user_id } = item;
 
             if (redirect) {
+                if (redirect == 'dashboard_card') {
+                    return `/dashboard/card`;
+                }
                 // 内部链接与外部链接
                 return redirect;
             } else {
