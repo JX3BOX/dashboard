@@ -199,6 +199,8 @@ export default {
         hasLink: function (item) {
             if (ignoreLinkTypes.includes(item.source_type)) {
                 return false;
+            } else if (item.redirect) {
+                return true;
             } else if (item.source_id && item.source_type) {
                 return true;
             }
@@ -208,11 +210,11 @@ export default {
             let { source_id, source_type, type, subtype, redirect, user_id } = item;
 
             if (redirect) {
-                if (redirect == 'dashboard_card') {
-                    return `/dashboard/card`;
+                if(redirect.startsWith('http') || redirect.startsWith('/')){
+                    return redirect;
+                }else{
+                    return redirect?.split('_')?.join('/');
                 }
-                // 内部链接与外部链接
-                return redirect;
             } else {
                 // 贺卡处理
                 if (source_type == "birthday") {
