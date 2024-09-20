@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@jx3box/jx3box-comment-ui": "^1.9.9",
-    "@jx3box/jx3box-common": "^8.3.3",
-    "@jx3box/jx3box-common-ui": "^8.9.16",
-    "@jx3box/jx3box-data": "^3.6.5",
+    "@jx3box/jx3box-common": "^8.3.5",
+    "@jx3box/jx3box-common-ui": "^8.9.24",
+    "@jx3box/jx3box-data": "^3.6.8",
     "@jx3box/jx3box-emotion": "^1.2.8",
     "@jx3box/jx3box-facedat": "^2.6.2",
     "@microsoft/signalr": "^8.0.0",
