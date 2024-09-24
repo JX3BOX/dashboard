@@ -17,8 +17,8 @@
                 <el-tab-pane label="激活码(直发)" name="sn">
                     <el-table
                         class="m-table"
-                        v-if="filteredList.length"
-                        :data="filteredList"
+                        v-if="codeList.length"
+                        :data="codeList"
                         show-header
                         cell-class-name="u-table-cell"
                         header-cell-class-name="u-header-cell"
@@ -240,8 +240,8 @@
                 <el-tab-pane label="一卡通" name="keycode">
                     <el-table
                         class="m-table"
-                        v-if="filteredList.length"
-                        :data="filteredList"
+                        v-if="keycodeList.length"
+                        :data="keycodeList"
                         show-header
                         v-loading="loading"
                     >
@@ -384,6 +384,9 @@ export default {
             showPagination: true,
             onlyNew: false,
             virtualList: [],
+
+            codeList: [],
+            keycodeList: [],
         };
     },
 
@@ -402,6 +405,17 @@ export default {
             return this.onlyNew ? this.list.filter((i) => !i.used_by_self) : this.list;
         },
     },
+    watch: {
+        onlyNew() {
+            if (this.tab == 'sn') {
+                this.page = 1;
+                this.loadSn();
+            } else if (this.tab == 'keycode') {
+                this.page = 1;
+                this.loadKeycode();
+            }
+        },
+    },
     methods: {
         // 获取一卡通列表
         loadKeycode() {
@@ -414,10 +428,14 @@ export default {
                 },
             });
             this.showPagination = false;
-            getKeycodeList(this.params)
+            const params = {
+                ...this.params,
+                used_by_self: this.onlyNew ? 0 : undefined,
+            }
+            getKeycodeList(params)
                 .then((res) => {
                     let list = res.data.data.list || [];
-                    this.list = list.map((item) => {
+                    this.keycodeList = list.map((item) => {
                         item.code = "";
                         return item;
                     });
@@ -439,10 +457,14 @@ export default {
                 },
             });
             this.showPagination = false;
-            getSnList(this.params)
+            const params = {
+                ...this.params,
+                used_by_self: this.onlyNew ? 0 : undefined,
+            }
+            getSnList(params)
                 .then((res) => {
                     let list = res.data.data.list || [];
-                    this.list = list.map((item) => {
+                    this.codeList = list.map((item) => {
                         item.sn = "";
                         item.code = "";
                         return item;
