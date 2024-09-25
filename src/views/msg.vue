@@ -210,10 +210,10 @@ export default {
             let { source_id, source_type, type, subtype, redirect, user_id } = item;
 
             if (redirect) {
-                if(redirect.startsWith('http') || redirect.startsWith('/')){
+                if (redirect.startsWith("http") || redirect.startsWith("/")) {
                     return redirect;
-                }else{
-                    return redirect?.split('_')?.join('/');
+                } else {
+                    return "/" + redirect?.split("_")?.join("/");
                 }
             } else {
                 // 贺卡处理
