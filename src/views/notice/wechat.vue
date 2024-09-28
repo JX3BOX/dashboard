@@ -21,7 +21,7 @@
         <el-dialog
             title="绑定微信公众号"
             :visible.sync="visible"
-            width="30%"
+            :width="isPhone ? '95%' : '400px'"
             custom-class="m-notice-wechat__dialog"
             :before-close="handleClose"
         >

@@ -6,13 +6,13 @@
                 phone ? "已绑定" : "未绑定"
             }}</el-tag>
         </div>
-        <el-button type="primary" :circle="isPhone" class="u-button" @click="visible = true" icon="el-icon-edit">{{
+        <el-button type="primary" :circle="isPhone" class="u-bind-button" @click="visible = true" icon="el-icon-edit">{{
             phone ? "修改手机" : "绑定手机"
         }}</el-button>
         <el-dialog
             title="绑定手机"
             :visible.sync="visible"
-            width="30%"
+            :width="isPhone ? '95%' : '400px'"
             custom-class="m-notice-phone__dialog"
             :before-close="handleClose"
         >

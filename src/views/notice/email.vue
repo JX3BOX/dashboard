@@ -20,8 +20,7 @@
 
 <script>
 import { validator } from "sterilizer";
-import User from "@jx3box/jx3box-common/js/user";
-import { sendVerifyEmail, sendBindEmail, checkEmailAvailable, getProfile } from "@/service/profile";
+import { sendBindEmail, checkEmailAvailable, getProfile } from "@/service/profile";
 import EmailDialog from "./email_dialog.vue";
 export default {
     name: "email",
