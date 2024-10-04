@@ -13,7 +13,7 @@ function setDecoration(data) {
 }
 
 function getDecorationJson() {
-    let url = __imgPath + `decoration/index.json?${Date.now()}}`;
+    let url = __imgPath + `decoration/index.json?${Date.now()}`;
     return axios.get(url);
 }
 
@@ -42,9 +42,20 @@ function getUserHonors(uid) {
         });
 }
 function setHonor(honor_id) {
-    return $cms().put(`/api/cms/user/honor/use/${honor_id}`)
+    return $cms().put(`/api/cms/user/honor/use/${honor_id}`);
 }
 function cancelHonor() {
-    return $cms().delete(`/api/cms/user/honor/use`)
+    return $cms().delete(`/api/cms/user/honor/use`);
 }
-export { getDecoration, setDecoration, getDecorationJson, getEmotion, receive, updateAvatarFrame, getHonor, getUserHonors, setHonor, cancelHonor };
+export {
+    getDecoration,
+    setDecoration,
+    getDecorationJson,
+    getEmotion,
+    receive,
+    updateAvatarFrame,
+    getHonor,
+    getUserHonors,
+    setHonor,
+    cancelHonor,
+};
