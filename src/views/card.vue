@@ -5,13 +5,13 @@
                 <i class="el-icon-bank-card"></i>
                 我的卡密
             </span>
-            <span class="u-only" v-if="tab !== 'virtual'">
+            <span class="u-only">
                 <el-switch v-model="onlyNew" active-text="仅查看未使用"></el-switch>
             </span>
         </h2>
         <el-alert class="m-boxcoin-tip" title="请务必妥善保管，并注意过期时间。" type="warning" show-icon>
             <!-- <a href="https://charge.xoyo.com/pay?item=jx3&way=kcard" target="_blank">金山一卡通充值页面</a> -->
-            <pre v-html="bread"></pre>
+            <div class="m-boxcoin-tip__content" v-html="bread"></div>
         </el-alert>
         <div class="m-keycode-tab">
             <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
@@ -29,18 +29,18 @@
                         header-cell-class-name="u-header-cell"
                         v-loading="loading"
                     >
-                        <el-table-column prop="type" label="类型">
+                        <el-table-column prop="type" label="类型" width="120px">
                             <template slot-scope="scope">{{
                                 snOptions.types[scope.row.type] || scope.row.type || "其他"
                             }}</template>
                         </el-table-column>
-                        <el-table-column prop="subtype" label="渠道">
+                        <el-table-column prop="subtype" label="渠道" width="100px">
                             <template slot-scope="scope">{{
                                 snOptions.subtypes[scope.row.subtype] || "其他"
                             }}</template>
                         </el-table-column>
-                        <el-table-column prop="describe" label="描述"> </el-table-column>
-                        <el-table-column label="激活码" min-width="300">
+                        <el-table-column prop="describe" label="描述" width="160px"></el-table-column>
+                        <el-table-column label="激活码" width="280">
                             <template slot-scope="scope">
                                 <div class="u-code">
                                     <span class="u-txt">{{ scope.row.code || "****************" }}</span>
@@ -67,7 +67,7 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column label="过期时间" min-width="180">
+                        <el-table-column label="过期时间" width="200">
                             <template slot-scope="scope">
                                 <div class="u-time" v-if="scope.row.expire_at">
                                     <span class="u-tag" :class="compareTime(scope.row.expire_at, 'tag')">{{
@@ -78,8 +78,8 @@
                                 <span v-else>-</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="发放时间" min-width="180" prop="grant_at"></el-table-column>
-                        <el-table-column prop="remark" label="备注" min-width="300"> </el-table-column>
+                        <el-table-column label="发放时间" width="200" prop="grant_at"></el-table-column>
+                        <el-table-column prop="remark" label="备注" width="200"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
                                 <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
@@ -95,7 +95,7 @@
                         </el-table-column>
                         <el-table-column prop="activate_url" label="激活地址">
                             <template #default="scope">
-                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '跳转激活' || ''  }}</a>
+                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '前往激活' || ''  }}</a>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -131,10 +131,10 @@
                         show-header
                         v-loading="loading"
                     >
-                        <el-table-column label="名称">
+                        <el-table-column label="名称" width="120px">
                             <template slot-scope="scope">{{ scope.row.goods.title || "-" }}</template>
                         </el-table-column>
-                        <el-table-column label="卡密" min-width="330">
+                        <el-table-column label="卡密" width="330">
                             <template slot-scope="scope">
                                 <div class="u-card">
                                     <div class="u-count">
@@ -201,7 +201,7 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column label="过期时间" min-width="180">
+                        <el-table-column label="过期时间" width="200">
                             <template slot-scope="scope">
                                 <div class="u-time" v-if="scope.row.goods.expire_at">
                                     <span class="u-tag" :class="compareTime(scope.row.goods.expire_at, 'tag')">{{
@@ -264,10 +264,10 @@
                         show-header
                         v-loading="loading"
                     >
-                        <el-table-column prop="type" label="类型" width="140">
+                        <el-table-column prop="type" label="类型" width="120">
                             <template slot-scope="scope">{{ keycodeOptions.types[scope.row.type] || "其他" }}</template>
                         </el-table-column>
-                        <el-table-column prop="subtype" label="渠道" width="140">
+                        <el-table-column prop="subtype" label="渠道" width="120">
                             <template slot-scope="scope">{{
                                 keycodeOptions.subtypes[scope.row.subtype] || "其他"
                             }}</template>
@@ -275,7 +275,7 @@
                         <el-table-column label="面额" width="120">
                             <template slot-scope="scope">{{ scope.row.count }}</template>
                         </el-table-column>
-                        <el-table-column label="卡密" min-width="330">
+                        <el-table-column label="卡密" width="360">
                             <template slot-scope="scope">
                                 <div class="u-card">
                                     <div class="u-count">
@@ -320,7 +320,7 @@
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column label="过期时间" min-width="180">
+                        <el-table-column label="过期时间" width="200">
                             <template slot-scope="scope">
                                 <div class="u-time" v-if="scope.row.expire_at">
                                     <span class="u-tag" :class="compareTime(scope.row.expire_at, 'tag')">{{
@@ -331,8 +331,8 @@
                                 <span v-else>-</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="发放时间" min-width="180" prop="grant_at"></el-table-column>
-                        <el-table-column prop="remark" label="备注" min-width="200"> </el-table-column>
+                        <el-table-column label="发放时间" width="200" prop="grant_at"></el-table-column>
+                        <el-table-column prop="remark" label="备注" width="200"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
                                 <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
