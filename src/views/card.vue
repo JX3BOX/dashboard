@@ -10,11 +10,16 @@
             </span>
         </h2>
         <el-alert class="m-boxcoin-tip" title="请务必妥善保管，并注意过期时间。" type="warning" show-icon>
-            <a href="https://charge.xoyo.com/pay?item=jx3&way=kcard" target="_blank">金山一卡通充值页面</a>
+            <!-- <a href="https://charge.xoyo.com/pay?item=jx3&way=kcard" target="_blank">金山一卡通充值页面</a> -->
+            <pre v-html="bread"></pre>
         </el-alert>
         <div class="m-keycode-tab">
             <el-tabs type="border-card" v-model="tab" @tab-click="tabClick">
                 <el-tab-pane label="激活码(直发)" name="sn">
+                    <template #label>
+                        <span class="u-tab--title">激活码</span>
+                        (<span class="u-tab--desc">直发</span>)
+                    </template>
                     <el-table
                         class="m-table"
                         v-if="codeList.length"
@@ -77,7 +82,7 @@
                         <el-table-column prop="remark" label="备注" min-width="300"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
-                                {{ scope.row.used_by_self ? "是" : "否" }}
+                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
 
                                 <el-button
                                     v-show="!scope.row.used_by_self"
@@ -86,6 +91,11 @@
                                     @click="onSnUsedClick(scope.row)"
                                     >（标记使用）</el-button
                                 >
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="activate_url" label="激活地址">
+                            <template #default="scope">
+                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '跳转激活' || ''  }}</a>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -110,6 +120,10 @@
                     ></el-pagination>
                 </el-tab-pane>
                 <el-tab-pane label="激活码(积分兑换|抽奖)" name="virtual">
+                    <template #label>
+                        <span class="u-tab--title">激活码</span>
+                        (<span class="u-tab--desc">积分兑换|抽奖</span>)
+                    </template>
                     <el-table
                         class="m-table"
                         v-if="virtualList.length"
@@ -204,18 +218,23 @@
                             </template>
                         </el-table-column>
                         <!-- <el-table-column prop="used_by_self" label="是否使用">
-                        <template slot-scope="scope">
-                            {{ scope.row.used_by_self ? "是" : "否" }}
+                            <template slot-scope="scope">
+                                {{ scope.row.used_by_self ? "是" : "否" }}
 
-                            <el-button
-                                v-show="!scope.row.used_by_self"
-                                type="text"
-                                size="mini"
-                                @click="onKeyCodeUsedClick(scope.row)"
-                                >（标记使用）</el-button
-                            >
-                        </template>
-                    </el-table-column> -->
+                                <el-button
+                                    v-show="!scope.row.used_by_self"
+                                    type="text"
+                                    size="mini"
+                                    @click="onKeyCodeUsedClick(scope.row)"
+                                    >（标记使用）</el-button
+                                >
+                            </template>
+                        </el-table-column> -->
+                        <el-table-column prop="activate_url" label="激活地址">
+                            <template #default="scope">
+                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '跳转激活' || '-'  }}</a>
+                            </template>
+                        </el-table-column>
                     </el-table>
                     <el-alert
                         v-else
@@ -316,7 +335,7 @@
                         <el-table-column prop="remark" label="备注" min-width="200"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
-                                {{ scope.row.used_by_self ? "是" : "否" }}
+                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
 
                                 <el-button
                                     v-show="!scope.row.used_by_self"
@@ -365,6 +384,7 @@ import {
 import { getVirtual } from "@/service/goods";
 import keycodeOptions from "@/assets/data/card_keycode.json";
 import snOptions from "@/assets/data/card_sn.json";
+import { getBreadcrumb } from "@jx3box/jx3box-common/js/api_misc"
 
 // import _ from "lodash";
 export default {
@@ -387,6 +407,8 @@ export default {
 
             codeList: [],
             keycodeList: [],
+
+            bread: ""
         };
     },
 
@@ -622,6 +644,10 @@ export default {
         if (this.$route.query.tab) this.tab = this.$route.query.tab;
         this.page = Number(this.$route.query.page || 1);
         this.loadName && this[this.loadName]();
+
+        getBreadcrumb("dashboard_card_tips").then((res) => {
+            this.bread = res;
+        });
     },
 };
 </script>
