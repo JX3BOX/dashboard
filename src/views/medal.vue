@@ -97,17 +97,19 @@ export default {
 .m-dashboard-medal {
     .u-list {
         .flex;
-        gap: 10px;
-        justify-content: center;
+        gap: 20px;
+        // justify-content: center;
         flex-wrap: wrap;
-        padding: 20px 60px;
+        // max-width: 800px;
+        margin:0 auto;
+        padding:20px;
     }
     .u-pagination {
         margin-top: 20px;
         text-align: center;
     }
     .u-img {
-        .size(32px);
+        .size(20px);
         border: none;
     }
 
