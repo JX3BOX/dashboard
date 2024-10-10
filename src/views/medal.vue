@@ -100,14 +100,14 @@ export default {
         gap: 10px;
         justify-content: center;
         flex-wrap: wrap;
-        padding: 20px;
+        padding: 20px 60px;
     }
     .u-pagination {
         margin-top: 20px;
         text-align: center;
     }
     .u-img {
-        .size(40px);
+        .size(32px);
         border: none;
     }
 
