@@ -47,6 +47,16 @@ function setHonor(honor_id) {
 function cancelHonor() {
     return $cms().delete(`/api/cms/user/honor/use`);
 }
+
+// 获取用户勋章
+function getUserMedals(uid) {
+    return $next({ mute: true }).get("/api/next2/user/" + uid + "/medals");
+}
+
+// 获取所有勋章
+function getMedals(params) {
+    return $cms().get("/api/cms/config/medal", {params});
+}
 export {
     getDecoration,
     setDecoration,
@@ -58,4 +68,6 @@ export {
     getUserHonors,
     setHonor,
     cancelHonor,
+    getUserMedals,
+    getMedals,
 };

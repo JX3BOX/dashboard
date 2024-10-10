@@ -3,6 +3,7 @@
         { "name": "frame", "icon": "el-icon-camera", "label": "头像框" },
         { "name": "theme", "icon": "el-icon-orange", "label": "主题风格" },
         { "name": "honor", "icon": "el-icon-collection-tag", "label": "称号" },
+        { "name": "medal", "icon": "el-icon-medal", "label": "勋章" },
         { "name": "emotion", "icon": "el-icon-picture-outline-round", "label": "表情包" }
     ],
     "profileTab": [
