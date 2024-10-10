@@ -24,6 +24,7 @@ const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
 const certification = () => import("../views/certification.vue");
+const medal = () => import("../views/medal.vue");
 
 const orders = () => import("../views/orders.vue");
 const packet = () => import("../views/packet.vue");
@@ -72,6 +73,7 @@ const routes = [
     { name: "theme", path: "/theme", component: theme },
     { name: "emotion", path: "/emotion", component: emotion },
     { name: "honor", path: "/honor", component: honor },
+    { name: "medal", path: "/medal", component: medal },
     {
         name: "treasure",
         path: "/treasure",

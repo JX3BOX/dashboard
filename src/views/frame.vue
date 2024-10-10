@@ -66,8 +66,7 @@ import User from "@jx3box/jx3box-common/js/user";
 import { showAvatar } from "@jx3box/jx3box-common/js/utils";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import { getFrames, getUserOverview } from "@/service/profile";
-import { updateAvatarFrame, getDecoration, receive, setDecoration } from "@/service/decoration"; 
-// import frames from "@jx3box/jx3box-common/data/user_avatar_frame.json";
+import { updateAvatarFrame, getDecoration, receive, setDecoration } from "@/service/decoration";
 export default {
     name: "frame",
     props: [],

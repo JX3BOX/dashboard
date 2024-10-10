@@ -251,6 +251,7 @@ export default {
                     this.isSelect = isCustomize;
                 }
                 this.honorList.unshift(isCustomize);
+                this.honorList = this.sortData(this.honorList);
                 this.list = cloneDeep(this.honorList);
                 this.isSelectBak = cloneDeep(this.isSelect);
             });
@@ -266,6 +267,13 @@ export default {
         reset() {
             this.$set(this, "honorList", cloneDeep(this.list));
             this.$set(this, "isSelect", cloneDeep(this.isSelectBak));
+        },
+        sortData(arr) {
+            // 已有的称号
+            const isHave = arr.filter((e) => e.isHave).sort((a, b) => a.honor_id - b.honor_id);
+            // 未有的称号
+            const noHave = arr.filter((e) => !e.isHave).sort((a, b) => a.honor_id - b.honor_id);
+            return isHave.concat(noHave);
         },
         showLevelColor: function (level) {
             return __userLevelColor[level];

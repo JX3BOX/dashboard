@@ -40,8 +40,6 @@
                 </div>
             </div>
             <div class="m-theme-right">
-                <!-- <div class="u-tips"><i class="el-icon-warning-outline"></i> 仅限同主题配置，该主题下部位可分别激活</div> -->
-                <!-- <div class="u-no-theme" :class="decorationActivate==null?'select':''" @click="noSet">不设置主题</div> -->
                 <!-- 主题渲染列表 -->
                 <div class="u-theme">
                     <div class="u-decoration-list" v-for="(item, i) in decoration" :key="i + item.val">
@@ -61,7 +59,6 @@
                                     :class="item2.isHave ? (item2.using ? 'select' : '') : 'noHave'"
                                     @click="setStatus(i, i2, item2)"
                                 >
-                                    <!-- <img :src="item2 | showDecoration"/> -->
                                     <el-image :src="item2 | showDecoration" fit="contain" />
                                 </div>
                                 <div class="u-decoration-name">{{ item2.text }}</div>
@@ -85,6 +82,33 @@ import User from "@jx3box/jx3box-common/js/user";
 import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
 import { cloneDeep, flatten } from "lodash";
 import { themeTab } from "@/assets/data/tabs.json";
+
+const sortBy = function (sort) {
+    return (x, y) => {
+        return x[sort] - y[sort];
+    };
+};
+
+//去重并判断是否拥有
+const uniqueFromObject = function (arr, uniId, key, options, noKey = []) {
+    let res = new Map(),
+        newArr = [];
+    let optionsClone = cloneDeep(options);
+    let filterArr = arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+    optionsClone.forEach((item, i) => {
+        item.val = key;
+        if (noKey.indexOf(key) === -1) {
+            let find = filterArr.find((e) => e.type == item.type);
+            if (find) {
+                item.isHave = 1;
+                item.using = find.using;
+            }
+        }
+        newArr.push(item);
+    });
+    return newArr;
+};
+
 export default {
     name: "theme",
     props: [],
@@ -100,11 +124,9 @@ export default {
                 { name: "评论皮肤", type: "comment", statue: 1 },
                 //{ name: "社区称号", type: "", statue: 0 },
             ],
-            // bg: "url('https://cdn.jx3box.com/static/dashboard/img/no.5fe91973.svg')", //预览合成背景
             previewUrl: "",
             decoration: [],
             decorationJson: [], //远程json
-            // decorationActivate: null,
             originalActivateName: null,
             back: {},
         };
@@ -113,10 +135,8 @@ export default {
     methods: {
         reset() {
             let back = cloneDeep(this.back);
-            // let back=this.back
             this.previewUrl = "";
             this.decoration = back.decoration;
-            // this.decorationActivate = back.decorationActivate;
             this.originalActivateName = back.originalActivateName;
         },
         loadDecoration() {
@@ -127,8 +147,8 @@ export default {
                     let typeArr = ["atcard", "homebg", "sidebar", "calendar", "comment"];
                     let arr = res.data.data.filter((item) => item.type != "" && typeArr.indexOf(item.type) != -1);
                     this.decoration = this.formattingData(arr, "val");
+                    this.decoration = this.sortData(this.decoration, this.decorationJson);
                     this.back.decoration = cloneDeep(this.decoration);
-                    // this.back.decorationActivate = cloneDeep(this.decorationActivate);
                     this.back.originalActivateName = cloneDeep(this.originalActivateName);
                 });
             });
@@ -159,30 +179,7 @@ export default {
                     }
                 }
             });
-            let sortBy = function (sort) {
-                return (x, y) => {
-                    return x[sort] - y[sort];
-                };
-            };
-            //去重并判断是否拥有
-            let uniqueFromObject = function (arr, uniId, key) {
-                let res = new Map(),
-                    newArr = [];
-                let optionsClone = cloneDeep(options);
-                let filterArr = arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1));
-                optionsClone.forEach((item, i) => {
-                    item.val = key;
-                    if (noKey.indexOf(key) === -1) {
-                        let find = filterArr.find((e) => e.type == item.type);
-                        if (find) {
-                            item.isHave = 1;
-                            item.using = find.using;
-                        }
-                    }
-                    newArr.push(item);
-                });
-                return newArr;
-            };
+
             let decorationJson = cloneDeep(this.decorationJson);
             Object.keys(decorationJson).forEach((key, i) => {
                 if (!map[key] && decorationJson[key].status == 1) {
@@ -197,26 +194,23 @@ export default {
                 }
             });
             Object.keys(map).forEach((key, i) => {
-                // if (key == this.originalActivateName) {
-                //     this.decorationActivate = i;
-                // }
                 res.push({
                     [group_key]: key,
                     name: decorationJson[key]?.desc,
-                    list: uniqueFromObject(map[key], "type", key).sort(sortBy("sort")),
+                    list: uniqueFromObject(map[key], "type", key, options, noKey).sort(sortBy("sort")),
                 });
             });
             return res;
         },
-        // noSet() {
-        //     let decorationActivate = this.decorationActivate;
-        //     let res = this.decoration[decorationActivate] ? this.decoration[decorationActivate].list : [];
-        //     for (let k = 0; k < res.length; k++) {
-        //         res[k].using = 0;
-        //     }
-        //     this.decorationActivate = null;
-        //     this.previewUrl = "";
-        // },
+        // 数据排序，新的装扮在前
+        sortData(arr, source = {}) {
+            // 根据source的顺序排序
+            let res = [];
+            const userHad = arr.filter((item) => item.list.some((e) => e.isHave));
+            const userNo = arr.filter((item) => !item.list.some((e) => e.isHave));
+
+            return userHad.reverse().concat(userNo.reverse());
+        },
         //设置选中/取消
         setStatus(i, i2, item) {
             if (!item.isHave) {
@@ -224,7 +218,7 @@ export default {
             }
             let type = item.type;
             let val = item.val;
-            // 消除激活的痛部位
+            // 消除激活的同部位
             this.decoration.forEach(({ list }, index) => {
                 list.forEach((item, i) => {
                     if (item.val != val && item.type == type && item.using == 1) {
@@ -236,7 +230,6 @@ export default {
             item.using == 1 ? (item.using = 0) : (item.using = 1);
         },
         isStatus(item) {
-            // let decorationActivate = this.decorationActivate;
             // 循环所有主题的卡片，判断是否有已激活的
             let type = item.type;
             var isSelect = false;
