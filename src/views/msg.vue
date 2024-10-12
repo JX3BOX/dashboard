@@ -102,7 +102,7 @@ import uc from "@/components/uc.vue";
 import CommentDetail from "@/components/msg/CommentDetail.vue";
 
 const redirectMap = {
-    team_member_list: "/team/my/org?tab=manage-member",
+    team_member_list: "/team/my/org/{id}?tab=manage-member",
 }
 
 export default {
@@ -219,7 +219,8 @@ export default {
                 } else {
                     // 特殊处理
                     if (redirectMap[redirect]) {
-                        return redirectMap[redirect];
+                        const url = redirectMap[redirect];
+                        return url.replace("{id}", source_id);
                     }
                     return "/" + redirect?.split("_")?.join("/");
                 }
