@@ -101,6 +101,10 @@ const ignoreLinkTypes = ["namespace"];
 import uc from "@/components/uc.vue";
 import CommentDetail from "@/components/msg/CommentDetail.vue";
 
+const redirectMap = {
+    team_member_list: "/team/my/org?tab=manage-member",
+}
+
 export default {
     name: "msg",
     components: {
@@ -213,6 +217,10 @@ export default {
                 if (redirect.startsWith("http") || redirect.startsWith("/")) {
                     return redirect;
                 } else {
+                    // 特殊处理
+                    if (redirectMap[redirect]) {
+                        return redirectMap[redirect];
+                    }
                     return "/" + redirect?.split("_")?.join("/");
                 }
             } else {
