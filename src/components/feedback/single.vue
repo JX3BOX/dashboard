@@ -184,7 +184,7 @@
             client="std"
             :userId="data.user_id"
             :article-id="~~id"
-            category="community"
+            category="feedback"
             @updateRecord="loadRecord"
         ></Homework>
     </div>
