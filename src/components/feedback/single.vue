@@ -84,6 +84,44 @@
                     </div>
                 </div>
             </div>
+            <div class="m-feedback-thx">
+                <el-divider content-position="left"
+                    ><i class="el-icon-coin"></i> 反馈回馈
+                    <el-button v-if="isAdmin" size="mini" class="u-thx-trigger" type="success" @click="onThx"
+                        >品鉴</el-button
+                    ></el-divider
+                >
+                <div class="u-thx-table">
+                    <el-table size="mini" stripe border :data="thxData">
+                        <el-table-column label="参与打赏" prop="ext_operate_user_info">
+                            <template #default="{ row }">
+                                <div class="m-user">
+                                    <img class="u-gift" svg-inline :src="giftUrl" />
+                                    <a class="u-item u-user" :href="authorLink(row.ext_operate_user_info.id)" target="_blank">
+                                        <img class="u-user-avatar" :src="showAvatar(row.ext_operate_user_info.avatar)" />
+                                        <span class="u-user-name">{{ row.ext_operate_user_info.display_name }}</span>
+                                    </a>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="盒币" prop="count">
+                            <template #default="{row}">
+                                <span class="u-count">+{{row.count}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="寄语" prop="remark"></el-table-column>
+                        <el-table-column label="时间" prop="created_at">
+                            <template #default="{row, $index}">
+                                <time :datetime="row.created_at">{{ row.created_at }}</time>
+
+                                <span class="u-delete" v-if="isSuperAdmin" @click="recovery(row, $index)">
+                                    <i class="el-icon-delete"></i>撤销
+                                </span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
             <div class="m-reply" v-if="done">
                 <el-divider content-position="left"><i class="el-icon-chat-line-square"></i> 回复处理</el-divider>
                 <Comment :id="id" category="feedback" order="desc" />
@@ -137,6 +175,18 @@
                 <el-button size="small" type="primary" @click="confirm">确 定</el-button>
             </span>
         </el-dialog>
+
+        <Homework
+            v-model="showThx"
+            title="反馈回馈"
+            :postType="postType"
+            :postId="id"
+            client="std"
+            :userId="data.user_id"
+            :article-id="~~id"
+            category="community"
+            @updateRecord="loadRecord"
+        ></Homework>
     </div>
 </template>
 
@@ -148,10 +198,16 @@ import { types, subtypes, statusMap, statusColors } from "@/assets/data/feedback
 import { showAvatar, authorLink } from "@jx3box/jx3box-common/js/utils";
 import moment from "moment";
 import Comment from "@jx3box/jx3box-comment-ui/src/Comment.vue";
+// 打赏相关
+import { getPostBoxcoinRecords, recoveryBoxcoin } from "@/service/thx.js";
+import Homework from "@jx3box/jx3box-common-ui/src/interact/Homework.vue";
+import User from "@jx3box/jx3box-common/js/user";
+import AdminGift from "@jx3box/jx3box-common-ui/assets/img/widget/admin_gift.svg";
 export default {
     name: "FeedbackSingle",
     components: {
         Comment,
+        Homework,
     },
     data() {
         return {
@@ -174,6 +230,12 @@ export default {
             },
             rules: {},
             teammates: [],
+
+            // 打赏相关
+            thxData: [],
+            showThx: false,
+            postType: "feedback",
+            giftUrl: AdminGift,
         };
     },
     computed: {
@@ -182,6 +244,12 @@ export default {
         },
         isTeammate() {
             return this.$store.state.isTeammate;
+        },
+        isAdmin() {
+            return User.isAdmin();
+        },
+        isSuperAdmin() {
+            return User.isSuperAdmin();
         },
     },
     watch: {
@@ -194,6 +262,8 @@ export default {
     },
     mounted() {
         this.loadTeammates();
+
+        this.loadRecord();
     },
     methods: {
         async getData() {
@@ -265,6 +335,32 @@ export default {
         },
         sanitizedHTML(html) {
             return DOMPurify.sanitize(html);
+        },
+
+        // 打赏相关
+        onThx() {
+            this.showThx = true;
+        },
+        loadRecord() {
+            getPostBoxcoinRecords(this.postType, this.id, { pageSize: 12, pageIndex: 1 }).then((res) => {
+                this.thxData = res.data.data?.list || [];
+            });
+        },
+        recovery: function (item, i) {
+            this.$alert("是否确定撤销该评分？", "确认", {
+                confirmButtonText: "确定",
+                callback: (action) => {
+                    if (action == "confirm") {
+                        recoveryBoxcoin(item.id).then(() => {
+                            this.$message({
+                                message: "撤销成功",
+                                type: "success",
+                            });
+                            this.list.splice(i, 1);
+                        });
+                    }
+                },
+            });
         },
     },
 };
