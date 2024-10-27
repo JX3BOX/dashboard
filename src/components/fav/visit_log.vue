@@ -85,18 +85,19 @@ export default {
         getTypeLabel,
         getLink,
         del(id){
-            this.$alert("确定要删除该历史记录吗？", "确认信息", {
-                confirmButtonText: "确定",
-                callback: (action) => {
-                    deleteVisitHistory(id).then(() => {
-                        this.$message({
-                            type: "success",
-                            message: `操作成功`,
-                        });
-                        this.loadData()
+            this.$confirm('确定要删除该历史记录吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                deleteVisitHistory(id).then(() => {
+                    this.$message({
+                        type: "success",
+                        message: `操作成功`,
                     });
-                },
-            });
+                    this.loadData()
+                });
+            }).catch(() => {});
         },
         loadData(){
             this.loading = true;

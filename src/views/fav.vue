@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { getMyFavs, delFav } from "../service/fav";
+import { getMyFavs, delFav, deleteVisitHistory } from "../service/fav";
 import { getLink, getTypeLabel } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/dateFormat";
 import { __postType, __wikiType, __appType, __gameType } from "@jx3box/jx3box-common/data/jx3box.json";
@@ -189,17 +189,19 @@ export default {
             this.search = val;
         },
         del: function (id) {
-            this.$alert("确定要取消收藏吗？", "确认信息", {
-                confirmButtonText: "确定",
-                callback: (action) => {
-                    delFav(id).then(() => {
-                        this.$message({
-                            type: "success",
-                            message: `取消收藏成功`,
-                        });
-                        location.reload();
+            this.$confirm('确定要取消收藏吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                delFav(id).then(() => {
+                    this.$message({
+                        type: "success",
+                        message: `取消收藏成功`,
                     });
-                },
+                    this.loadData();
+                });
+            }).catch(() => {
             });
         },
         getLink,
