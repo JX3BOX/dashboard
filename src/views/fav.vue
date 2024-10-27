@@ -70,7 +70,7 @@
                 敬请期待。。。
             </el-tab-pane>
             <el-tab-pane label="历史记录" name="log">
-                <span slot="label"><i class="el-icon-film"></i> 历史记录 </span>
+                <span slot="label"><i class="el-icon-time"></i> 历史记录 </span>
                 <visit-log
                     v-if="favChangeCount === 'log'"
                    :type="searchType"
@@ -79,7 +79,7 @@
                 />
             </el-tab-pane>
             <el-tab-pane label="稍后再看" name="watch_later">
-                <span slot="label"><i class="el-icon-date"></i> 稍后再看</span>
+                <span slot="label"><i class="el-icon-news"></i> 稍后再看</span>
                 <wait-list
                     v-if="favChangeCount === 'watch_later'"
                     :type="searchType"
