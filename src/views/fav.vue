@@ -3,7 +3,7 @@
         <div class="m-dashboard-work-header">
             <h2 class="u-title"><i class="el-icon-star-off"></i> 收藏订阅</h2>
             <el-select v-model="searchType" placeholder="类型过滤" class="u-filter" size="small" @change="handleChange">
-                <el-option label="全部" value=""> </el-option>
+                <el-option label="全部" value="all"> </el-option>
                 <el-option-group v-for="group in options" :key="group.label" :label="group.label">
                     <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
@@ -13,7 +13,7 @@
         <el-tabs v-model="favChangeCount" @tab-click="loadData">
             <el-tab-pane label="收藏" name="fav">
                 <span slot="label"><i class="el-icon-star-off"></i> 收藏</span>
-                <div class="m-dashboard-box" v-loading="loading">
+                <div v-if="favChangeCount === 'fav'" class="m-dashboard-box" v-loading="loading">
                     <div class="m-dashboard-msg-header">
                         <el-input
                             class="m-dashboard-work-search"
@@ -69,6 +69,24 @@
                 <span slot="label"><i class="u-tab-icon el-icon-news"></i> 订阅</span>
                 敬请期待。。。
             </el-tab-pane>
+            <el-tab-pane label="历史记录" name="log">
+                <span slot="label"><i class="el-icon-film"></i> 历史记录 </span>
+                <visit-log
+                    v-if="favChangeCount === 'log'"
+                   :type="searchType"
+                   :search="search"
+                   @change-search="changeSearch"
+                />
+            </el-tab-pane>
+            <el-tab-pane label="稍后再看" name="watch_later">
+                <span slot="label"><i class="el-icon-date"></i> 稍后再看</span>
+                <wait-list
+                    v-if="favChangeCount === 'watch_later'"
+                    :type="searchType"
+                    :search="search"
+                    @change-search="changeSearch"
+                />
+          </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -78,8 +96,11 @@ import { getMyFavs, delFav } from "../service/fav";
 import { getLink, getTypeLabel } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../utils/dateFormat";
 import { __postType, __wikiType, __appType, __gameType } from "@jx3box/jx3box-common/data/jx3box.json";
+import VisitLog from "@/components/fav/visit_log.vue";
+import WaitList from "@/components/fav/wait_list.vue";
 export default {
     name: "fav",
+    components: { WaitList, VisitLog },
     props: [],
     data: function () {
         return {
@@ -90,7 +111,7 @@ export default {
             per: 10,
             showPagination: true,
             search: "",
-            searchType: "",
+            searchType: "all",
             options: [
                 {
                     label: "文章作品",
@@ -133,13 +154,14 @@ export default {
         },
     },
     methods: {
-        loadData() {
+        loadFav(){
             this.loading = true;
             this.showPagination = false;
             this.$router.push({
                 name: "fav",
                 query: {
                     page: this.page,
+                    tabs: this.favChangeCount,
                 },
             });
             const params = {
@@ -157,6 +179,14 @@ export default {
                     this.loading = false;
                     this.showPagination = true;
                 });
+        },
+        loadData() {
+            if (this.favChangeCount === 'fav'){
+                this.loadFav()
+            }
+        },
+        changeSearch(val){
+            this.search = val;
         },
         del: function (id) {
             this.$alert("确定要取消收藏吗？", "确认信息", {
@@ -182,7 +212,6 @@ export default {
             return dateFormat(new Date(val));
         },
         handleChange() {
-            this.page = 1;
             this.loadData();
         },
         currentChange: function (val) {
@@ -195,8 +224,18 @@ export default {
             if (!val) val = "all";
             this.$router.push({ name: "fav", params: { subtype: val } });
         },
+        favChangeCount(){
+            this.$router.push({
+                name: "fav",
+                query: {
+                    page: this.page,
+                    tabs: this.favChangeCount,
+                },
+            });
+        }
     },
     mounted: function () {
+        this.favChangeCount = this.$route.query.tabs || "fav";
         this.page = Number(this.$route.query.page || 1);
         this.subtype && (this.searchType = this.subtype);
         this.loadData();
@@ -204,6 +243,6 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style  lang="less">
 @import "../assets/css/fav.less";
 </style>

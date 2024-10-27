@@ -13,4 +13,24 @@ function delFav(id) {
     return $next().delete(`api/article/favorites/my/${id}`);
 }
 
-export { getMyFavs, delFav };
+function getVisitHistory(params) {
+    return $next().get(`api/next2/userdata/visit-history/list`, {
+        params,
+    });
+}
+
+function deleteVisitHistory(id){
+    return $next().delete(`api/next2/userdata/visit-history/item/${id}`,);
+}
+
+function getWaitWatch(params) {
+    return $next().get(`api/next2/userdata/favorite/list`, {
+        params,
+    });
+}
+
+function deleteWaitWatch(id){
+    return $next().delete(`api/next2/userdata/favorite/item/${id}`,);
+}
+
+export { getMyFavs, delFav,getVisitHistory,getWaitWatch,deleteVisitHistory,deleteWaitWatch };
