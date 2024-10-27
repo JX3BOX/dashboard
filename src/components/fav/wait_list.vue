@@ -1,5 +1,5 @@
 <template>
-    <div  class="m-dashboard-box" v-loading="loading">
+    <div class="m-dashboard-box" v-loading="loading">
         <div class="m-dashboard-msg-header">
             <el-input
                 class="m-dashboard-work-search"
@@ -17,26 +17,18 @@
                     <img svg-inline src="../../assets/img/works/repo.svg" />
                 </i>
                 <a class="u-title" target="_blank" :href="getLink(item.source_type, item.source_id)">{{
-                        item.title || "无标题"
-                    }}</a>
+                    item.title || "无标题"
+                }}</a>
                 <div class="u-desc">
-                                <span class="u-category"
-                                ><i class="el-icon-folder"></i> {{ getTypeLabel(item.source_type) }}
-                                </span>
-                    <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created_at) }}  </span>
+                    <span class="u-category"><i class="el-icon-folder"></i> {{ getTypeLabel(item.source_type) }} </span>
+                    <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created_at) }} 添加 </span>
                 </div>
                 <el-button-group class="u-action">
-                    <el-button
-                        size="mini"
-                        icon="el-icon-delete"
-                        title="取消收藏"
-                        @click="del(item.id)"
-                    ></el-button>
+                    <el-button size="mini" icon="el-icon-delete" title="删除" @click="del(item.id)"></el-button>
                 </el-button-group>
             </li>
         </ul>
-        <el-alert v-else class="m-dashboard-box-null" title="没有找到相关条目" type="info" center show-icon>
-        </el-alert>
+        <el-alert v-else class="m-dashboard-box-null" title="没有找到相关条目" type="info" center show-icon> </el-alert>
         <el-pagination
             v-if="showPagination"
             class="m-dashboard-box-pages"
@@ -61,58 +53,60 @@ export default {
     name: "WaitList",
     props: {
         type: {
-            type: String
+            type: String,
         },
-        search:{
-            type:String
-        }
+        search: {
+            type: String,
+        },
     },
-    data(){
+    data() {
         return {
             currentSearch: this.search,
-            data:[],
+            data: [],
             loading: false,
             total: 0,
             showPagination: false,
             page: 1,
             per: 10,
-        }
+        };
     },
-    emits:["change-search"],
-    watch:{
-        currentSearch(val){
-            this.$emit("change-search",val)
+    emits: ["change-search"],
+    watch: {
+        currentSearch(val) {
+            this.$emit("change-search", val);
         },
-        type(){
-            this.loadData()
-        }
+        type() {
+            this.loadData();
+        },
     },
-    computed :{
-        filterData(){
-          return this.data
-        }
+    computed: {
+        filterData() {
+            return this.data;
+        },
     },
     methods: {
         dateFormat,
         getTypeLabel,
         getLink,
-        del(id){
-            this.$confirm('确定要删除该稍后再看吗？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                deleteWaitWatch(id).then(() => {
-                    this.$message({
-                        type: "success",
-                        message: `操作成功`,
-                    });
-                    this.loadData()
-                });
-            }).catch(() => {
+        del(id) {
+            this.$confirm("确定要删除该记录吗？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+                callback: (action) => {
+                    if (action == "confirm") {
+                        deleteWaitWatch(id).then(() => {
+                            this.$message({
+                                type: "success",
+                                message: `操作成功`,
+                            });
+                            this.loadData();
+                        });
+                    }
+                },
             });
         },
-        loadData(){
+        loadData() {
             this.loading = true;
             const params = {
                 pageIndex: this.page,
@@ -120,29 +114,29 @@ export default {
             };
             if (this.currentSearch) params.title = this.currentSearch;
             if (this.type && this.type !== "all") params.category = this.type;
-            getWaitWatch(params).then(({data})=>{
-                this.data = data.data.list || [];
-                this.total = data.data.page.total || 0;
-            }).finally(()=>{
-                this.loading = false;
-                this.showPagination = true;
-            })
+            getWaitWatch(params)
+                .then(({ data }) => {
+                    this.data = data.data.list || [];
+                    this.total = data.data.page.total || 0;
+                })
+                .finally(() => {
+                    this.loading = false;
+                    this.showPagination = true;
+                });
         },
         currentChange(val) {
             this.page = val;
             this.loadData();
         },
-        handleChange(){
+        handleChange() {
             this.page = 1;
-            this.loadData()
-        }
+            this.loadData();
+        },
     },
     mounted() {
         this.loadData();
-    }
+    },
 };
 </script>
 
-<style  lang="less">
-
-</style>
+<style lang="less"></style>
