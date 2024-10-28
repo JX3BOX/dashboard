@@ -207,6 +207,7 @@ export default {
         getLink,
         getTypeLabel(type) {
             type = type.replace(/dbm_/g, "");
+            type = type.includes("community") ? "community" : type;
             return getTypeLabel(type);
         },
         dateFormat: function (val) {
