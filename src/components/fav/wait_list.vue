@@ -86,7 +86,11 @@ export default {
     },
     methods: {
         dateFormat,
-        getTypeLabel,
+        getTypeLabel(type) {
+            type = type.replace(/dbm_/g, "");
+            type = type.includes("community") ? "community" : type;
+            return getTypeLabel(type);
+        },
         getLink,
         del(id) {
             this.$confirm("确定要删除该记录吗？", "提示", {
