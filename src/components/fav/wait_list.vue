@@ -20,7 +20,7 @@
                     item.title || "无标题"
                 }}</a>
                 <div class="u-desc">
-                    <span class="u-category"><i class="el-icon-folder"></i> {{ getTypeLabel(item.source_type) }} </span>
+                    <span class="u-category"><i class="el-icon-folder"></i> {{ getTypeLabel(item.category) }} </span>
                     <span><i class="el-icon-date"></i> 于 {{ dateFormat(item.created_at) }} 添加 </span>
                 </div>
                 <el-button-group class="u-action">

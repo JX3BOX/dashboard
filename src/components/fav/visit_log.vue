@@ -71,7 +71,7 @@ export default {
     methods: {
         dateFormat,
         getTypeLabel(type) {
-            type = type.replace(/dbm_/g, "");
+            type = type?.replace(/dbm_/g, "");
             type = type.includes("community") ? "community" : type;
             return getTypeLabel(type);
         },
