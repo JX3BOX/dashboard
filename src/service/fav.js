@@ -33,4 +33,14 @@ function deleteWaitWatch(id){
     return $next().delete(`api/next2/userdata/favorite/item/${id}`,);
 }
 
-export { getMyFavs, delFav,getVisitHistory,getWaitWatch,deleteVisitHistory,deleteWaitWatch };
+function getRssList(params) {
+    return $next().get(`api/next2/rss/list`, {
+        params,
+    });
+}
+
+function deleteRss(id){
+    return $next().delete(`api/next2/rss/subscribe/${id}`,);
+}
+
+export { getMyFavs, delFav,getVisitHistory,getWaitWatch,deleteVisitHistory,deleteWaitWatch, getRssList, deleteRss };

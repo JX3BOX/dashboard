@@ -6,6 +6,8 @@
                 placeholder="请输入搜索内容"
                 v-model="currentSearch"
                 @keyup.enter.native="handleChange"
+                clearable
+                @clear="handleChange"
             >
                 <template slot="prepend">关键词</template>
                 <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
@@ -30,7 +32,6 @@
         </ul>
         <el-alert v-else class="m-dashboard-box-null" title="没有找到相关条目" type="info" center show-icon> </el-alert>
         <el-pagination
-            v-if="showPagination"
             class="m-dashboard-box-pages"
             background
             :hide-on-single-page="true"
@@ -47,7 +48,7 @@
 <script>
 import { getLink, getTypeLabel } from "@jx3box/jx3box-common/js/utils";
 import dateFormat from "../../utils/moment";
-import { deleteVisitHistory, deleteWaitWatch, getVisitHistory, getWaitWatch } from "@/service/fav";
+import { deleteWaitWatch, getWaitWatch } from "@/service/fav";
 
 export default {
     name: "WaitList",
