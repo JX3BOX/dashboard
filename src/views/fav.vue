@@ -65,9 +65,11 @@
                     </el-pagination>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="订阅" name="sub" disabled>
+            <el-tab-pane label="订阅" name="sub">
                 <span slot="label"><i class="u-tab-icon el-icon-news"></i> 订阅</span>
-                敬请期待。。。
+                <rss-list
+                    v-if="favChangeCount === 'sub'"
+                />
             </el-tab-pane>
             <el-tab-pane label="历史记录" name="log">
                 <span slot="label"><i class="el-icon-time"></i> 历史记录 </span>
@@ -98,9 +100,10 @@ import dateFormat from "../utils/dateFormat";
 import { __postType, __wikiType, __appType, __gameType } from "@jx3box/jx3box-common/data/jx3box.json";
 import VisitLog from "@/components/fav/visit_log.vue";
 import WaitList from "@/components/fav/wait_list.vue";
+import RssList from "@/components/fav/rss_list.vue";
 export default {
     name: "fav",
-    components: { WaitList, VisitLog },
+    components: { WaitList, VisitLog, RssList },
     props: [],
     data: function () {
         return {
