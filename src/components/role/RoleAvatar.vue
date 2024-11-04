@@ -15,7 +15,7 @@ export default {
     methods: {
         showAvatar: function (mount, body_type) {
             return (
-                __cdn + "design/avatar/" + mount + "-" + body_type + ".png"
+                __cdn + "design/avatar/xisai/" + mount + "-" + body_type + ".png"
             );
         },
     },

@@ -224,7 +224,7 @@ export default {
                 });
         },
         showAvatar: function (mount, body_type) {
-            return getThumbnail(__cdn + "design/avatar/" + mount + "-" + body_type + ".png");
+            return getThumbnail(__cdn + "design/avatar/xisai/" + mount + "-" + body_type + ".png");
         },
         go: function (route) {
             this.$router.push(route);
