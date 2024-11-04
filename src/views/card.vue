@@ -82,7 +82,9 @@
                         <el-table-column prop="remark" label="备注" width="200"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
-                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
+                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{
+                                    scope.row.used_by_self ? "是" : "否"
+                                }}</span>
 
                                 <el-button
                                     v-show="!scope.row.used_by_self"
@@ -95,7 +97,9 @@
                         </el-table-column>
                         <el-table-column prop="activate_url" label="激活地址">
                             <template #default="scope">
-                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '前往激活' || ''  }}</a>
+                                <a :href="scope.row.activate_url" target="_blank">{{
+                                    (scope.row.activate_url && "前往激活") || ""
+                                }}</a>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -134,70 +138,30 @@
                         <el-table-column label="名称" width="120px">
                             <template slot-scope="scope">{{ scope.row.goods.title || "-" }}</template>
                         </el-table-column>
-                        <el-table-column label="卡密" width="330">
+                        <el-table-column label="激活码" width="330">
                             <template slot-scope="scope">
-                                <div class="u-card">
-                                    <div class="u-count">
-                                        <template v-if="scope.row.goods.sub_category == 'keycode'">
-                                            <div class="u-line">
-                                                <span
-                                                    >卡号：{{ scope.row.goods.good_number || "****************" }}</span
-                                                >
-                                                <el-button
-                                                    class="u-btn"
-                                                    v-if="scope.row.goods.good_number"
-                                                    type="txt"
-                                                    size="mini"
-                                                    icon="el-icon-document-copy"
-                                                    v-clipboard:copy="'' + scope.row.goods.good_number"
-                                                    v-clipboard:success="onCopy"
-                                                    v-clipboard:error="onError"
-                                                    >复制卡号</el-button
-                                                >
-                                            </div>
-                                            <div class="u-line">
-                                                <span
-                                                    >卡密：{{ scope.row.goods.goods_secret || "****************" }}
-                                                </span>
-                                                <el-button
-                                                    v-if="!scope.row.goods.goods_secret"
-                                                    type="primary"
-                                                    icon="el-icon-view"
-                                                    @click="getVirtualCode(scope.$index, scope.row)"
-                                                    size="mini"
-                                                    plain
-                                                    >点击查看</el-button
-                                                >
-                                                <el-button
-                                                    class="u-btn"
-                                                    v-if="scope.row.goods.goods_secret"
-                                                    type="txt"
-                                                    size="mini"
-                                                    icon="el-icon-document-copy"
-                                                    v-clipboard:copy="'' + scope.row.goods.goods_secret"
-                                                    v-clipboard:success="onCopy"
-                                                    v-clipboard:error="onError"
-                                                >
-                                                    复制卡密
-                                                </el-button>
-                                            </div>
-                                        </template>
-                                        <div class="u-line" v-else>
-                                            <span> {{ scope.row.goods.good_number }}</span>
-                                            <el-button
-                                                class="u-btn"
-                                                type="primary"
-                                                size="mini"
-                                                icon="el-icon-document-copy"
-                                                plain
-                                                v-clipboard:copy="'' + scope.row.goods.good_number"
-                                                v-clipboard:success="onCopy"
-                                                v-clipboard:error="onError"
-                                            >
-                                                复制卡号
-                                            </el-button>
-                                        </div>
-                                    </div>
+                                <div class="u-code">
+                                    <span class="u-txt">{{ scope.row.code || "****************" }}</span>
+                                    <el-button
+                                        v-if="!scope.row.code"
+                                        type="primary"
+                                        icon="el-icon-view"
+                                        @click="getVirtualCode(scope.$index, scope.row)"
+                                        size="mini"
+                                        plain
+                                        >点击查看</el-button
+                                    >
+                                    <el-button
+                                        class="u-btn"
+                                        v-else
+                                        type="txt"
+                                        size="mini"
+                                        icon="el-icon-document-copy"
+                                        v-clipboard:copy="'' + scope.row.code"
+                                        v-clipboard:success="onCopy"
+                                        v-clipboard:error="onError"
+                                        >复制</el-button
+                                    >
                                 </div>
                             </template>
                         </el-table-column>
@@ -217,22 +181,26 @@
                                 {{ scope.row.goods.mark || scope.row.goods.subtitle }}
                             </template>
                         </el-table-column>
-                        <!-- <el-table-column prop="used_by_self" label="是否使用">
+                        <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
-                                {{ scope.row.used_by_self ? "是" : "否" }}
+                                <span class="u-used" :class="{ 'is-used': scope.row.owner.used_by_self }">{{
+                                    scope.row.owner.used_by_self ? "是" : "否"
+                                }}</span>
 
                                 <el-button
-                                    v-show="!scope.row.used_by_self"
+                                    v-show="!scope.row.owner.used_by_self"
                                     type="text"
                                     size="mini"
-                                    @click="onKeyCodeUsedClick(scope.row)"
+                                    @click="onVirtualUsedClick(scope.row)"
                                     >（标记使用）</el-button
                                 >
                             </template>
-                        </el-table-column> -->
+                        </el-table-column>
                         <el-table-column prop="activate_url" label="激活地址">
                             <template #default="scope">
-                                <a :href="scope.row.activate_url" target="_blank">{{ scope.row.activate_url && '跳转激活' || '-'  }}</a>
+                                <a :href="scope.row.activate_url" target="_blank">{{
+                                    (scope.row.activate_url && "跳转激活") || "-"
+                                }}</a>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -335,7 +303,9 @@
                         <el-table-column prop="remark" label="备注" width="200"> </el-table-column>
                         <el-table-column prop="used_by_self" label="是否使用">
                             <template slot-scope="scope">
-                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{ scope.row.used_by_self ? "是" : "否" }}</span>
+                                <span class="u-used" :class="{ 'is-used': scope.row.used_by_self }">{{
+                                    scope.row.used_by_self ? "是" : "否"
+                                }}</span>
 
                                 <el-button
                                     v-show="!scope.row.used_by_self"
@@ -380,11 +350,13 @@ import {
     markSn,
     markKeycode,
     getVirtualCode,
+    markVirtualCode,
 } from "@/service/card.js";
 import { getVirtual } from "@/service/goods";
 import keycodeOptions from "@/assets/data/card_keycode.json";
 import snOptions from "@/assets/data/card_sn.json";
-import { getBreadcrumb } from "@jx3box/jx3box-common/js/api_misc"
+import { getBreadcrumb } from "@jx3box/jx3box-common/js/api_misc";
+import { cloneDeep } from "lodash";
 
 // import _ from "lodash";
 export default {
@@ -408,7 +380,7 @@ export default {
             codeList: [],
             keycodeList: [],
 
-            bread: ""
+            bread: "",
         };
     },
 
@@ -429,10 +401,10 @@ export default {
     },
     watch: {
         onlyNew() {
-            if (this.tab == 'sn') {
+            if (this.tab == "sn") {
                 this.page = 1;
                 this.loadSn();
-            } else if (this.tab == 'keycode') {
+            } else if (this.tab == "keycode") {
                 this.page = 1;
                 this.loadKeycode();
             }
@@ -453,7 +425,7 @@ export default {
             const params = {
                 ...this.params,
                 used_by_self: this.onlyNew ? 0 : undefined,
-            }
+            };
             getKeycodeList(params)
                 .then((res) => {
                     let list = res.data.data.list || [];
@@ -482,7 +454,7 @@ export default {
             const params = {
                 ...this.params,
                 used_by_self: this.onlyNew ? 0 : undefined,
-            }
+            };
             getSnList(params)
                 .then((res) => {
                     let list = res.data.data.list || [];
@@ -559,10 +531,15 @@ export default {
                 inputType: "password",
             }).then(({ value }) => {
                 getVirtualCode(row.goods.id, { password: value }).then((res) => {
-                    let { good_number, goods_secret } = res.data.data;
-                    row.goods.good_number = good_number;
-                    row.goods.goods_secret = goods_secret;
-                    this.$set(this.virtualList, index, row);
+                    let { good_number } = res.data.data;
+
+                    const list = cloneDeep(this.virtualList);
+                    this.virtualList = list.map((item, i) => {
+                        if (i === index) {
+                            item.code = good_number;
+                        }
+                        return item;
+                    });
                 });
             });
         },
@@ -612,6 +589,23 @@ export default {
                             message: "标记成功!",
                         });
                         this.loadSn();
+                    });
+                })
+                .catch(() => {});
+        },
+        onVirtualUsedClick(row) {
+            this.$confirm("确认标记为已使用吗？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    markVirtualCode(row.goods.id, 1).then((res) => {
+                        this.$message({
+                            type: "success",
+                            message: "标记成功!",
+                        });
+                        this.loadVirtual();
                     });
                 })
                 .catch(() => {});
