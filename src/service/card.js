@@ -29,7 +29,20 @@ function markKeycode(id, flag) {
 }
 
 function getVirtualCode(id, data) {
-    return $pay().post(`/mall/manage/virtual_goods/${id}/secret`, data);
+    return $pay().post(`/api/mall/my/virtual_goods/${id}/secret`, data);
 }
 
-export { getKeycodeList, getSnList, activationKeycode, activationSn, markSn, markKeycode, getVirtualCode };
+function markVirtualCode(id, flag) {
+    return $pay().put(`/api/mall/my/virtual_goods/${id}/mark-used/${flag}`);
+}
+
+export {
+    getKeycodeList,
+    getSnList,
+    activationKeycode,
+    activationSn,
+    markSn,
+    markKeycode,
+    getVirtualCode,
+    markVirtualCode,
+};
