@@ -8,7 +8,7 @@
             <el-tabs v-model="active" @tab-click="tabChange">
                  <el-tab-pane label="我的亲友" name="whitelist"></el-tab-pane>
                  <el-tab-pane label="黑名单" name="blacklist"></el-tab-pane>
-                 <el-tab-pane label="我的关注" name="myfollow"></el-tab-pane>
+                 <el-tab-pane label="我的订阅" name="myfollow"></el-tab-pane>
                  <el-tab-pane label="我的粉丝" name="myfans"></el-tab-pane>
             </el-tabs>
 
@@ -25,14 +25,14 @@
                     <a class="u-item-pic" :href="userLink(item)" target="_blank">
                         <img
                             class="u-item-avatar"
-                            :src="(item.kith_info || item).user_avatar | showAvatar"
+                            :src="((item.kith_info || item).user_avatar || item.user_info.avatar) | showAvatar"
                         />
                     </a>
                     <a
                         class="u-item-name"
                         :href="(item.kith_id || item.user_id) | authorLink"
                         target="_blank"
-                    >{{ (item.kith_info || item).display_name }}</a>
+                    >{{ (item.kith_info || item.user_info || item).display_name }}</a>
                     <template v-if="active === 'whitelist'">
                         <span class="u-item-remark" v-if="item.status">备注：{{ item.remark || '无' }}</span>
                         <span class="u-item-remark" v-else>
@@ -125,6 +125,7 @@ import {
     undeny,
     removeFans
 } from "@/service/privacy.js";
+import {getAuthorRssList,removeRssUser,addRssUser} from "@/service/rss"
 import User from "@jx3box/jx3box-common/js/user.js";
 import { showAvatar, authorLink } from "@jx3box/jx3box-common/js/utils";
 export default {
@@ -197,7 +198,8 @@ export default {
             return {
                 blacklist: undeny,
                 myfollow: unfollow,
-                myfans: removeFans,
+                // myfans: removeFans,
+                myfans: removeRssUser,
             }
         },
         addFns() {
@@ -220,6 +222,9 @@ export default {
                 myfollow: "添加关注",
                 whitelist: "添加亲友"
             }[this.active]
+        },
+        userId() {
+            return User.getInfo().uid
         }
     },
     methods: {
@@ -248,9 +253,15 @@ export default {
             })
         },
         add() {
-            this.addFns[this.active](this.userdata.ID).then((res) => {
-                this.loadList();
-            });
+            if (this.active === 'myfollow') {
+                addRssUser(this.userdata.ID, { title: this.userdata.display_name }).then((res) => {
+                    this.loadList();
+                });
+            } else {
+                this.addFns[this.active](this.userdata.ID).then((res) => {
+                    this.loadList();
+                });
+            }
         },
         // 添加亲友
         addKith() {
@@ -311,6 +322,18 @@ export default {
                     .finally(() => {
                         this.loading = false;
                     });
+            } else if (this.active === 'myfans') {
+                const params = {
+                    index: this.pagination.pageIndex,
+                    pageSize: this.pagination.pageSize,
+                }
+
+                getAuthorRssList(this.userId, params).then(res => {
+                    this.list = res.data.data.list || [];
+                    this.pagination.total = res.data.data.page.total;
+                }).finally(() => {
+                    this.loading = false;
+                })
             } else {
                 const params = {
                     pageIndex: this.pagination.pageIndex,
@@ -379,6 +402,8 @@ export default {
             let id = ''
             if (this.active === 'whitelist') {
                 id = item.kith_id
+            } else if (this.active === 'myfans') {
+                id = item.user_id
             } else {
                 id = this.active !== 'myfans' ? item.bind_user_id : item.user_id
             }
