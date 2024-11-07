@@ -12,7 +12,7 @@
                  <el-tab-pane label="我的粉丝" name="myfans"></el-tab-pane>
             </el-tabs>
 
-            <el-input v-if="active !== 'whitelist'" class="m-privacy-search" placeholder="请输入搜索内容" v-model="keyword" @keyup.enter.native="handleChange">
+            <el-input v-if="active !== 'whitelist'" class="m-privacy-search" placeholder="请输入搜索内容" v-model="keyword" @keyup.enter.native="handleChange" clearable @clear="handleChange">
                 <template slot="prepend">关键词</template>
                 <el-button slot="append" icon="el-icon-search" @click="handleChange"></el-button>
             </el-input>
@@ -25,14 +25,14 @@
                     <a class="u-item-pic" :href="userLink(item)" target="_blank">
                         <img
                             class="u-item-avatar"
-                            :src="((item.kith_info || item).user_avatar || item.user_info.avatar) | showAvatar"
+                            :src="getAvatar(item) | showAvatar"
                         />
                     </a>
                     <a
                         class="u-item-name"
-                        :href="(item.kith_id || item.user_id) | authorLink"
+                        :href="userLink(item)"
                         target="_blank"
-                    >{{ (item.kith_info || item.user_info || item).display_name }}</a>
+                    >{{ getName(item) }}</a>
                     <template v-if="active === 'whitelist'">
                         <span class="u-item-remark" v-if="item.status">备注：{{ item.remark || '无' }}</span>
                         <span class="u-item-remark" v-else>
@@ -125,7 +125,7 @@ import {
     undeny,
     removeFans
 } from "@/service/privacy.js";
-import {getAuthorRssList,removeRssUser,addRssUser} from "@/service/rss"
+import {getMyRss,getMySubscribers,removeRssUser,addRssUser, cancelRssUser} from "@/service/rss"
 import User from "@jx3box/jx3box-common/js/user.js";
 import { showAvatar, authorLink } from "@jx3box/jx3box-common/js/utils";
 export default {
@@ -190,15 +190,13 @@ export default {
         fns() {
             return {
                 blacklist: getBlackList,
-                myfollow: getMyFollowList,
-                myfans: getMyFansList,
+                myfans: getMySubscribers,
             }
         },
         removeFns() {
             return {
                 blacklist: undeny,
-                myfollow: unfollow,
-                // myfans: removeFans,
+                myfollow: cancelRssUser,
                 myfans: removeRssUser,
             }
         },
@@ -322,13 +320,15 @@ export default {
                     .finally(() => {
                         this.loading = false;
                     });
-            } else if (this.active === 'myfans') {
+            } else if (this.active === 'myfollow') {
                 const params = {
                     index: this.pagination.pageIndex,
                     pageSize: this.pagination.pageSize,
+                    q: this.keyword,
+                    category: 2
                 }
 
-                getAuthorRssList(this.userId, params).then(res => {
+                getMyRss(params).then(res => {
                     this.list = res.data.data.list || [];
                     this.pagination.total = res.data.data.page.total;
                 }).finally(() => {
@@ -379,14 +379,25 @@ export default {
         removeOther(item) {
             const msgs = {
                 blacklist: "确认解除对该用户的屏蔽？",
-                myfollow: "确认不再关注该用户？",
+                myfollow: "确认不再订阅该用户？",
                 myfans: "确认要移除粉丝？",
             }
             this.$confirm(msgs[this.active], "提示", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
             }).then(() => {
-                const id = this.active === 'myfans' ? item.user_id : item.bind_user_id;
+                // const id = this.active === 'myfans' || this.active == 'myfollow' ? item.user_id : item.bind_user_id;
+                let id = ''
+                if (this.active === 'whitelist') {
+                    id = item.kith_id
+                } else if (this.active === 'myfans') {
+                    id = item.user_id
+                } else if (this.active === 'blacklist') {
+                    id = item.bind_user_id
+                } else {
+                    id = item.author_id
+                }
+
                 this.removeFns[this.active](id).then(() => {
                     this.$notify({
                         title: "成功",
@@ -404,10 +415,28 @@ export default {
                 id = item.kith_id
             } else if (this.active === 'myfans') {
                 id = item.user_id
+            } else if (this.active === 'blacklist') {
+                id = item.bind_user_id
             } else {
-                id = this.active !== 'myfans' ? item.bind_user_id : item.user_id
+                id = item.author_id
             }
             return authorLink(id)
+        },
+        getAvatar(item) {
+            if (this.active == 'myfans') {
+                return item.user_info?.avatar
+            } else if (this.active == 'myfollow') {
+                return item.author_info?.avatar
+            }
+            return (item.kith_info || item).user_avatar
+        },
+        getName(item) {
+            if (this.active == 'myfans') {
+                return item.user_info?.display_name
+            } else if (this.active == 'myfollow') {
+                return item.author_info?.display_name
+            }
+            return (item.kith_info || item).display_name
         }
     },
     mounted: function () {
