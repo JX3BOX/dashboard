@@ -50,6 +50,7 @@ const config = () => import("../views/config.vue");
 const privacy = () => import("../views/privacy.vue");
 const cooperation = () => import("../views/cooperation.vue");
 const feedback = () => import("../views/feedback.vue");
+const auth = () => import("../views/auth.vue");
 
 const address = () => import("../views/address.vue");
 const mall = () => import("../views/mall.vue");
@@ -110,6 +111,7 @@ const routes = [
     { name: "filter", path: "/filter", component: filter },
 
     { name: "address", path: "/address", component: address },
+    { name: "auth", path: "/auth", component: auth },
     { name: "order-detail", path: "/mall-detail/:id", component: order_detail },
 
     {
