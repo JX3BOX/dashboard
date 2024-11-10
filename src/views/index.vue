@@ -41,12 +41,6 @@
                         <em>UID</em>
                         <b>{{ uid }}</b>
                     </span>
-                    <!-- <span class="u-level">
-                        <el-tooltip :content="`当前经验 ${info.experience || 0}`">
-                            <em>Level</em>
-                        </el-tooltip>
-                        <b>Lv.{{ level }}</b>
-                    </span> -->
                     <span class="u-group">
                         <em>Verify</em>
                         <el-tooltip
@@ -74,6 +68,12 @@
                         <em>Group</em>
                         <b>{{ showGroupName(group) }}</b>
                     </span>
+                    <span class="u-group" v-if="group>=16">
+                        <em>认证用户</em>
+                    </span>
+                    <el-tooltip v-else placement="top" content="未认证的用户将无法使用发布中心">
+                        <i class="u-unauth el-icon-warning"></i>
+                    </el-tooltip>
                 </div>
                 <div class="u-identity m-level">
                     <span class="u-level">

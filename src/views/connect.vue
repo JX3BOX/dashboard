@@ -9,7 +9,7 @@
             >
             </el-alert>
             <div class="m-dashboard-content-list">
-                <div class="m-item" v-for="(item, type) in oauth" :key="type">
+                <div class="m-item" v-for="type in oauth" :key="type">
                     <span class="u-profile-item">
                         <img :class="'u-' + type" svg-inline :src="icon(type)" />
                         <span class="u-status">
@@ -33,9 +33,18 @@
 import uc from "@/components/uc.vue";
 import links from "@jx3box/jx3box-common/js/connect";
 import oauth from "@jx3box/jx3box-common/data/oauth.json";
-import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { unbindOAuth, checkOAuth } from "@/service/profile";
 const client = location.host.includes("origin") ? "origin" : "std";
+
+const imgMap = {
+    github: "github",
+    qq: "qq",
+    weibo: "weibo",
+    wechat: "wechat",
+    wechat_miniprogram: "app",
+}
+
 export default {
     name: "connect",
     props: [],
@@ -53,8 +62,10 @@ export default {
 
                 wechat_name: "",
                 wechat_unionid: "",
+
+                wechat_miniprogram_openid: "",
             },
-            oauth,
+            oauth: ["github", "qq", "weibo", "wechat", "wechat_miniprogram"],
         };
     },
     computed: {},
@@ -62,11 +73,13 @@ export default {
         checkStatus: function (type) {
             if (type == "qq" || type == "wechat") {
                 return !!this.data[type + "_unionid"];
+            } else if (type == "wechat_miniprogram") {
+                return !!this.data[type + "_openid"];
             }
             return !!this.data[type + "_id"];
         },
         getNickname: function (type) {
-            return this.data[type + "_name"] || "未知";
+            return this.data[type + "_name"] || "已绑定";
         },
         bind: function (type) {
             location.href = links[type].replace("state=login", `state=bind_${client}`);
@@ -89,7 +102,7 @@ export default {
                 .catch(() => {});
         },
         icon: function (type) {
-            return __imgPath + "image/connect/" + type + ".svg";
+            return __cdn + "design/user/" + imgMap[type] + ".png";
         },
     },
     mounted: function () {
