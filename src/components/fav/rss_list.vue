@@ -111,6 +111,7 @@ export default {
                 index: this.index,
                 pageSize: this.pageSize,
                 q: this.search,
+                category: -2
             }
             this.loading = true;
             getRssList(params)
