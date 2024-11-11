@@ -97,9 +97,9 @@ export default {
                 this.show = bol;
                 if (bol) {
                     this.showTeams = cloneDeep(this.teams);
+                    this.form.repository = this.staged.repository;
                     if (this.type === "transfer") {
                         this.form.assign = this.staged.assign;
-                        this.form.repository = this.staged.repository;
                         this.form.remark = this.staged.remark;
                     }
                 }
