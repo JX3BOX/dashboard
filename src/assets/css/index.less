@@ -37,7 +37,7 @@
             a {
                 color: @color;
                 .mr(10px);
-                .tm(0.5);
+                // .tm(0.5);
             }
             a:last-child {
                 .mr(0);
@@ -47,9 +47,21 @@
             }
         }
 
-        .u-unauth {
-            .fz(14px);
-            color: #F56C6C;
+        .u-auth{
+            margin-left:5px;
+            display: inline-flex;
+            align-items: center;
+            gap:3px;
+            a{
+                color:@color-link;
+                &:hover{
+                    text-decoration: underline
+                }
+            }
+            i {
+                .fz(14px);
+                color: #F56C6C;
+            }
         }
 
         .u-vip {

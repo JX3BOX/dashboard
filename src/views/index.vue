@@ -64,16 +64,16 @@
                             </a>
                         </el-tooltip>
                     </span>
-                    <span class="u-group" v-if="group > 30">
+                    <span class="u-group">
                         <em>Group</em>
                         <b>{{ showGroupName(group) }}</b>
+                        <el-tooltip v-if="group < 16" placement="top" content="未认证的用户将无法使用发布中心">
+                            <span class="u-auth">
+                                <i class="u-unauth el-icon-warning"></i>
+                                <a href="/dashboard/auth" target="_blank">前往认证</a>
+                            </span>
+                        </el-tooltip>
                     </span>
-                    <span class="u-group" v-if="group>=16">
-                        <em>认证用户</em>
-                    </span>
-                    <el-tooltip v-else placement="top" content="未认证的用户将无法使用发布中心">
-                        <i class="u-unauth el-icon-warning"></i>
-                    </el-tooltip>
                 </div>
                 <div class="u-identity m-level">
                     <span class="u-level">
@@ -291,12 +291,7 @@
 </template>
 
 <script>
-import {
-    __userGroup,
-    __imgPath,
-    __userLevelColor,
-    __userLevel,
-} from "@jx3box/jx3box-common/data/jx3box.json";
+import { __userGroup, __imgPath, __userLevelColor, __userLevel } from "@jx3box/jx3box-common/data/jx3box.json";
 import User from "@jx3box/jx3box-common/js/user";
 import { getLink } from "@jx3box/jx3box-common/js/utils";
 import { getUserMedals, getMyAssetLogs, getMyInfo } from "@/service/index.js";
@@ -404,11 +399,11 @@ export default {
             const [min, max] = __userLevel[this.level];
             return max;
         },
-        maxLevel: function (){
+        maxLevel: function () {
             const keys = Object.keys(__userLevel)?.map(Number);
 
-            return Math.max(...keys)
-        }
+            return Math.max(...keys);
+        },
     },
     methods: {
         formatProgress: function () {
@@ -546,7 +541,7 @@ export default {
         },
         showTime(val) {
             return moment(val).format("YYYY-MM-DD HH:mm:ss");
-        }
+        },
     },
     mounted: function () {
         this.init();

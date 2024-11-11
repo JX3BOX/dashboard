@@ -13,7 +13,8 @@
                     <span class="u-profile-item">
                         <img :class="'u-' + type" svg-inline :src="icon(type)" />
                         <span class="u-status">
-                            {{ checkStatus(type) ? getNickname(type) : "未绑定" }}
+                            {{ types[type].name }}
+                            <!-- {{ checkStatus(type) ? getNickname(type) : "未绑定" }} -->
                         </span>
                     </span>
                     <el-button
@@ -21,7 +22,7 @@
                         :type="!checkStatus(type) ? 'primary' : 'danger'"
                         @click="!checkStatus(type) ? bind(type) : unbind(type)"
                     >
-                        {{ !checkStatus(type) ? "绑定" : "解除绑定" }}
+                        {{ !checkStatus(type) ? "立即绑定" : "解除绑定" }}
                     </el-button>
                 </div>
             </div>
@@ -37,13 +38,28 @@ import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { unbindOAuth, checkOAuth } from "@/service/profile";
 const client = location.host.includes("origin") ? "origin" : "std";
 
-const imgMap = {
-    github: "github",
-    qq: "qq",
-    weibo: "weibo",
-    wechat: "wechat",
-    wechat_miniprogram: "app",
-}
+const types = {
+    github: {
+        icon: "github",
+        name: "Github",
+    },
+    qq: {
+        icon: "qq",
+        name: "QQ",
+    },
+    weibo: {
+        icon: "weibo",
+        name: "微博",
+    },
+    wechat: {
+        icon: "wechat",
+        name: "微信",
+    },
+    wechat_miniprogram: {
+        icon: "app",
+        name: "微信小程序",
+    },
+};
 
 export default {
     name: "connect",
@@ -66,6 +82,7 @@ export default {
                 wechat_miniprogram_openid: "",
             },
             oauth: ["github", "qq", "weibo", "wechat", "wechat_miniprogram"],
+            types
         };
     },
     computed: {},
@@ -102,7 +119,7 @@ export default {
                 .catch(() => {});
         },
         icon: function (type) {
-            return __cdn + "design/user/" + imgMap[type] + ".png";
+            return __cdn + "design/user/" + types[type]['icon'] + ".png";
         },
     },
     mounted: function () {
