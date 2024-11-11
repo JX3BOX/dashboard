@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <el-dropdown
-                        v-if="isTeammate && data.status !== 11"
+                        v-if="isTeammate && data.status < 12"
                         size="small"
                         split-button
                         trigger="click"
@@ -25,13 +25,19 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item @click.native="handleEdit">
-                                    <el-button class="u-btn" type="primary" size="small" icon="el-icon-edit-outline">编辑</el-button>
+                                    <el-button class="u-btn" type="primary" size="small" icon="el-icon-edit-outline"
+                                        >编辑</el-button
+                                    >
                                 </el-dropdown-item>
                                 <el-dropdown-item v-if="data.status === 1" @click.native="handleTransfer">
-                                    <el-button class="u-btn" type="warning" size="small" icon="el-icon-right">转交</el-button>
+                                    <el-button class="u-btn" type="warning" size="small" icon="el-icon-right"
+                                        >转交</el-button
+                                    >
                                 </el-dropdown-item>
                                 <el-dropdown-item v-if="data.status === 2" @click.native="handleClose">
-                                    <el-button class="u-btn" type="info" size="small" icon="el-icon-circle-close">关闭</el-button>
+                                    <el-button class="u-btn" type="info" size="small" icon="el-icon-circle-close"
+                                        >关闭</el-button
+                                    >
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
@@ -115,57 +121,61 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-feedback-thx">
-                    <el-divider content-position="left"
-                        ><i class="el-icon-coin"></i> 反馈回馈
-                        <el-button v-if="isAdmin" size="mini" class="u-thx-trigger" type="success" @click="onThx"
-                            >品鉴</el-button
-                        ></el-divider
-                    >
-                    <div class="u-thx-table">
-                        <el-table size="mini" stripe border :data="thxData">
-                            <el-table-column label="参与打赏" prop="ext_operate_user_info">
-                                <template #default="{ row }">
-                                    <div class="m-user">
-                                        <img class="u-gift" svg-inline :src="giftUrl" />
-                                        <a
-                                            class="u-item u-user"
-                                            :href="authorLink(row.ext_operate_user_info.id)"
-                                            target="_blank"
-                                        >
-                                            <img
-                                                class="u-user-avatar"
-                                                :src="showAvatar(row.ext_operate_user_info.avatar)"
-                                            />
-                                            <span class="u-user-name">{{
-                                                row.ext_operate_user_info.display_name
-                                            }}</span>
-                                        </a>
-                                    </div>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="盒币" prop="count">
-                                <template #default="{ row }">
-                                    <span class="u-count">+{{ row.count }}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="寄语" prop="remark"></el-table-column>
-                            <el-table-column label="时间" prop="created_at">
-                                <template #default="{ row, $index }">
-                                    <time :datetime="row.created_at">{{ row.created_at }}</time>
+                <template v-if="!isOver">
+                    <div class="m-feedback-thx">
+                        <el-divider content-position="left"
+                            ><i class="el-icon-coin"></i> 反馈回馈
+                            <el-button v-if="isAdmin" size="mini" class="u-thx-trigger" type="success" @click="onThx"
+                                >品鉴</el-button
+                            ></el-divider
+                        >
+                        <div class="u-thx-table">
+                            <el-table size="mini" stripe border :data="thxData">
+                                <el-table-column label="参与打赏" prop="ext_operate_user_info">
+                                    <template #default="{ row }">
+                                        <div class="m-user">
+                                            <img class="u-gift" svg-inline :src="giftUrl" />
+                                            <a
+                                                class="u-item u-user"
+                                                :href="authorLink(row.ext_operate_user_info.id)"
+                                                target="_blank"
+                                            >
+                                                <img
+                                                    class="u-user-avatar"
+                                                    :src="showAvatar(row.ext_operate_user_info.avatar)"
+                                                />
+                                                <span class="u-user-name">{{
+                                                    row.ext_operate_user_info.display_name
+                                                }}</span>
+                                            </a>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="盒币" prop="count">
+                                    <template #default="{ row }">
+                                        <span class="u-count">+{{ row.count }}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="寄语" prop="remark"></el-table-column>
+                                <el-table-column label="时间" prop="created_at">
+                                    <template #default="{ row, $index }">
+                                        <time :datetime="row.created_at">{{ row.created_at }}</time>
 
-                                    <span class="u-delete" v-if="isSuperAdmin" @click="recovery(row, $index)">
-                                        <i class="el-icon-delete"></i>撤销
-                                    </span>
-                                </template>
-                            </el-table-column>
-                        </el-table>
+                                        <span class="u-delete" v-if="isSuperAdmin" @click="recovery(row, $index)">
+                                            <i class="el-icon-delete"></i>撤销
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
                     </div>
-                </div>
-                <div class="m-reply" v-if="done">
-                    <el-divider content-position="left"><i class="el-icon-chat-line-square"></i> 回复处理</el-divider>
-                    <Comment :id="id" category="feedback" order="desc" />
-                </div>
+                    <div class="m-reply" v-if="done">
+                        <el-divider content-position="left"
+                            ><i class="el-icon-chat-line-square"></i> 回复处理</el-divider
+                        >
+                        <Comment :id="id" category="feedback" order="desc" />
+                    </div>
+                </template>
             </main>
 
             <Homework
@@ -314,36 +324,15 @@ export default {
                     value: ~~key,
                 };
             });
-            const preList = _list.filter((item) => item.value <= 3);
-            let list = [];
-            if (this.data.status <= 3) {
-                list = preList.concat([
-                    {
-                        value: 10,
-                        text: "已结束",
-                    },
-                ]);
-            }
-            if (this.data.status === 10) {
-                list = preList.concat([
-                    {
-                        value: 10,
-                        text: "已完成",
-                    },
-                ]);
-            }
-            if (this.data.status === 11) {
-                list = preList.concat([
-                    {
-                        value: 11,
-                        text: "已关闭",
-                    },
-                ]);
-            }
+            const filterStatus = this.data.status === 11 ? 10 : 11;
+            const list = _list.filter((item) => item.value !== filterStatus);
             return list;
         },
         currentStep() {
             return this.statusList.findIndex((item) => item.value === this.data.status);
+        },
+        isOver() {
+            return this.data.status === 12;
         },
     },
     watch: {
@@ -367,14 +356,14 @@ export default {
             if (status === 2) {
                 str = "开始处理";
             }
-            if (status === 3) {
-                str = "处理完成";
-            }
             if (status === 10) {
-                str = "完结";
+                str = "处理完成";
             }
             if (status === 11) {
                 str = "关闭";
+            }
+            if (status === 12) {
+                str = "完结";
             }
             return str;
         },
@@ -386,7 +375,7 @@ export default {
                 str = "开始处理";
             } else if (status === 2) {
                 str = "处理完成";
-            } else if (status === 3) {
+            } else if (status === 10 || status === 11) {
                 str = "结束工单";
             }
             return str;
@@ -400,7 +389,12 @@ export default {
                 // 待处理 指派
                 this.handleAssign();
             }
-            if (this.data.status === 1 || this.data.status === 2 || this.data.status === 3) {
+            if (
+                this.data.status === 1 ||
+                this.data.status === 2 ||
+                this.data.status === 10 ||
+                this.data.status === 11
+            ) {
                 this.handleStatus();
             }
         },
