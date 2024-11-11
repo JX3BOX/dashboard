@@ -38,13 +38,51 @@
         color: #999;
     }
     .u-remark {
-        color: #999;
+        color: orange;
         font-size: 12px;
         margin-top: 5px;
+    }
+    .el-timeline-item__timestamp {
+        .fz(12px);
     }
 }
 .m-feed-content {
     width: calc(100% - 300px);
+
+    .el-step__icon {
+        width: 20px;
+        height: 20px;
+    }
+    .el-step__icon-inner {
+        .fz(12px);
+    }
+    .el-step__title{
+        .fz(14px);
+        .bold;
+    }
+
+    .is-process{
+        .el-step__icon {
+            background: orange;
+            border-color: orange;
+        }
+        .el-step__icon-inner {
+            color: #fff;
+        }
+    }
+    .el-step__title.is-process{
+        color: orange !important;
+    }
+    .is-success{
+        .el-step__icon {
+            background: #49c10f;
+        }
+        .el-step__icon-inner {
+            color: #fff;
+        }
+    }
+
+
 }
 .m-single-content {
     .pt(10px);
