@@ -1,6 +1,6 @@
 <template>
     <uc class="m-dashboard-connect">
-        <div class="m-profile-connect">
+        <div class="m-profile-connect" v-loading="loading">
             <el-alert
                 class="u-tip"
                 title="通过第三方账号快速登录，如需解绑则需要先绑定一个邮箱"
@@ -27,13 +27,23 @@
                 </div>
             </div>
         </div>
+
+        <el-dialog :visible.sync="showMiniProgram" title="绑定微信小程序" :width="isPhone ? '95%' : '400px'" custom-class="m-qrcode-dialog" :show-close="false">
+            <div class="m-qr-content">
+                <img class="u-login-qrcode" src="@/assets/img/connect/loginqrcode.jpg" alt="">
+                <i class="u-tip">打开微信扫一扫，绑定小程序</i>
+            </div>
+
+            <template #footer>
+                <el-button type="primary" @click="ihadBind">我已绑定</el-button>
+            </template>
+        </el-dialog>
     </uc>
 </template>
 
 <script>
 import uc from "@/components/uc.vue";
 import links from "@jx3box/jx3box-common/js/connect";
-import oauth from "@jx3box/jx3box-common/data/oauth.json";
 import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { unbindOAuth, checkOAuth } from "@/service/profile";
 const client = location.host.includes("origin") ? "origin" : "std";
@@ -82,7 +92,12 @@ export default {
                 wechat_miniprogram_openid: "",
             },
             oauth: ["github", "qq", "weibo", "wechat", "wechat_miniprogram"],
-            types
+            types,
+
+            showMiniProgram: false,
+            isPhone: window.innerWidth < 768,
+
+            loading: false,
         };
     },
     computed: {},
@@ -99,6 +114,10 @@ export default {
             return this.data[type + "_name"] || "已绑定";
         },
         bind: function (type) {
+            if (type == "wechat_miniprogram") {
+                this.showMiniProgram = true;
+                return;
+            }
             location.href = links[type].replace("state=login", `state=bind_${client}`);
         },
         unbind: function (type) {
@@ -113,7 +132,7 @@ export default {
                             message: "解绑成功",
                             type: "success",
                         });
-                        location.reload();
+                        this.loadAuth();
                     });
                 })
                 .catch(() => {});
@@ -121,11 +140,21 @@ export default {
         icon: function (type) {
             return __cdn + "design/user/" + types[type]['icon'] + ".png";
         },
+        loadAuth() {
+            this.loading = true;
+            checkOAuth().then((res) => {
+                this.data = res.data.data;
+            }).finally(() => {
+                this.loading = false;
+            });
+        },
+        ihadBind() {
+            this.showMiniProgram = false;
+            this.loadAuth();
+        },
     },
     mounted: function () {
-        checkOAuth().then((res) => {
-            this.data = res.data.data;
-        });
+        this.loadAuth();
     },
     components: {
         uc,
