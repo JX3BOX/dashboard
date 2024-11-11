@@ -17,7 +17,7 @@
                         size="small"
                         split-button
                         trigger="click"
-                        type="warning"
+                        type="primary"
                         @click.stop="onDeal"
                     >
                         <i class="el-icon-s-tools"></i>
@@ -25,13 +25,13 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item @click.native="handleEdit">
-                                    <el-button class="u-btn" type="primary" size="mini"> 编辑 </el-button>
+                                    <el-button class="u-btn" type="primary" size="small" icon="el-icon-edit-outline">编辑</el-button>
                                 </el-dropdown-item>
                                 <el-dropdown-item v-if="data.status === 1" @click.native="handleTransfer">
-                                    <el-button class="u-btn" type="warning" size="mini"> 转交 </el-button>
+                                    <el-button class="u-btn" type="warning" size="small" icon="el-icon-right">转交</el-button>
                                 </el-dropdown-item>
                                 <el-dropdown-item v-if="data.status === 2" @click.native="handleClose">
-                                    <el-button type="danger" size="mini">关闭</el-button>
+                                    <el-button class="u-btn" type="info" size="small" icon="el-icon-circle-close">关闭</el-button>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
@@ -205,8 +205,8 @@
                             <span class="u-name">{{ item.display_name }}</span>
                         </a>
                     </div>
-                    <div class="u-content" v-else>{{ logMap(log.status) }} 了工单</div>
-                    <div class="u-remark">{{ log.remark || "-" }}</div>
+                    <div class="u-content" v-else>{{ logMap(log.status) }}工单</div>
+                    <div class="u-remark" v-if="log.remark">{{ log.remark || "-" }}</div>
                 </el-timeline-item>
             </el-timeline>
             <el-empty v-else description="暂无日志"></el-empty>
