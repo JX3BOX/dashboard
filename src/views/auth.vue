@@ -57,7 +57,7 @@ export default {
         return {
             content: "",
             data: {},
-            oauth: ["wechat_mp_openid", "wechat_miniprogram_openid", "user_phone"],
+            oauth: ["wechat_mp_openid", "wechat_miniprogram_openid"], // "user_phone"
 
             types,
             loading: false,
