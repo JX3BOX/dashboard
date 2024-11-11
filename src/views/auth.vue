@@ -34,15 +34,15 @@ import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { checkOAuth } from "@/service/profile";
 
 const types = {
-    wechat_mp: {
+    wechat_mp_openid: {
         icon: "official",
         name: "微信公众号",
     },
-    wechat_miniprogram: {
+    wechat_miniprogram_openid: {
         icon: "app",
         name: "微信小程序",
     },
-    phone: {
+    user_phone: {
         icon: "phone",
         name: "手机号",
     },
@@ -57,7 +57,7 @@ export default {
         return {
             content: "",
             data: {},
-            oauth: ["wechat_mp", "wechat_miniprogram", "phone"],
+            oauth: ["wechat_mp_openid", "wechat_miniprogram_openid", "user_phone"],
 
             types,
             loading: false,
@@ -72,12 +72,7 @@ export default {
     },
     methods: {
         checkStatus: function (type) {
-            if (type == "qq" || type == "wechat") {
-                return !!this.data[type + "_unionid"];
-            } else if (type == "wechat_miniprogram") {
-                return !!this.data[type + "_openid"];
-            }
-            return !!this.data[type + "_id"];
+            return !!this.data[type]
         },
         getNickname: function (type) {
             return this.data[type + "_name"] || "已绑定";
@@ -95,9 +90,9 @@ export default {
         },
         toBind(type) {
             const routeName = {
-                "wechat_mp": "notice",
-                "wechat_miniprogram": "connect",
-                "phone": "notice",
+                "wechat_mp_openid": "notice",
+                "wechat_miniprogram_openid": "connect",
+                "user_phone": "notice",
             }[type];
 
             this.$router.push({ name: routeName });
