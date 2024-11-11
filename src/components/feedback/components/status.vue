@@ -59,7 +59,7 @@ export default {
             if (this.staged.status === 2) {
                 str = "处理完成";
             }
-            if (this.staged.status === 3) {
+            if (this.staged.status === 10 || this.staged.status === 11) {
                 str = "结束工单";
             }
             if (this.staged.status === 2 && this.isClose) {
@@ -78,10 +78,14 @@ export default {
     },
     mounted() {
         this.form.repository = this.staged.repository;
-        if (this.staged.status === 3) {
+        if (this.staged.status === 1) {
+            this.form.status = 2;
+        }
+        if (this.staged.status === 2) {
             this.form.status = 10;
-        } else {
-            this.form.status = this.staged.status + 1;
+        }
+        if (this.staged.status === 10 || this.staged.status === 11) {
+            this.form.status = 12;
         }
     },
     methods: {
