@@ -353,7 +353,7 @@ export default {
     },
     methods: {
         logMap(status) {
-            let str = "操作";
+            let str = "创建";
             if (status === 2) {
                 str = "开始处理";
             }
