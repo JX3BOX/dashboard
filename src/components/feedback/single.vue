@@ -329,7 +329,8 @@ export default {
             return list;
         },
         currentStep() {
-            return this.statusList.findIndex((item) => item.value === this.data.status);
+            const index = this.statusList.findIndex((item) => item.value === this.data.status) + 1;
+            return index;
         },
         isOver() {
             return this.data.status === 12;
