@@ -7,6 +7,9 @@
 .m-feed-log {
     flex: none;
     width: 280px;
+    @media screen and (max-width: @phone) {
+        .none;
+    }
     .el-icon-document {
         margin-right: 5px;
     }
@@ -48,6 +51,9 @@
 }
 .m-feed-content {
     width: calc(100% - 300px);
+    @media screen and (max-width: @phone) {
+        .w(100%);
+    }
 
     .el-step__icon {
         width: 20px;
@@ -56,12 +62,12 @@
     .el-step__icon-inner {
         .fz(12px);
     }
-    .el-step__title{
+    .el-step__title {
         .fz(14px);
         .bold;
     }
 
-    .is-process{
+    .is-process {
         .el-step__icon {
             background: orange;
             border-color: orange;
@@ -70,10 +76,10 @@
             color: #fff;
         }
     }
-    .el-step__title.is-process{
+    .el-step__title.is-process {
         color: orange !important;
     }
-    .is-success{
+    .is-success {
         .el-step__icon {
             background: #49c10f;
         }
@@ -81,8 +87,6 @@
             color: #fff;
         }
     }
-
-
 }
 .m-single-content {
     .pt(10px);
@@ -102,9 +106,13 @@
     .m-block {
         .flex;
         align-items: center;
+        gap: 20px;
+
+        @media screen and (max-width: @phone) {
+            flex-wrap: wrap;
+        }
     }
     .u-subblock {
-        .mr(20px);
         .flex;
         align-items: center;
 
@@ -114,6 +122,9 @@
     }
     .m-steps {
         margin-top: 20px;
+        @media screen and (max-width: @phone) {
+            .none;
+        }
     }
     .m-type {
         .flex;
