@@ -121,7 +121,6 @@
                         </div>
                     </div>
                 </div>
-                <template v-if="!isOver">
                     <div class="m-feedback-thx">
                         <el-divider content-position="left"
                             ><i class="el-icon-coin"></i> 反馈回馈
@@ -175,7 +174,6 @@
                         >
                         <Comment :id="id" category="feedback" order="desc" />
                     </div>
-                </template>
             </main>
 
             <Homework
@@ -331,9 +329,6 @@ export default {
         currentStep() {
             const index = this.statusList.findIndex((item) => item.value === this.data.status) + 1;
             return index;
-        },
-        isOver() {
-            return this.data.status === 12;
         },
     },
     watch: {
