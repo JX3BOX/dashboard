@@ -13,15 +13,17 @@
                         <!-- {{ checkStatus(type) ? getNickname(type) : "未绑定" }} -->
                     </span>
                 </span>
-                <el-button
-                    class="u-button"
-                    :type="!checkStatus(type) ? 'primary' : 'danger'"
-                    @click="toBind(type)"
-                    v-if="!checkStatus(type)"
-                >
-                    前往绑定
-                </el-button>
-                <i class="el-icon-success u-bind" v-else></i>
+                <template v-if="type != 'user_phone'">
+                    <el-button
+                        class="u-button"
+                        :type="!checkStatus(type) ? 'primary' : 'danger'"
+                        @click="toBind(type)"
+                        v-if="!checkStatus(type)"
+                    >
+                        前往绑定
+                    </el-button>
+                    <i class="el-icon-success u-bind" v-else></i>
+                </template>
             </div>
         </div>
     </uc>
@@ -57,7 +59,7 @@ export default {
         return {
             content: "",
             data: {},
-            oauth: ["wechat_mp_openid", "wechat_miniprogram_openid"], // "user_phone"
+            oauth: ["wechat_mp_openid", "wechat_miniprogram_openid", "user_phone"],
 
             types,
             loading: false,
@@ -72,31 +74,33 @@ export default {
     },
     methods: {
         checkStatus: function (type) {
-            return !!this.data[type]
+            return !!this.data[type];
         },
         getNickname: function (type) {
             return this.data[type + "_name"] || "已绑定";
         },
         icon: function (type) {
-            return __cdn + "design/user/" + types[type]['icon'] + ".png";
+            return __cdn + "design/user/" + types[type]["icon"] + ".png";
         },
         loadAuth() {
             this.loading = true;
-            checkOAuth().then((res) => {
-                this.data = res.data.data;
-            }).finally(() => {
-                this.loading = false;
-            });
+            checkOAuth()
+                .then((res) => {
+                    this.data = res.data.data;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         },
         toBind(type) {
             const routeName = {
-                "wechat_mp_openid": "notice",
-                "wechat_miniprogram_openid": "connect",
-                "user_phone": "notice",
+                wechat_mp_openid: "notice",
+                wechat_miniprogram_openid: "connect",
+                user_phone: "notice",
             }[type];
 
             this.$router.push({ name: routeName });
-        }
+        },
     },
 };
 </script>
@@ -124,16 +128,16 @@ export default {
         }
     }
 
-    .m-dashboard-content-list{
+    .m-dashboard-content-list {
         .flex;
         box-sizing: border-box;
         flex-direction: column;
         gap: 20px;
-        .u-profile-item{
+        .u-profile-item {
             .flex;
             align-items: center;
-            gap:20px;
-            padding:0 20px;
+            gap: 20px;
+            padding: 0 20px;
             .bold;
         }
     }
@@ -161,7 +165,7 @@ export default {
 
     .u-status {
         .nobreak;
-        .w(200px)
+        .w(200px);
     }
 
     .u-tip {
