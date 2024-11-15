@@ -185,6 +185,7 @@
                 :userId="data.user_id"
                 :article-id="~~id"
                 category="feedback"
+                placeholder="感谢！Best wishes (#^.^#)"
                 @updateRecord="loadRecord"
             ></Homework>
         </div>
