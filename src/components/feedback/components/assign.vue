@@ -1,7 +1,7 @@
 <template>
     <el-dialog class="w-dialog m-feedback-assign" :visible.sync="show" :title="title" @close="close">
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-            <el-form-item label="指派至" prop="assign">
+            <el-form-item v-if="type !== 'coordination'" label="指派至" prop="assign">
                 <el-select
                     v-model="form.assign"
                     multiple
@@ -23,7 +23,29 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="项目" prop="repository">
+            <el-form-item v-else label="协同给" prop="coordination">
+                <el-select
+                    v-model="form.coordination"
+                    multiple
+                    class="u-select"
+                    filterable
+                    :filter-method="dataFilter"
+                    style="width: 100%"
+                >
+                    <el-option
+                        :label="item.teammate_info.display_name"
+                        :value="item.user_id"
+                        v-for="item in showTeams"
+                        :key="item.id"
+                    >
+                        <div class="m-assign-user">
+                            <img class="u-assign-avatar" :src="item.teammate_info.user_avatar" />
+                            {{ `${item.teammate_info.display_name} ( ${item.user_id} ) - ${group[item.group]}` }}
+                        </div>
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item v-if="type !== 'coordination'" label="项目" prop="repository">
                 <el-input v-model="form.repository" placeholder="请输入GitHub仓库" clearable></el-input>
             </el-form-item>
             <el-form-item label="备注" prop="remark">
@@ -42,7 +64,7 @@
 </template>
 
 <script>
-import { assignMiscFeedback, transferMiscFeedback } from "@/service/feedback";
+import { assignMiscFeedback, transferMiscFeedback, coordinationMiscFeedback } from "@/service/feedback";
 import { cloneDeep, throttle } from "lodash";
 const { group } = require("@/assets/data/feedback.json");
 export default {
@@ -72,6 +94,7 @@ export default {
             show: false,
             showTeams: [],
             form: {
+                coordination: [],
                 assign: [],
                 remark: "",
                 repository: "",
@@ -84,7 +107,14 @@ export default {
     },
     computed: {
         title() {
-            return this.type === "assign" ? "指派" : "转交";
+            let title = "指派";
+            if (this.type === "transfer") {
+                title = "转交";
+            }
+            if (this.type === "coordination") {
+                title = "协同";
+            }
+            return title;
         },
         id() {
             return this.staged.id;
@@ -97,10 +127,14 @@ export default {
                 this.show = bol;
                 if (bol) {
                     this.showTeams = cloneDeep(this.teams);
-                    this.form.repository = this.staged.repository;
-                    if (this.type === "transfer") {
-                        this.form.assign = this.staged.assign;
-                        this.form.remark = this.staged.remark;
+                    if (this.type === "coordination") {
+                        this.form.coordination = this.staged.coordination || [];
+                    } else {
+                        this.form.repository = this.staged.repository;
+                        if (this.type === "transfer") {
+                            this.form.assign = this.staged.assign;
+                            this.form.remark = this.staged.remark;
+                        }
                     }
                 }
             },
@@ -128,7 +162,17 @@ export default {
                     if (this.loading) return;
                     const data = cloneDeep(this.form);
                     this.loading = true;
-                    const fn = this.type === "assign" ? assignMiscFeedback : transferMiscFeedback;
+                    let fn = assignMiscFeedback;
+                    if (this.type === "transfer") {
+                        fn = transferMiscFeedback;
+                    }
+                    if (this.type === "coordination") {
+                        fn = coordinationMiscFeedback;
+                        delete data.assign;
+                        delete data.repository;
+                    } else {
+                        delete data.coordination;
+                    }
                     fn(this.id, data)
                         .then(() => {
                             this.$message.success("提交成功");
