@@ -102,6 +102,7 @@ export default {
             group,
             rules: {
                 assign: [{ required: true, message: "请选择指派人", trigger: ["blur", "change"] }],
+                coordination: [{ required: true, message: "请选择协同人", trigger: ["blur", "change"] }],
             },
         };
     },
