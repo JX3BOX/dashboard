@@ -94,6 +94,7 @@ import { msgTab } from "@/assets/data/tabs.json";
 import { getMsgs, readMsg, removeMsg, readAll, getCommentMsgDetail } from "../service/msg.js";
 import { showTime } from "@jx3box/jx3box-common/js/moment.js";
 import { getLink } from "@jx3box/jx3box-common/js/utils";
+import mitt from "@/utils/mitt";
 import { Base64 } from "js-base64";
 const ignoreLinkTypes = ["namespace"];
 
@@ -182,6 +183,8 @@ export default {
                     if (res.data.code === 0) {
                         this.changePage(this.page);
                         this.msgChangeCount = 1; // 表示全部已读
+
+                        mitt.emit("refresh");
                     } else {
                         this.$notify.error({ title: res.data.message });
                     }
