@@ -8,7 +8,8 @@ module.exports = {
         proxy: {
             // SERVER by iRuxu
             "/api/cms": {
-                target: process.env["DEV_SERVER"] == "true" ? "http://localhost:7100" : "https://cms.jx3box.com",
+                target: "https://cms.jx3box.com",
+                // target: process.env["DEV_SERVER"] == "true" ? "http://localhost:7100" : "https://cms.jx3box.com",
             },
             // NEXT2服务
             "/api/article": {
@@ -57,6 +58,12 @@ module.exports = {
             },
             "/api/comment": {
                 target: "https://next2.jx3box.com",
+                onProxyReq: function (request) {
+                    request.setHeader("origin", "");
+                },
+            },
+            "/api/userdata": {
+                target: "https://dev.next2.jx3box.com",
                 onProxyReq: function (request) {
                     request.setHeader("origin", "");
                 },
