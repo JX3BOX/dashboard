@@ -27,6 +27,7 @@
     "localforage": "^1.7.3",
     "lodash": "^4.17.15",
     "lua-json": "^1.0.0",
+    "mitt": "^3.0.1",
     "moment": "^2.29.4",
     "qs": "^6.9.4",
     "sterilizer": "^0.1.1",
