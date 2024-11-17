@@ -1,23 +1,26 @@
 import { $next } from "@jx3box/jx3box-common/js/https";
-import qs from "qs";
 
 function getMsgs(params) {
-    return $next().get(`/api/messages`, { params });
+    return $next().get(`/api/next2/userdata/messages`, { params });
 }
 
 function readMsg(id) {
-    return $next().put(`/api/messages/read/${id}`);
+    return $next().put(`/api/next2/userdata/messages/read/${id}`);
 }
 
 function readAll() {
-    return $next().put(`/api/messages/read`);
+    return $next().put(`/api/next2/userdata/messages/read`);
 }
 
 function removeMsg(id) {
-    return $next().delete(`/api/messages/${id}`);
+    return $next().delete(`/api/next2/userdata/messages/${id}`);
 }
 
-function getMsgUnread() {
+function getMessageUnread() {
+    return $next({ mute: true }).get("/api/next2/userdata/messages/unread_total");
+}
+
+function getLetterUnread() {
     return $next({ mute: true }).get("/api/letter/unread/count");
 }
 
@@ -25,4 +28,4 @@ function getCommentMsgDetail(id) {
     return $next().get(`/api/next2/comment/item/${id}`);
 }
 
-export { getMsgs, readMsg, readAll, removeMsg, getMsgUnread, getCommentMsgDetail };
+export { getMsgs, readMsg, readAll, removeMsg, getLetterUnread, getCommentMsgDetail, getMessageUnread };

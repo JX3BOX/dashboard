@@ -17,13 +17,13 @@
                     <template slot="prepend">关键词</template>
                     <el-button slot="append" icon="el-icon-search" @click="changePage(1)"></el-button>
                 </el-input>
-                <el-button class="u-read-all" type="primary" @click="read(null)" :disabled="!unread_total">
+                <el-button class="u-read-all" type="primary" @click="read(null)">
                     <i class="el-icon el-icon-check"></i>
                     <span v-text="'全部设为已读'"></span>
                 </el-button>
             </div>
             <ul class="m-dashboard-box-list" v-if="data.length">
-                <li v-for="(item, i) in data" :key="i" :class="{ on: item.read == 1 }" v-show="item.deleted == 0">
+                <li v-for="(item, i) in data" :key="i" :class="{ on: item.read == 1 }">
                     <div class="u-primary">
                         <span class="u-content">
                             <span class="u-label u-hasChecked" v-if="item.read == 1">已读</span>
@@ -156,7 +156,7 @@ export default {
                 .then((res) => {
                     this.unread_total = res.data.data.unread_count;
                     this.total = res.data.data.page.total;
-                    this.data = res.data.data.data || [];
+                    this.data = res.data.data.list || [];
                     this.paginationShow = true;
                 })
                 .catch((err) => {

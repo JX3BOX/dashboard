@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { getMsgUnread } from "@/service/msg";
+import { getLetterUnread, getMessageUnread } from "@/service/msg";
 export default {
     name: "",
     props: {
@@ -32,7 +32,10 @@ export default {
                 msg: "message",
                 letter: "letter",
             },
-            count: {},
+            count: {
+                message: 0,
+                letter: 0,
+            },
         };
     },
     watch: {
@@ -68,10 +71,14 @@ export default {
             this.$router.push({ name: this.active });
         },
         loadCount() {
-            getMsgUnread().then((res) => {
+            getLetterUnread().then((res) => {
                 const data = res.data?.data || {};
-                this.count = data;
+                this.count.letter = data.letter || 0;
             });
+
+            getMessageUnread().then((res) => {
+                this.count.message = res.data.data?.unread_count || 0;
+            })
         },
     },
     mounted: function () {
