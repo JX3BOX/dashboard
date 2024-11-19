@@ -85,6 +85,11 @@ function transferMiscFeedback(id, data) {
     return $next().put(`/api/next2/miscfeedback/manager/item/${id}/transfer`, data);
 }
 
+// 协同
+function coordinationMiscFeedback(id, data) {
+    return $next().put(`/api/next2/miscfeedback/manager/item/${id}/coordination`, data);
+}
+
 export {
     leave,
     feedback,
@@ -97,4 +102,5 @@ export {
     assignMiscFeedback,
     switchMiscFeedback,
     transferMiscFeedback,
+    coordinationMiscFeedback,
 };

@@ -34,11 +34,19 @@
                                         >转交</el-button
                                     >
                                 </el-dropdown-item>
-                                <el-dropdown-item v-if="data.status === 2" @click.native="handleClose">
-                                    <el-button class="u-btn" type="info" size="small" icon="el-icon-circle-close"
-                                        >关闭</el-button
-                                    >
-                                </el-dropdown-item>
+                                <template v-if="data.status === 2">
+                                    <el-dropdown-item @click.native="handleCoordination">
+                                        <el-button class="u-btn" type="success" size="small" icon="el-icon-help"
+                                            >协同</el-button
+                                        >
+                                    </el-dropdown-item>
+
+                                    <el-dropdown-item @click.native="handleClose">
+                                        <el-button class="u-btn" type="info" size="small" icon="el-icon-circle-close"
+                                            >关闭
+                                        </el-button>
+                                    </el-dropdown-item>
+                                </template>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -75,6 +83,21 @@
                                     :src="showAvatar('https://oss.jx3box.com/upload/avatar/2021/3/18/6568744.png')"
                                 />
                                 <span class="u-assign-name">JX3BOX</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="u-subblock" v-if="data.coordination_user?.length">
+                        <span class="u-label">协同人：</span>
+                        <div class="u-list u-list-assign">
+                            <a
+                                class="u-item u-assign"
+                                :href="authorLink(item.id)"
+                                target="_blank"
+                                v-for="item in data.coordination_user"
+                                :key="item.id"
+                            >
+                                <img class="u-assign-avatar" :src="showAvatar(item.avatar)" />
+                                <span class="u-assign-name">{{ item.display_name }}</span>
                             </a>
                         </div>
                     </div>
@@ -121,59 +144,57 @@
                         </div>
                     </div>
                 </div>
-                    <div class="m-feedback-thx">
-                        <el-divider content-position="left"
-                            ><i class="el-icon-coin"></i> 反馈回馈
-                            <el-button v-if="isAdmin" size="mini" class="u-thx-trigger" type="success" @click="onThx"
-                                >品鉴</el-button
-                            ></el-divider
-                        >
-                        <div class="u-thx-table">
-                            <el-table size="mini" stripe border :data="thxData">
-                                <el-table-column label="参与打赏" prop="ext_operate_user_info">
-                                    <template #default="{ row }">
-                                        <div class="m-user">
-                                            <img class="u-gift" svg-inline :src="giftUrl" />
-                                            <a
-                                                class="u-item u-user"
-                                                :href="authorLink(row.ext_operate_user_info.id)"
-                                                target="_blank"
-                                            >
-                                                <img
-                                                    class="u-user-avatar"
-                                                    :src="showAvatar(row.ext_operate_user_info.avatar)"
-                                                />
-                                                <span class="u-user-name">{{
-                                                    row.ext_operate_user_info.display_name
-                                                }}</span>
-                                            </a>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="盒币" prop="count">
-                                    <template #default="{ row }">
-                                        <span class="u-count">+{{ row.count }}</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="寄语" prop="remark"></el-table-column>
-                                <el-table-column label="时间" prop="created_at">
-                                    <template #default="{ row, $index }">
-                                        <time :datetime="row.created_at">{{ row.created_at }}</time>
+                <div class="m-feedback-thx">
+                    <el-divider content-position="left"
+                        ><i class="el-icon-coin"></i> 反馈回馈
+                        <el-button v-if="isAdmin" size="mini" class="u-thx-trigger" type="success" @click="onThx"
+                            >品鉴</el-button
+                        ></el-divider
+                    >
+                    <div class="u-thx-table">
+                        <el-table size="mini" stripe border :data="thxData">
+                            <el-table-column label="参与打赏" prop="ext_operate_user_info">
+                                <template #default="{ row }">
+                                    <div class="m-user">
+                                        <img class="u-gift" svg-inline :src="giftUrl" />
+                                        <a
+                                            class="u-item u-user"
+                                            :href="authorLink(row.ext_operate_user_info.id)"
+                                            target="_blank"
+                                        >
+                                            <img
+                                                class="u-user-avatar"
+                                                :src="showAvatar(row.ext_operate_user_info.avatar)"
+                                            />
+                                            <span class="u-user-name">{{
+                                                row.ext_operate_user_info.display_name
+                                            }}</span>
+                                        </a>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="盒币" prop="count">
+                                <template #default="{ row }">
+                                    <span class="u-count">+{{ row.count }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="寄语" prop="remark"></el-table-column>
+                            <el-table-column label="时间" prop="created_at">
+                                <template #default="{ row, $index }">
+                                    <time :datetime="row.created_at">{{ row.created_at }}</time>
 
-                                        <span class="u-delete" v-if="isSuperAdmin" @click="recovery(row, $index)">
-                                            <i class="el-icon-delete"></i>撤销
-                                        </span>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
+                                    <span class="u-delete" v-if="isSuperAdmin" @click="recovery(row, $index)">
+                                        <i class="el-icon-delete"></i>撤销
+                                    </span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                     </div>
-                    <div class="m-reply" v-if="done">
-                        <el-divider content-position="left"
-                            ><i class="el-icon-chat-line-square"></i> 回复处理</el-divider
-                        >
-                        <Comment :id="id" category="feedback" order="desc" />
-                    </div>
+                </div>
+                <div class="m-reply" v-if="done">
+                    <el-divider content-position="left"><i class="el-icon-chat-line-square"></i> 回复处理</el-divider>
+                    <Comment :id="id" category="feedback" order="desc" />
+                </div>
             </main>
 
             <Homework
@@ -185,6 +206,7 @@
                 :userId="data.user_id"
                 :article-id="~~id"
                 category="feedback"
+                placeholder="感谢！Best wishes (#^.^#)"
                 @updateRecord="loadRecord"
             ></Homework>
         </div>
@@ -212,6 +234,20 @@
                             <img class="u-avatar" :src="showAvatar(item.avatar)" />
                             <span class="u-name">{{ item.display_name }}</span>
                         </a>
+                    </div>
+                    <div class="u-content" v-else-if="log.status === 5">
+                        邀请
+                        <a
+                            class="u-item u-user"
+                            v-for="(item, i) in log.coordination_list"
+                            :key="i"
+                            :href="authorLink(item.id)"
+                            target="_blank"
+                        >
+                            <img class="u-avatar" :src="showAvatar(item.avatar)" />
+                            <span class="u-name">{{ item.display_name }}</span>
+                        </a>
+                        进行协同
                     </div>
                     <div class="u-content" v-else>{{ logMap(log.status) }}工单</div>
                     <div class="u-remark" v-if="log.remark">{{ log.remark || "-" }}</div>
@@ -402,6 +438,10 @@ export default {
             this.opType = "transfer";
             this.assignVisible = true;
         },
+        handleCoordination() {
+            this.opType = "coordination";
+            this.assignVisible = true;
+        },
         handleStatus() {
             this.isClose = false;
             this.statusVisible = true;
@@ -428,6 +468,7 @@ export default {
                 this.loading = true;
                 let res = await getFeedback(this.id);
                 this.data = res.data.data;
+                console.log(this.data);
                 this.data.content = this.data.content.replace(/\n/g, "<br>");
                 this.done = true;
             } catch (e) {

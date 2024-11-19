@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Header></Header>
+        <Header :key="headerKey" ></Header>
         <Breadcrumb name="个人中心" slug="dashboard" root="/dashboard" :crumbEnable="true">
             <img slot="logo" svg-inline src="../assets/img/logo.svg" />
             <Info />
@@ -18,15 +18,23 @@
 import Info from "@/components/Info.vue";
 import Nav from "@/components/Nav.vue";
 import checkLogin from "../utils/checkLogin";
+import mitt from "@/utils/mitt";
 export default {
     name: "dashboard",
     props: [],
     data: function () {
-        return {};
+        return {
+            headerKey: 0,
+        };
     },
     methods: {},
     created: function () {
         checkLogin();
+    },
+    mounted() {
+        mitt.on("refresh", () => {
+            this.headerKey++;
+        });
     },
     components: {
         Info,
