@@ -112,7 +112,7 @@ export default {
                     type: "success",
                 });
             });
-            this.$router.push("/msg");
+            this.$router.push("/privacy?tab=whitelist");
         },
         accept: function () {
             acceptKithInvitation(this.uid).then((res) => {
@@ -120,7 +120,7 @@ export default {
                     message: "操作成功",
                     type: "success",
                 });
-                this.$router.push("/msg");
+                this.$router.push("/privacy?tab=whitelist");
             });
         },
     },
