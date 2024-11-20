@@ -36,6 +36,7 @@
                 </el-date-picker>
             </div>
             <el-checkbox class="u-only-check" v-model="onlyMe"> 指派给我的 </el-checkbox>
+            <el-checkbox class="u-only-check" v-model="isSupport"> 我参与协同的 </el-checkbox>
         </div>
         <!-- list -->
         <div class="m-feedback-list" v-loading="loading">
@@ -109,6 +110,22 @@
                         </div>
                     </template>
                 </el-table-column>
+                <el-table-column label="协同">
+                    <template #default="{ row }">
+                        <div class="m-assign" v-if="row.coordination_user && row.coordination_user.length">
+                            <a
+                                class="u-assign"
+                                :href="authorLink(coordination.id)"
+                                target="_blank"
+                                v-for="coordination in row.coordination_user"
+                                :key="coordination.id"
+                            >
+                                <img class="u-assign-avatar" :src="showAvatar(coordination.avatar)" />
+                                <span class="u-assign-name">{{ coordination.display_name }}</span>
+                            </a>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="提交时间" prop="created_at">
                     <template #default="{ row }">
                         {{ formatTime(row.created_at) }}
@@ -173,6 +190,7 @@ export default {
 
             isEditor: false,
             onlyMe: true,
+            isSupport: true,
 
             time: "",
             select: "",
@@ -195,6 +213,11 @@ export default {
                 _params.assign = this.user.uid;
             } else {
                 _params.assign = this.select;
+            }
+            if (this.isSupport) {
+                _params.coordination = this.user.uid;
+            } else {
+                _params.coordination = "";
             }
             if (this.time) {
                 // time 是月份
