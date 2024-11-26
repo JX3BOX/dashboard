@@ -17,6 +17,12 @@
             <el-form-item label="接受赠礼">
                 <el-switch v-model="conf.allow_cny" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
             </el-form-item>
+            <el-form-item label="接受虚拟礼物">
+                <el-switch v-model="conf.allow_gift_of_mall_virtual_goods" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
+            </el-form-item>
+            <el-form-item label="订阅通知">
+                <el-switch v-model="conf.feed_message" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
+            </el-form-item>
 
 
             <!-- <el-form-item label="评论邮件通知">
@@ -57,6 +63,8 @@ export default {
                 cmt_order: "DESC",
                 editor_mode: "tinymce",
                 allow_cny: 1,
+                allow_gift_of_mall_virtual_goods: 1,
+                feed_message: 1,
                 // hotkey: false,
                 // game_setting: false,
                 // custom_ui: false,
