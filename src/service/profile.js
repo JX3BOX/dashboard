@@ -88,6 +88,20 @@ function unbindWechat() {
     return $cms().get(`/api/cms/wechat/mp/unbind`);
 }
 
+// 7.手机
+// -------------------------------
+function sendPhoneCode(data) {
+    return $cms().post("/api/cms/account/oauth/phone/bind", data, {
+        app: "jx3box",
+    });
+}
+
+function verifyPhone(data) {
+    return $cms().put("/api/cms/account/oauth/phone/verify", data, {
+        app: "jx3box",
+    });
+}
+
 export {
     updateProfile,
     getProfile,
@@ -103,5 +117,8 @@ export {
     getUserOverview,
     getWechatQrcode,
     unbindWechat,
-    sendVerifyCode
+    sendVerifyCode,
+
+    sendPhoneCode,
+    verifyPhone
 };

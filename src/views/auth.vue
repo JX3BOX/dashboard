@@ -13,7 +13,7 @@
                         <!-- {{ checkStatus(type) ? getNickname(type) : "未绑定" }} -->
                     </span>
                 </span>
-                <template v-if="type != 'user_phone'">
+                <template v-if="type != 'user_phone' || (type == 'user_phone' && level >= 3)">
                     <el-button
                         class="u-button"
                         :type="!checkStatus(type) ? 'primary' : 'danger'"
@@ -34,6 +34,8 @@ import { getBreadcrumb } from "@jx3box/jx3box-common/js/api_misc";
 import uc from "@/components/uc.vue";
 import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { checkOAuth } from "@/service/profile";
+import User from "@jx3box/jx3box-common/js/user";
+import { getMyInfo } from "@/service/index.js";
 
 const types = {
     wechat_mp_openid: {
@@ -63,7 +65,14 @@ export default {
 
             types,
             loading: false,
+
+            info: {},
         };
+    },
+    computed: {
+        level: function () {
+            return User.getLevel(this.info?.experience || 0);
+        },
     },
     mounted() {
         getBreadcrumb("auth_ac").then((res) => {
@@ -71,6 +80,8 @@ export default {
         });
 
         this.loadAuth();
+
+        this.loadUserInfo();
     },
     methods: {
         checkStatus: function (type) {
@@ -100,6 +111,11 @@ export default {
             }[type];
 
             this.$router.push({ name: routeName });
+        },
+        loadUserInfo: function () {
+            getMyInfo().then((res) => {
+                this.info = res.data.data || {};
+            });
         },
     },
 };
