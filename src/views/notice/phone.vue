@@ -16,16 +16,32 @@
             custom-class="m-notice-phone__dialog"
             :before-close="handleClose"
         >
-            <div class="m-phone-content" v-loading="loading">
+            <!-- <div class="m-phone-content" v-loading="loading">
                 <img class="u-qr" src="../../assets/img/bindphone.jpg" />
                 <i class="u-tip">打开微信扫一扫，{{ phone ? "修改" : "绑定" }}手机号</i>
+            </div> -->
+            <div class="m-phone-content">
+                <el-input v-model="user_phone" placeholder="输入手机号">
+                    <template #prepend>
+                        <i class="el-icon-phone"></i>
+                    </template>
+                </el-input>
+                <el-input v-model="code" placeholder="输入验证码">
+                    <template #prepend>
+                        <i class="el-icon-lock"></i>
+                    </template>
+                    <template #append>
+                        <el-button :disabled="!user_phone || interval > 0" @click="sendCode">{{ interval > 0 ? interval + 's' : '发送验证码' }}</el-button>
+                    </template>
+                </el-input>
+                <el-button class="u-btn" type="primary" @click="verify" :disabled="!user_phone || !code">确认</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { getProfile } from "@/service/profile";
+import { getProfile, sendPhoneCode, verifyPhone } from "@/service/profile";
 export default {
     name: "phone",
     data: function () {
@@ -37,6 +53,12 @@ export default {
             isPhone: window.innerWidth < 768,
 
             loading: false,
+
+            user_phone: "",
+            code: "",
+
+            timer: null,
+            interval: 0,
         };
     },
     methods: {
@@ -50,11 +72,46 @@ export default {
         handleClose: function () {
             this.visible = false;
         },
+        sendCode: function () {
+            // 检验手机号
+            const regex = /^1[3456789]\d{9}$/;
+            if (!regex.test(this.user_phone)) {
+                this.$message.error("手机号格式错误");
+                return;
+            }
+            this.interval = 60;
+            sendPhoneCode({phone: this.user_phone}).then((res) => {
+                this.timer = setInterval(() => {
+                    if (this.interval > 0) {
+                        this.interval--;
+                    } else {
+                        clearInterval(this.timer);
+                    }
+                }, 1000);
+                this.$message.success("发送成功");
+            });
+        },
+        verify: function () {
+            // 检验手机号
+            const regex = /^1[3456789]\d{9}$/;
+            if (!regex.test(this.user_phone)) {
+                this.$message.error("手机号格式错误");
+                return;
+            }
+            verifyPhone({phone: this.user_phone, code: this.code}).then((res) => {
+                this.$message.success("绑定成功");
+                this.visible = false;
+                this.phone = this.user_phone;
+            });
+        },
     },
     mounted: function () {
         getProfile().then((res) => {
             this.phone = res.data.data.user_phone;
         });
+    },
+    beforeDestroy: function () {
+        clearInterval(this.timer);
     },
 };
 </script>
@@ -85,6 +142,10 @@ export default {
         }
         .u-error {
             .fz(120px);
+        }
+
+        .u-btn {
+            width: 100%;
         }
     }
 }
