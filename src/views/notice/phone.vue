@@ -15,33 +15,40 @@
             :width="isPhone ? '95%' : '400px'"
             custom-class="m-notice-phone__dialog"
             :before-close="handleClose"
+            :close-on-click-modal="false"
         >
             <!-- <div class="m-phone-content" v-loading="loading">
                 <img class="u-qr" src="../../assets/img/bindphone.jpg" />
                 <i class="u-tip">打开微信扫一扫，{{ phone ? "修改" : "绑定" }}手机号</i>
             </div> -->
             <div class="m-phone-content">
-                <el-input v-model="user_phone" placeholder="输入手机号">
-                    <template #prepend>
-                        <i class="el-icon-phone"></i>
-                    </template>
-                </el-input>
-                <el-input v-model="code" placeholder="输入验证码">
-                    <template #prepend>
-                        <i class="el-icon-lock"></i>
-                    </template>
-                    <template #append>
-                        <el-button :disabled="!user_phone || interval > 0" @click="sendCode">{{ interval > 0 ? interval + 's' : '发送验证码' }}</el-button>
-                    </template>
-                </el-input>
-                <el-button class="u-btn" type="primary" @click="verify" :disabled="!user_phone || !code">确认</el-button>
+                <el-form :model="form" :rules="rules" status-icon ref="phoneRef">
+                    <el-form-item label="手机号" prop="user_phone">
+                        <el-input v-model="form.user_phone" placeholder="输入手机号">
+                            <template #prepend>
+                                <i class="el-icon-phone"></i>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="验证码" prop="code">
+                        <el-input v-model="form.code" placeholder="输入验证码">
+                            <template #prepend>
+                                <i class="el-icon-lock"></i>
+                            </template>
+                            <template #append>
+                                <el-button :disabled="canSendCode" @click="sendCode">{{ interval > 0 ? interval + 's' : '发送验证码' }}</el-button>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                </el-form>
+                <el-button class="u-btn" type="primary" @click="verify" :disabled="!this.form.user_phone || !this.form.code">确认</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { getProfile, sendPhoneCode, verifyPhone } from "@/service/profile";
+import { getProfile, sendPhoneCode, verifyPhone, checkPhone } from "@/service/profile";
 export default {
     name: "phone",
     data: function () {
@@ -54,12 +61,50 @@ export default {
 
             loading: false,
 
-            user_phone: "",
-            code: "",
+            form: {
+                user_phone: "",
+                code: "",
+            },
 
             timer: null,
             interval: 0,
+            // 已被绑定
+            hasBind: false,
+
+            rules: {
+                user_phone: [
+                    { required: true, message: "请输入手机号", trigger: "blur" },
+                    {
+                        validator: (rule, value, callback) => {
+                            if (!value) {
+                                return callback(new Error("请输入手机号"));
+                            }
+                            if (!/^1[3456789]\d{9}$/.test(value)) {
+                                return callback(new Error("手机号格式错误"));
+                            }
+                            if (value == this.phone) {
+                                return callback(new Error("手机号未变更"));
+                            }
+                            checkPhone({ phone: value }).then((res) => {
+                                if (!res.data.data) {
+                                    this.hasBind = true;
+                                    callback(new Error("手机号已被绑定"));
+                                } else {
+                                    callback();
+                                }
+                            });
+                        },
+                        trigger: "blur",
+                    },
+                ],
+                code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+            }
         };
+    },
+    computed: {
+        canSendCode() {
+            return !this.form.user_phone || this.interval > 0 || this.form.user_phone == this.phone || this.hasBind;
+        }
     },
     methods: {
         phoneStr: function (phone) {
@@ -70,17 +115,22 @@ export default {
             this.visible = false;
         },
         handleClose: function () {
+            this.form.user_phone = "";
+            this.form.code = "";
+            this.interval = 0;
             this.visible = false;
+            clearInterval(this.timer);
+            this.$refs.phoneRef.clearValidate();
         },
         sendCode: function () {
             // 检验手机号
             const regex = /^1[3456789]\d{9}$/;
-            if (!regex.test(this.user_phone)) {
+            if (!regex.test(this.form.user_phone)) {
                 this.$message.error("手机号格式错误");
                 return;
             }
             this.interval = 60;
-            sendPhoneCode({phone: this.user_phone}).then((res) => {
+            sendPhoneCode({phone: this.form.user_phone}).then((res) => {
                 this.timer = setInterval(() => {
                     if (this.interval > 0) {
                         this.interval--;
@@ -94,14 +144,14 @@ export default {
         verify: function () {
             // 检验手机号
             const regex = /^1[3456789]\d{9}$/;
-            if (!regex.test(this.user_phone)) {
+            if (!regex.test(this.form.user_phone)) {
                 this.$message.error("手机号格式错误");
                 return;
             }
-            verifyPhone({phone: this.user_phone, code: this.code}).then((res) => {
+            verifyPhone({phone: this.form.user_phone, code: this.form.code}).then((res) => {
                 this.$message.success("绑定成功");
                 this.visible = false;
-                this.phone = this.user_phone;
+                this.phone = this.form.user_phone;
             });
         },
     },
@@ -147,6 +197,10 @@ export default {
         .u-btn {
             width: 100%;
         }
+    }
+
+    .el-dialog__body {
+        padding-top: 0;
     }
 }
 @media screen and (max-width: @phone) {

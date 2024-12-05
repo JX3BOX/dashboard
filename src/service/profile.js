@@ -102,6 +102,12 @@ function verifyPhone(data) {
     });
 }
 
+function checkPhone(params) {
+    return $cms().get("/api/cms/account/oauth/phone/check", {
+        params,
+    });
+}
+
 export {
     updateProfile,
     getProfile,
@@ -120,5 +126,6 @@ export {
     sendVerifyCode,
 
     sendPhoneCode,
-    verifyPhone
+    verifyPhone,
+    checkPhone,
 };
