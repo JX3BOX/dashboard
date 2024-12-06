@@ -23,14 +23,14 @@
             </div> -->
             <div class="m-phone-content">
                 <el-form :model="form" :rules="rules" status-icon ref="phoneRef">
-                    <el-form-item label="手机号" prop="user_phone">
+                    <el-form-item label="" prop="user_phone">
                         <el-input v-model="form.user_phone" placeholder="输入手机号">
                             <template #prepend>
                                 <i class="el-icon-phone"></i>
                             </template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="验证码" prop="code">
+                    <el-form-item label="" prop="code">
                         <el-input v-model="form.code" placeholder="输入验证码">
                             <template #prepend>
                                 <i class="el-icon-lock"></i>
@@ -197,10 +197,6 @@ export default {
         .u-btn {
             width: 100%;
         }
-    }
-
-    .el-dialog__body {
-        padding-top: 0;
     }
 }
 @media screen and (max-width: @phone) {
