@@ -14,15 +14,29 @@
                         <img :class="'u-' + type" svg-inline :src="icon(type)" />
                         <span class="u-status">
                             {{ types[type].name }}
-                            <!-- {{ checkStatus(type) ? getNickname(type) : "未绑定" }} -->
                         </span>
                     </span>
-                    <el-button
+                    <!-- <el-button
                         class="u-button"
                         :type="!checkStatus(type) ? 'primary' : 'danger'"
                         @click="!checkStatus(type) ? bind(type) : unbind(type)"
                     >
                         {{ !checkStatus(type) ? "立即绑定" : "解除绑定" }}
+                    </el-button> -->
+
+                    <a
+                        class="el-button el-button--primary el-button--large"
+                        v-if="!checkStatus(types[type].idKey)"
+                        :href="getAuthUrl(types[type].uuid)"
+                    >
+                        <span class="u-status">
+                            立即绑定
+                        </span>
+                    </a>
+                    <el-button v-else @click="unbind(types[type].uuid)" size="large" type="danger">
+                        <span class="u-status">
+                            解除绑定
+                        </span>
                     </el-button>
                 </div>
             </div>
@@ -47,28 +61,41 @@ import uc from "@/components/uc.vue";
 import links from "@jx3box/jx3box-common/js/connect";
 import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { unbindOAuth, checkOAuth } from "@/service/profile";
-const client = location.host.includes("origin") ? "origin" : "std";
+const client = location.href.includes("origin") ? "origin" : "std";
+import { unbindApp } from "@/service/union";
+
+const BASE_URL = "http://localhost:7100/"
 
 const types = {
     github: {
         icon: "github",
         name: "Github",
+        uuid: "github",
+        idKey: "github_id",
     },
     qq: {
         icon: "qq",
         name: "QQ",
+        uuid: "qqsite",
+        idKey: "qq_openid",
     },
     weibo: {
         icon: "weibo",
         name: "微博",
+        uuid: "weibosite",
+        idKey: "weibo_id"
     },
     wechat: {
         icon: "wechat",
         name: "微信",
+        uuid: "wesite",
+        idKey: "wechat_openid"
     },
     wechat_miniprogram: {
         icon: "app",
         name: "微信小程序",
+        uuid: "wechat_miniprogram",
+        idKey: "wechat_miniprogram_openid"
     },
 };
 
@@ -91,6 +118,8 @@ export default {
                 wechat_unionid: "",
 
                 wechat_miniprogram_openid: "",
+
+                user_email: "",
             },
             oauth: ["github", "qq", "weibo", "wechat", "wechat_miniprogram"],
             types,
@@ -103,13 +132,8 @@ export default {
     },
     computed: {},
     methods: {
-        checkStatus: function (type) {
-            if (type == "qq" || type == "wechat") {
-                return !!this.data[type + "_unionid"];
-            } else if (type == "wechat_miniprogram") {
-                return !!this.data[type + "_openid"];
-            }
-            return !!this.data[type + "_id"];
+        checkStatus: function (idKey) {
+            return this.data[idKey];
         },
         getNickname: function (type) {
             return this.data[type + "_name"] || "已绑定";
@@ -122,7 +146,18 @@ export default {
             location.href = links[type].replace("state=login", `state=bind_${client}`);
         },
         unbind: function (type) {
-            this.$confirm("确定要解绑吗？", "解绑", {
+            if (!this.data.user_email) {
+                this.$alert("当前账号未验证邮箱，无法解除绑定", "提示", {
+                    confirmButtonText: "确定",
+                    type: "warning",
+                });
+                return;
+            }
+            if (type == 'wechat') {
+                this.unbindWechat(type);
+            }
+            const name = types[type].name;
+            this.$confirm(`确定要解绑【${name}】吗？`, "解绑", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
@@ -145,6 +180,7 @@ export default {
             this.loading = true;
             checkOAuth().then((res) => {
                 this.data = res.data.data;
+                this.data.user_email = ''
             }).finally(() => {
                 this.loading = false;
             });
@@ -153,6 +189,26 @@ export default {
             this.showMiniProgram = false;
             this.loadAuth();
         },
+        getAuthUrl(uuid) {
+            return BASE_URL + `api/cms/user/union/${uuid}/bind?client=${client}`;
+        },
+        unbindWechat(type) {
+            this.$confirm(`如果取消则无法再通过微信扫一扫登录`, "确定取消绑定吗？", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning",
+            })
+                .then(() => {
+                    unbindApp(type).then((res) => {
+                        this.$message({
+                            message: "解绑成功",
+                            type: "success",
+                        });
+                        this.loadAuth();
+                    });
+                })
+                .catch(() => {});
+        }
     },
     mounted: function () {
         this.loadAuth();
