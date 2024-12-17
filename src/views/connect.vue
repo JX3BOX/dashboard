@@ -59,12 +59,12 @@
 <script>
 import uc from "@/components/uc.vue";
 import links from "@jx3box/jx3box-common/js/connect";
-import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __imgPath, __cdn, __cms } from "@jx3box/jx3box-common/data/jx3box.json";
 import { unbindOAuth, checkOAuth } from "@/service/profile";
 const client = location.href.includes("origin") ? "origin" : "std";
 import { unbindApp } from "@/service/union";
 
-const BASE_URL = "http://localhost:7100/"
+const BASE_URL = __cms
 
 const types = {
     github: {
