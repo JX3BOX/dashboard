@@ -76,13 +76,13 @@ const types = {
     qq: {
         icon: "qq",
         name: "QQ",
-        uuid: "qqsite",
+        uuid: "qq",
         idKey: "qq_openid",
     },
     weibo: {
         icon: "weibo",
         name: "微博",
-        uuid: "weibosite",
+        uuid: "weibo",
         idKey: "weibo_id"
     },
     wechat: {
@@ -153,8 +153,9 @@ export default {
                 }).catch(() => {});
                 return;
             }
-            if (type == 'wechat') {
+            if (type == 'wesite') {
                 this.unbindWechat(type);
+                return;
             }
             const name = types[type].name;
             this.$confirm(`确定要解绑【${name}】吗？`, "解绑", {
