@@ -150,7 +150,7 @@ export default {
                 this.$alert("当前账号未验证邮箱，无法解除绑定", "提示", {
                     confirmButtonText: "确定",
                     type: "warning",
-                });
+                }).catch(() => {});
                 return;
             }
             if (type == 'wechat') {
@@ -180,7 +180,6 @@ export default {
             this.loading = true;
             checkOAuth().then((res) => {
                 this.data = res.data.data;
-                this.data.user_email = ''
             }).finally(() => {
                 this.loading = false;
             });
