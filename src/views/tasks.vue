@@ -56,7 +56,7 @@ export default {
                 .then((res) => {
                     const list = res.data.data.list;
                     this.list = list.filter((item) => {
-                        return item.task.task_group == "";
+                        return item.task.task_group == "" && item?.task.action_type != "task_account_bind_github";
                     });
                     this.group = list
                         .sort((a, b) => {
