@@ -16,15 +16,16 @@
                             {{ types[type].name }}
                         </span>
                     </span>
-                    <!-- <el-button
-                        class="u-button"
-                        :type="!checkStatus(type) ? 'primary' : 'danger'"
-                        @click="!checkStatus(type) ? bind(type) : unbind(type)"
+                    <el-button
+                        type="primary"
+                        @click="bind(types[type].uuid)"
+                        size="large"
+                        v-if="!checkStatus(types[type].idKey)"
                     >
-                        {{ !checkStatus(type) ? "立即绑定" : "解除绑定" }}
-                    </el-button> -->
+                        立即绑定
+                    </el-button>
 
-                    <a
+                    <!-- <a
                         class="el-button el-button--primary el-button--large"
                         v-if="!checkStatus(types[type].idKey)"
                         :href="getAuthUrl(types[type].uuid)"
@@ -32,7 +33,7 @@
                         <span class="u-status">
                             立即绑定
                         </span>
-                    </a>
+                    </a> -->
                     <el-button v-else @click="unbind(types[type].uuid)" size="large" type="danger">
                         <span class="u-status">
                             解除绑定
@@ -76,13 +77,13 @@ const types = {
     qq: {
         icon: "qq",
         name: "QQ",
-        uuid: "qq",
+        uuid: "qqsite",
         idKey: "qq_openid",
     },
     weibo: {
         icon: "weibo",
         name: "微博",
-        uuid: "weibo",
+        uuid: "weibosite",
         idKey: "weibo_id"
     },
     wechat: {
@@ -143,7 +144,7 @@ export default {
                 this.showMiniProgram = true;
                 return;
             }
-            location.href = links[type].replace("state=login", `state=bind_${client}`);
+            location.href = this.getAuthUrl(type)
         },
         unbind: function (type) {
             if (!this.data.user_email) {
@@ -153,11 +154,12 @@ export default {
                 }).catch(() => {});
                 return;
             }
-            if (type == 'wesite') {
-                this.unbindWechat(type);
+            if (type != "wechat_miniprogram") {
+                this.unbindApp(type);
                 return;
             }
-            const name = types[type].name;
+            const _type = Object.entries(types).find((item) => item[1].uuid == type)[0];
+            const name = types[_type].name;
             this.$confirm(`确定要解绑【${name}】吗？`, "解绑", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
@@ -192,8 +194,13 @@ export default {
         getAuthUrl(uuid) {
             return BASE_URL + `api/cms/user/union/${uuid}/bind?client=${client}`;
         },
-        unbindWechat(type) {
-            this.$confirm(`如果取消则无法再通过微信扫一扫登录`, "确定取消绑定吗？", {
+        unbindApp(type) {
+            const desc = {
+                wesite: "如果取消则无法再通过微信扫一扫登录",
+                qqsite: "如果取消则无法再通过QQ登录",
+                weibosite: "如果取消则无法再通过微博登录",
+            }[type];
+            this.$confirm(desc, "确定取消绑定吗？", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
