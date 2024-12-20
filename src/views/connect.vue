@@ -67,12 +67,12 @@ import { unbindApp } from "@/service/union";
 const BASE_URL = __cms
 
 const types = {
-    github: {
-        icon: "github",
-        name: "Github",
-        uuid: "github",
-        idKey: "github_id",
-    },
+    // github: {
+    //     icon: "github",
+    //     name: "Github",
+    //     uuid: "github",
+    //     idKey: "github_id",
+    // },
     qq: {
         icon: "qq",
         name: "QQ",
@@ -121,7 +121,7 @@ export default {
 
                 user_email: "",
             },
-            oauth: ["github", "qq", "weibo", "wechat", "wechat_miniprogram"],
+            oauth: ["qq", "weibo", "wechat", "wechat_miniprogram"],
             types,
 
             showMiniProgram: false,
