@@ -27,7 +27,7 @@
             </div> -->
         </div>
         <div class="m-content">
-            <el-input v-model="form.content" type="textarea" :rows="10" placeholder="输入反馈内容"></el-input>
+            <el-input v-model="form.content" type="textarea" :rows="10" placeholder="输入反馈内容" @paste.native="handlePaste"></el-input>
         </div>
         <div class="m-feedback-actions">
             <div class="m-feedback-attachment">
@@ -40,7 +40,6 @@
                     :on-success="done"
                     :on-error="fail"
                     :on-exceed="exceed"
-                    :before-upload="beforeUpload"
                     :limit="max"
                     title="上传图片"
                     with-credentials
@@ -117,18 +116,18 @@ export default {
         },
     },
     methods: {
-        beforeUpload: function (file) {
-            // 判断上传的文件类型
-            const isJPG =
-                file.type === "image/jpeg" ||
-                file.type === "image/png" ||
-                file.type === "image/gif" ||
-                file.type === "image/bmp";
-            if (!isJPG) {
-                this.$message.error("上传图片只能是 JPG/PNG/GIF/BMP 格式!");
-                return false;
-            }
-        },
+        // beforeUpload: function (file) {
+        //     // 判断上传的文件类型
+        //     const isJPG =
+        //         file.type === "image/jpeg" ||
+        //         file.type === "image/png" ||
+        //         file.type === "image/gif" ||
+        //         file.type === "image/bmp";
+        //     if (!isJPG) {
+        //         this.$message.error("上传图片只能是 JPG/PNG/GIF/BMP 格式!");
+        //         return false;
+        //     }
+        // },
         // 提交图片成功
         done: function (res) {
             this.imgs = [...this.imgs, res.data[0]];
@@ -150,7 +149,7 @@ export default {
         remove: function (file) {
             this.imgs = this.imgs.filter((img) => img !== file?.response?.data[0]);
         },
-        submit() {
+        async submit() {
             this.loading = true;
             const data = {
                 ...this.form,
@@ -168,6 +167,27 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        addFile(file) {
+            this.$refs.upload.handleStart(file);
+            return false;
+        },
+        handlePaste(event) {
+            const clipboardItems = event.clipboardData.items;
+            for (let i = 0; i < clipboardItems.length; i++) {
+                const item = clipboardItems[i];
+                if (item.type.indexOf("image") !== -1) {
+                    // 阻止默认粘贴图片的名字
+                    event.preventDefault();
+                    const blob = item.getAsFile();
+                    const file = new File([blob], new Date().getTime() + "-" + blob.name, { type: blob.type });
+                    this.addFile(file);
+
+                    this.$nextTick(() => {
+                        this.$refs.upload.submit();
+                    });
+                }
+            }
         },
     },
 };
