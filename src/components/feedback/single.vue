@@ -468,7 +468,6 @@ export default {
                 this.loading = true;
                 let res = await getFeedback(this.id);
                 this.data = res.data.data;
-                console.log(this.data);
                 this.data.content = this.data.content.replace(/\n/g, "<br>");
                 this.done = true;
             } catch (e) {
