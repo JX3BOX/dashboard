@@ -79,7 +79,7 @@
 import uc from "@/components/uc.vue";
 import { getDecoration, setDecoration, getDecorationJson } from "@/service/decoration";
 import User from "@jx3box/jx3box-common/js/user";
-import { __imgPath } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import { cloneDeep, flatten } from "lodash";
 import { themeTab } from "@/assets/data/tabs.json";
 
@@ -255,7 +255,7 @@ export default {
                 }
             });
             let defaultImg = "https://cdn.jx3box.com/static/dashboard/img/no.5fe91973.svg";
-            if (val) return __imgPath + `decoration/images/${val}/${type}_preview.png`;
+            if (val) return __cdn + `design/decoration/images/${val}/${type}_preview.png`;
             else return defaultImg;
         },
         decorationSubmit() {
@@ -298,7 +298,7 @@ export default {
     },
     filters: {
         showDecoration: function (item) {
-            return __imgPath + `decoration/images/${item.val}/${item.type}_preview.png`;
+            return __cdn + `design/decoration/images/${item.val}/${item.type}_preview.png`;
         },
     },
     components: {

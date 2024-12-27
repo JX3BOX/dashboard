@@ -88,8 +88,8 @@ import uc from "@/components/uc.vue";
 import { themeTab } from "@/assets/data/tabs.json";
 import User from "@jx3box/jx3box-common/js/user";
 import { getMyInfo } from "@/service/index.js";
-import { __userLevelColor, __imgPath } from "@jx3box/jx3box-common/data/jx3box";
-import { getDecoration, setDecoration, getHonor, getUserHonors, setHonor, cancelHonor } from "@/service/decoration";
+import { __userLevelColor, __imgPath, __cdn } from "@jx3box/jx3box-common/data/jx3box";
+import { getHonor, getUserHonors, setHonor, cancelHonor } from "@/service/decoration";
 import { cloneDeep, inRange } from "lodash";
 export default {
     name: "honor",
@@ -143,7 +143,7 @@ export default {
     },
     methods: {
         imgUrl: function (item) {
-            return __imgPath + `decoration/honor/${item.img}/${item.img}.${item.img_ext}`;
+            return __cdn + `design/decoration/honor/${item.img}/${item.img}.${item.img_ext}`;
         },
         setClass(item) {
             if (!item.isHave) return "noHave";
