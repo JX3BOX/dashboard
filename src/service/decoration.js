@@ -1,6 +1,6 @@
 import { $cms, $next } from "@jx3box/jx3box-common/js/https.js";
 import axios from "axios";
-import { __imgPath, __dataPath } from "@jx3box/jx3box-common/data/jx3box.json";
+import { __imgPath, __dataPath, __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 
 function getDecoration(params) {
     return $cms().get(`/api/cms/user/decoration`, {
@@ -13,7 +13,7 @@ function setDecoration(data) {
 }
 
 function getDecorationJson() {
-    let url = __imgPath + `decoration/index.json?${Date.now()}`;
+    let url = __cdn + `design/decoration/index.json?${Date.now()}`;
     return axios.get(url);
 }
 
