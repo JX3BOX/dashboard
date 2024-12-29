@@ -23,6 +23,9 @@
             <el-form-item label="订阅通知">
                 <el-switch v-model="conf.feed_message" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
             </el-form-item>
+            <el-form-item label="日历链接">
+                <el-input v-model="conf.fav_link" placeholder="输入日历链接"></el-input>
+            </el-form-item>
 
 
             <!-- <el-form-item label="评论邮件通知">
@@ -74,6 +77,7 @@ export default {
                 // plugin_setting_lr: false,
                 // plugin_setting_jx: false,
                 // plugin_setting_fy: false,
+                fav_link: "",
             },
         };
     },
