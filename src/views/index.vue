@@ -67,7 +67,7 @@
                     <span class="u-group">
                         <em>Group</em>
                         <b>{{ showGroupName(group) }}</b>
-                        <el-tooltip v-if="group < 16" placement="top" content="未认证的用户将无法使用发布中心">
+                        <el-tooltip v-if="~~group < 16" placement="top" content="未认证的用户将无法使用发布中心">
                             <span class="u-auth">
                                 <i class="u-unauth el-icon-warning"></i>
                                 <a href="/dashboard/auth" target="_blank">前往认证</a>
