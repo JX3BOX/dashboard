@@ -26,6 +26,12 @@
             <el-form-item label="日历链接">
                 <el-input v-model="conf.fav_link" placeholder="输入日历链接"></el-input>
             </el-form-item>
+            <el-form-item label="客户端偏好">
+                <el-select v-model="conf.default_client">
+                    <el-option label="正式服（旗舰版/无界）" value="std"></el-option>
+                    <el-option label="怀旧服（缘起）" value="origin"></el-option>
+                </el-select>
+            </el-form-item>
 
 
             <!-- <el-form-item label="评论邮件通知">
@@ -78,6 +84,7 @@ export default {
                 // plugin_setting_jx: false,
                 // plugin_setting_fy: false,
                 fav_link: "",
+                default_client: "",
             },
         };
     },
