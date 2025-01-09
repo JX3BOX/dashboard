@@ -95,7 +95,7 @@ export default {
 
             levelMap: new Array(8).fill(0).map((_, i) => {
                 return {
-                    label: i + 1,
+                    label: `等级${i + 1}`,
                     value: i + 1
                 };
             })
