@@ -87,6 +87,13 @@ module.exports = {
                     request.setHeader("origin", "");
                 },
             },
+            // 活动
+            "/api/event": {
+                target: "https://pay.jx3box.com",
+                onProxyReq: function (request) {
+                    request.setHeader("origin", "");
+                },
+            },
             // 默认PAY服务
             "/api": {
                 target: "https://pay.jx3box.com",
