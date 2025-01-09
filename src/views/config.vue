@@ -32,6 +32,11 @@
                     <el-option label="怀旧服（缘起）" value="origin"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="关注要求">
+                <el-select v-model="conf.rss_need_level">
+                    <el-option v-for="item in levelMap" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
 
 
             <!-- <el-form-item label="评论邮件通知">
@@ -85,7 +90,15 @@ export default {
                 // plugin_setting_fy: false,
                 fav_link: "",
                 default_client: "",
+                rss_need_level: 1
             },
+
+            levelMap: new Array(8).fill(0).map((_, i) => {
+                return {
+                    label: i + 1,
+                    value: i + 1
+                };
+            })
         };
     },
     computed: {
