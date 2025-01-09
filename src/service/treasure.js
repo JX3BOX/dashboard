@@ -6,8 +6,8 @@ function teamCertificationRecordList(params) {
 }
 
 // 获取个人节日贺卡列表
-function tirggerHistory(params) {
-    return $pay().get("/api/event/tirgger/history", { params });
+function getHolidayCard(params) {
+    return $pay().get("/api/event/trigger/history", { params });
 }
 
-export { teamCertificationRecordList, tirggerHistory };
+export { teamCertificationRecordList, getHolidayCard };

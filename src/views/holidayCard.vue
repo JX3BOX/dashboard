@@ -73,7 +73,7 @@
 <script>
 import uc from "@/components/uc.vue";
 import { antiqueTab } from "@/assets/data/tabs.json";
-import { tirggerHistory } from "@/service/treasure";
+import { getHolidayCard } from "@/service/treasure";
 import { __cdn } from "@jx3box/jx3box-common/data/jx3box.json";
 import tianTuanCertificateCode from "@/assets/data/tianTuan_certificate_code.json";
 import { showSchoolIcon } from "@jx3box/jx3box-common/js/utils";
@@ -106,13 +106,7 @@ export default {
             this.getCertificateList();
         },
         getCertificateList() {
-            tirggerHistory({
-                index: this.page,
-                pageSize: this.per,
-            }).then((res) => {
-                this.total = res.data.data.page.total;
-                this.list = res.data.data.list;
-            });
+            getHolidayCard().then((res) => {});
         },
         handleCurrentChange(current) {
             this.page = current;
