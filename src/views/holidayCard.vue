@@ -21,18 +21,18 @@
                     </a>
                 </el-col>
             </el-row>
-
-            <el-pagination
-                class="m-cert-pages"
-                background
-                @current-change="handleCurrentChange"
-                :page-size="per"
-                :hide-on-single-page="true"
-                :current-page.sync="page"
-                layout="total, prev, pager, next, jumper"
-                :total="total"
-            ></el-pagination>
         </div>
+
+        <el-pagination
+            class="m-pagination"
+            background
+            :hide-on-single-page="true"
+            :page-size="pageSize"
+            :current-page.sync="pageIndex"
+            layout="total, prev, pager, next"
+            :total="total"
+            @current-change="currentChange"
+        />
     </uc>
 </template>
 
@@ -64,17 +64,13 @@ export default {
         },
         getCertificateList() {
             const params = {
-                pageIndex: this.pageIndex, 
+                pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
             }
             getHolidayCard(params).then((res) => {
                 this.list = res.data.data.list;
                 this.total = res.data.data.page.total;
             });
-        },
-        handleCurrentChange(current) {
-            this.page = current;
-            this.getCertificateList();
         },
         formatTime(time) {
             let date = new Date(time);
