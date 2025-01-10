@@ -2,7 +2,7 @@
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-cert-list">
             <el-empty v-if="!list.length" description="您还未获得过证书~"></el-empty>
-            <el-row :gutter="32">
+            <el-row :gutter="32" v-else>
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
                     <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
                         <div
@@ -22,6 +22,17 @@
                 </el-col>
             </el-row>
         </div>
+
+        <el-pagination
+            class="m-pagination"
+            background
+            :hide-on-single-page="true"
+            :page-size="pageSize"
+            :current-page.sync="pageIndex"
+            layout="total, prev, pager, next"
+            :total="total"
+            @current-change="currentChange"
+        />
     </uc>
 </template>
 
@@ -40,6 +51,10 @@ export default {
         return {
             tabList: antiqueTab,
             list: [],
+
+            pageSize: 10,
+            pageIndex: 1,
+            total: 0
         };
     },
     computed: {},
@@ -48,9 +63,13 @@ export default {
             this.getCertificateList();
         },
         getCertificateList() {
-            getHolidayCard().then((res) => {
-                console.log(res.data);
-                this.list = res.data;
+            const params = {
+                pageIndex: this.pageIndex,
+                pageSize: this.pageSize,
+            }
+            getHolidayCard(params).then((res) => {
+                this.list = res.data.data.list;
+                this.total = res.data.data.page.total;
             });
         },
         formatTime(time) {
@@ -62,6 +81,10 @@ export default {
         },
         getCertLink(item) {
             return `/author/${item.user_id}/holiday-card/${item.event_id}?id=${item.id}`;
+        },
+        currentChange(val) {
+            this.pageIndex = val;
+            this.getCertificateList();
         },
     },
     mounted: function () {
