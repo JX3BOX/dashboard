@@ -24,6 +24,7 @@ const theme = () => import("../views/theme.vue");
 const emotion = () => import("../views/emotion.vue");
 const honor = () => import("../views/honor.vue");
 const certification = () => import("../views/certification.vue");
+const holidayCard = () => import("../views/holidayCard.vue");
 const medal = () => import("../views/medal.vue");
 
 const orders = () => import("../views/orders.vue");
@@ -83,6 +84,7 @@ const routes = [
         },
     },
     { name: "certification", path: "/treasure/certification", component: certification },
+    { name: "holidayCard", path: "/treasure/holidayCard", component: holidayCard },
 
     { name: "mall", path: "/mall", component: mall },
     { name: "orders", path: "/orders", component: orders },

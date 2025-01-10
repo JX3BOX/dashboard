@@ -24,6 +24,7 @@
         { "name": "letter", "icon": "el-icon-chat-dot-square", "label": "私信" }
     ],
     "antiqueTab":[
-        { "name": "certification", "icon": "el-icon-medal", "label": "电子证书" }
+        { "name": "certification", "icon": "el-icon-medal", "label": "电子证书" },
+        { "name": "holidayCard", "icon": "el-icon-sugar", "label": "节日贺卡" }
     ]
 }

@@ -8,7 +8,7 @@
             <el-tabs v-model="active" @tab-click="tabChange">
                  <el-tab-pane label="我的亲友" name="whitelist"></el-tab-pane>
                  <el-tab-pane label="黑名单" name="blacklist"></el-tab-pane>
-                 <el-tab-pane label="我的关注" name="myfollow"></el-tab-pane>
+                 <el-tab-pane label="我的订阅" name="myfollow"></el-tab-pane>
                  <el-tab-pane label="我的粉丝" name="myfans"></el-tab-pane>
             </el-tabs>
 

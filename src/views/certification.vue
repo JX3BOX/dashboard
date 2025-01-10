@@ -1,6 +1,7 @@
 <template>
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-cert-list">
+            <el-empty v-if="!list.length" description="您还未获得过证书~"></el-empty>
             <el-row :gutter="32">
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
                     <a

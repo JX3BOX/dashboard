@@ -110,6 +110,27 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="接受虚拟礼物">
+                <el-switch v-model="conf.allow_gift_of_mall_virtual_goods" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
+            </el-form-item>
+            <el-form-item label="订阅通知">
+                <el-switch v-model="conf.feed_message" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
+            </el-form-item>
+            <el-form-item label="日历链接">
+                <el-input v-model="conf.fav_link" placeholder="输入日历链接"></el-input>
+            </el-form-item>
+            <el-form-item label="客户端偏好">
+                <el-select v-model="conf.default_client">
+                    <el-option label="正式服（旗舰版/无界）" value="std"></el-option>
+                    <el-option label="怀旧服（缘起）" value="origin"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="关注要求">
+                <el-select v-model="conf.rss_need_level">
+                    <el-option v-for="item in levelMap" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
+
 
             <!-- <el-form-item label="评论邮件通知">
                 <el-switch v-model="conf.cmt_email" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0" disabled></el-switch>
@@ -162,7 +183,7 @@ export default {
                 // plugin_setting_fy: false,
                 fav_link: "",
                 default_client: "",
-                rss_need_level: 1,
+                rss_need_level: 1
             },
 
             levelMap: new Array(8).fill(0).map((_, i) => {
