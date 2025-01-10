@@ -4,7 +4,7 @@
             <el-empty v-if="!list.length" description="您还未获得过证书~"></el-empty>
             <el-row :gutter="32">
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
-                    <a class="m-cert-item" target="_blank">
+                    <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
                         <div
                             class="u-img"
                             :style="{
@@ -59,6 +59,9 @@ export default {
             let month = date.getMonth() + 1;
             let day = date.getDate();
             return `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
+        },
+        getCertLink(item) {
+            return `/author/${item.user_id}/holiday-card/${item.event_id}?id=${item.id}`;
         },
     },
     mounted: function () {
