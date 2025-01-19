@@ -147,6 +147,10 @@ export default {
                     type: "success",
                 });
                 this.status = false;
+
+                User.destroy().then(() => {
+                    User.toLogin();
+                })
             });
         },
         reset: function() {
