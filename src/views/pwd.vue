@@ -148,7 +148,9 @@ export default {
                 });
                 this.status = false;
 
-                User.destroy();
+                User.destroy().then(() => {
+                    User.toLogin();
+                });
             });
         },
         reset: function() {
