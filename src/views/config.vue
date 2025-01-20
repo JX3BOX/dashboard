@@ -14,10 +14,10 @@
                     <el-radio-button label="ASC">最早靠前</el-radio-button>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="接受赠礼">
+            <!-- <el-form-item label="接受赠礼">
                 <el-switch v-model="conf.allow_cny" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
-            </el-form-item>
-            <el-form-item label="接受虚拟礼物">
+            </el-form-item> -->
+            <el-form-item label="接受商城赠礼">
                 <el-switch v-model="conf.allow_gift_of_mall_virtual_goods" active-color="#13ce66" active-text="开启" :active-value="1" :inactive-value="0"></el-switch>
             </el-form-item>
             <el-form-item label="订阅通知">
@@ -70,7 +70,7 @@ import { getUserConf, setUserConf } from "@/service/conf";
 export default {
     name: "config",
     props: [],
-    data: function() {
+    data: function () {
         return {
             conf: {
                 cmt_email: 0,
@@ -95,21 +95,20 @@ export default {
 
             levelMap: new Array(8).fill(0).map((_, i) => {
                 return {
-                    label: i + 1,
-                    value: i + 1
+                    label: `等级${i + 1}`,
+                    value: i + 1,
                 };
-            })
+            }),
         };
     },
-    computed: {
-    },
+    computed: {},
     methods: {
-        loadData: function() {
+        loadData: function () {
             getUserConf().then((res) => {
                 this.conf = res?.data?.data;
             });
         },
-        submit: function() {
+        submit: function () {
             setUserConf(this.conf).then((res) => {
                 this.$message({
                     message: "设置更新成功",
@@ -118,7 +117,7 @@ export default {
             });
         },
     },
-    mounted: function() {
+    mounted: function () {
         this.loadData();
     },
     components: {},

@@ -7,13 +7,9 @@
                     <i class="el-icon-plus"></i> 自定义角色
                 </router-link>
             </div> -->
-            <el-button
-                slot="reference"
-                class="u-back"
-                size="mini"
-                icon="el-icon-arrow-left"
-                @click="goBack"
-            >返回列表</el-button>
+            <el-button slot="reference" class="u-back" size="mini" icon="el-icon-arrow-left" @click="goBack"
+                >返回列表</el-button
+            >
         </h2>
         <div class="m-role-bind">
             <el-tabs v-model="tab">
@@ -31,14 +27,12 @@
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
                         >
-                        <i class="el-icon-document-copy"></i>
-                        {{ token }}
-                    </span>
+                            <i class="el-icon-document-copy"></i>
+                            {{ token }}
+                        </span>
                     </div>
                     <div class="m-tutorial">
-                        <h2 class="u-title-name">
-                            <i class="el-icon-question"></i> 绑定步骤
-                        </h2>
+                        <h2 class="u-title-name"><i class="el-icon-question"></i> 绑定步骤</h2>
                         <p>
                             打开【茗伊插件集】-【团队】-【团队平台】
                             <br />【点击绑定】并【填入上方密钥】以绑定角色到魔盒账号
@@ -72,16 +66,13 @@ export default {
     data: function () {
         return {
             token: "INVALIDTESTTOKEN",
-            demo_url: __ossMirror + "upload/post/2021/7/4/6658485.png",
+            demo_url: __ossMirror + "upload/post/2025/1/15/28338_2338192.jpg",
             loading: false,
-            tab : location.href.includes('origin') ? 'origin' : 'std',
+            tab: location.href.includes("origin") ? "origin" : "std",
 
             form: {
                 name: "",
-                server:
-                    (localStorage &&
-                        localStorage.getItem("team_role_default_server")) ||
-                    "",
+                server: (localStorage && localStorage.getItem("team_role_default_server")) || "",
                 mount: "0",
                 body_type: "1",
                 note: "",
@@ -119,9 +110,9 @@ export default {
                     this.processing = false;
                 });
         },
-        goBack : function (){
-            this.$router.push('/role')
-        }
+        goBack: function () {
+            this.$router.push("/role");
+        },
     },
     mounted: function () {
         this.loading = true;
@@ -134,7 +125,7 @@ export default {
             });
     },
     components: {
-        roleform
+        roleform,
     },
 };
 </script>
