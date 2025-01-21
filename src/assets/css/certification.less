@@ -1,13 +1,11 @@
-.m-cert-list {
-}
 .m-cert-item {
     .pr();
     .mt(20px);
     .r(10px);
     .pointer();
     padding: 24px 18px;
-    border: 1px solid #7e91ab;
-    background: linear-gradient(180deg, #ffffff 28.24%, #f5f7fa 100%);
+    border: 1px solid #cfcfcf;
+    background: linear-gradient(0deg, #ffffff 28.24%, #f5f7fa 100%);
     transition: 0.2s all;
     .flex();
     align-items: flex-end;
@@ -18,7 +16,11 @@
         background-position: center;
         transition: 0.2s all;
         transform-origin: bottom left;
-        border: 1px solid #7e91ab;
+        border: 1px solid #cfcfcf;
+
+        &.u-card {
+            .pb(34%);
+        }
     }
     .m-info {
         .w(calc(100% - 40%));
@@ -41,6 +43,7 @@
     .u-icon {
         .pa();
         .rt(18px,24px);
+        .size(52px);
     }
     &:hover {
         box-shadow: 0 0 10px 0 #e3d29a;
@@ -62,6 +65,49 @@
         .u-icon {
             .size(65px);
             .rt(18px,18px);
+        }
+    }
+
+    &.m-feast-item {
+        .u-card {
+            background-image: url("../img/holidayCard/feast_img.png");
+            border-color: #eb7373;
+        }
+        .m-info {
+            .u-title {
+                color: #eb7373;
+            }
+        }
+        &:hover {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 1) 25.46%, rgba(255, 231, 222, 1) 100%);
+            border-color: #eb7373;
+            box-shadow: 0 0 10px 0 #f5c3bc;
+            .m-info {
+                .u-title {
+                    color: #cc3737;
+                }
+            }
+        }
+    }
+    &.m-bday-item {
+        .u-card {
+            background-image: url("../img/holidayCard/bday_img.png");
+            border-color: #cf82b8;
+        }
+        .m-info {
+            .u-title {
+                color: #cf82b8;
+            }
+        }
+        &:hover {
+            background: linear-gradient(180deg, #ffffff 25.46%, #ffebf6 100%);
+            border-color: #cf82b8;
+            box-shadow: 0 0 10px 0 #e9d3ed;
+            .m-info {
+                .u-title {
+                    color: #ab4f8f;
+                }
+            }
         }
     }
 }

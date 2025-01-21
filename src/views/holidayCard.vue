@@ -4,20 +4,14 @@
             <el-empty v-if="!list.length" description="您还未获得过证书~"></el-empty>
             <el-row :gutter="32" v-else>
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
-                    <a class="m-cert-item" :href="getCertLink(item)" target="_blank">
-                        <div
-                            class="u-img"
-                            :style="{
-                                backgroundImage: `url()`,
-                            }"
-                        ></div>
+                    <a class="m-cert-item m-feast-item" :href="getCertLink(item)" target="_blank">
+                        <div class="u-img u-card"></div>
                         <div class="m-info">
                             <div class="u-title">{{ item.event_name }}</div>
                             <div class="u-tip">{{ item.event_wish }}</div>
                             <div class="u-tip">获得时间：{{ formatTime(item.created_at) }}</div>
                         </div>
-                        <!-- 百强证书 -->
-                        <img class="u-icon" src="../assets/img/cert/CI_icon.svg" alt="" />
+                        <img class="u-icon" src="../assets/img/holidayCard/feast_icon.svg" />
                     </a>
                 </el-col>
             </el-row>
@@ -54,7 +48,7 @@ export default {
 
             pageSize: 10,
             pageIndex: 1,
-            total: 0
+            total: 0,
         };
     },
     computed: {},
@@ -66,7 +60,7 @@ export default {
             const params = {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
-            }
+            };
             getHolidayCard(params).then((res) => {
                 this.list = res.data.data.list;
                 this.total = res.data.data.page.total;
