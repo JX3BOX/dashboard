@@ -1,14 +1,14 @@
 <template>
     <uc class="m-dashboard-frame m-dashboard-skin" icon="el-icon-magic-stick" title="魔盒藏品" :tab-list="tabList">
         <div class="m-cert-list">
-            <el-empty v-if="!list.length" description="您还未获得过证书~"></el-empty>
+            <el-empty v-if="!list.length" description="您还未获得过贺卡~"></el-empty>
             <el-row :gutter="32" v-else>
                 <el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :xl="6">
                     <a class="m-cert-item m-bday-item" :href="getCertLink(item)" target="_blank">
                         <div class="u-img u-card"></div>
                         <div class="m-info">
-                            <div class="u-title">生日贺卡</div>
-                            <div class="u-tip">生日快乐！</div>
+                            <div class="u-title">{{ getYear(item.created_at) }}生日贺卡</div>
+                            <div class="u-tip">{{item.age}}周岁生日快乐</div>
                             <div class="u-tip">获得时间：{{ formatTime(item.created_at) }}</div>
                         </div>
                         <img class="u-icon" src="../assets/img/holidayCard/bday_icon.svg" />
@@ -63,7 +63,7 @@ export default {
             };
             getBirthdayCard(params).then((res) => {
                 this.list = res.data.data.list;
-                this.total = res.data.data.page.total;
+                this.total = res.data.data.page?.total || 0;
             });
         },
         formatTime(time) {
@@ -79,6 +79,9 @@ export default {
         currentChange(val) {
             this.pageIndex = val;
             this.getCertificateList();
+        },
+        getYear(item) {
+            return new Date(item).getFullYear();
         },
     },
     mounted: function () {
