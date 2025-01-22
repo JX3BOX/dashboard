@@ -1,4 +1,4 @@
-import { $team, $pay } from "@jx3box/jx3box-common/js/https";
+import { $team, $pay, $next } from "@jx3box/jx3box-common/js/https";
 
 // 获取个人团队成绩证书列表
 function teamCertificationRecordList(params) {
@@ -10,4 +10,9 @@ function getHolidayCard(params) {
     return $pay().get("/api/event/trigger/history", { params });
 }
 
-export { teamCertificationRecordList, getHolidayCard };
+// 获取个人生日贺卡列表
+function getBirthdayCard(params) {
+    return $next().get("/api/next2/birthday-event/my/list", { params });
+}
+
+export { teamCertificationRecordList, getHolidayCard, getBirthdayCard };
