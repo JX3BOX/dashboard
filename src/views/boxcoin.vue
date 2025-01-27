@@ -48,6 +48,8 @@
                         <el-radio :label="5000" border :disabled="!canSelect(5000)">5000通宝</el-radio>
                         <el-radio :label="10000" border :disabled="!canSelect(10000)">10000通宝</el-radio>
                         <el-radio :label="50000" border :disabled="!canSelect(50000)">50000通宝</el-radio>
+                        <el-radio :label="100000" border :disabled="!canSelect(100000)">100000通宝</el-radio>
+                        <el-radio :label="200000" border :disabled="!canSelect(200000)">200000通宝</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="邮箱地址">
