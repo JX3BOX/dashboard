@@ -74,7 +74,7 @@ export default {
             return `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
         },
         getCertLink(item) {
-            return `/author/${item.user_id}/birthday-card/${item.event_id}?id=${item.id}`;
+            return `/author/${item.user_id}/birthday-card/${item.skin || 'default2025'}?id=${item.id}`;
         },
         currentChange(val) {
             this.pageIndex = val;
