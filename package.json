@@ -2,9 +2,10 @@
   "name": "dashboard",
   "private": true,
   "scripts": {
-    "dev": "cross-env DEV_SERVER=true vue-cli-service serve",
+    "dev": "cross-env DEV_SERVER=true vue-cli-service serve --mode development",
     "serve": "vue-cli-service serve",
     "node+": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "debug": "env DEV_SERVER=true vue-cli-service serve --mode staging",
     "build": "vue-cli-service build",
     "preview": "cross-env BUILD_MODE=preview vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -12,9 +13,9 @@
     "update": "npm install @jx3box/jx3box-common-ui@latest @jx3box/jx3box-common@latest @jx3box/jx3box-data@latest @jx3box/jx3box-comment-ui@latest @jx3box/jx3box-emotion@latest @jx3box/jx3box-facedat@latest"
   },
   "dependencies": {
-    "@jx3box/jx3box-comment-ui": "^2.0.2",
-    "@jx3box/jx3box-common": "^8.6.2",
-    "@jx3box/jx3box-common-ui": "^9.1.4",
+    "@jx3box/jx3box-comment-ui": "^2.0.3",
+    "@jx3box/jx3box-common": "^8.6.3",
+    "@jx3box/jx3box-common-ui": "^9.1.5",
     "@jx3box/jx3box-data": "^3.7.7",
     "@jx3box/jx3box-emotion": "^1.2.8",
     "@jx3box/jx3box-facedat": "^2.6.2",

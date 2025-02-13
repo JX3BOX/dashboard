@@ -20,7 +20,7 @@ module.exports = {
             },
             // NEXT2服务
             "/api/next2/miscfeedback": {
-                target: "https://dev.next2.jx3box.com",
+                target: "https://next2.jx3box.com",
                 onProxyReq: function (request) {
                     request.setHeader("origin", "");
                 },
