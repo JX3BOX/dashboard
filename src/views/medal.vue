@@ -109,7 +109,7 @@ export default {
         text-align: center;
     }
     .u-img {
-        .size(20px);
+        .size(40px);
         border: none;
     }
 
