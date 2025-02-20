@@ -85,8 +85,8 @@ const routes = [
         },
     },
     { name: "certification", path: "/treasure/certification", component: certification },
-    { name: "holidayCard", path: "/treasure/holidayCard", component: holidayCard },
-    { name: "birthdayCard", path: "/treasure/birthdayCard", component: birthdayCard },
+    { name: "holidayCard", path: "/treasure/holiday-card", component: holidayCard },
+    { name: "birthdayCard", path: "/treasure/birthday-card", component: birthdayCard },
 
     { name: "mall", path: "/mall", component: mall },
     { name: "orders", path: "/orders", component: orders },
